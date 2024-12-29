@@ -7,10 +7,10 @@ import { brands } from '../config/brands';
 const PAGES_DIR = path.join(process.cwd(), 'src/app/pages');
 
 function generatePage(pageConfig: typeof pagesToBuild[0]) {
-  const { offer, brand, source } = pageConfig;
-  const routePath = `${offer}-${brand}-${source}`;
+  const { offerAbbrev, brand, source } = pageConfig;
+  const routePath = `${offerAbbrev}-${brand}-${source}`;
   
-  const offerContent = offers[offer];
+  const offerContent = offers[offerAbbrev];
   const brandConfig = brands[brand];
   
   if (!offerContent || !brandConfig) {
@@ -32,7 +32,7 @@ import BaseLayout from '@/components/base/layout/BaseLayout';
 import { LandingPage } from '@/components/templates/LandingPage';
 
 export default function Page() {
-  const offerContent = offers['${offer}'];
+  const offerContent = offers['${offerAbbrev}'];
   const brandConfig = brands['${brand}'];
   const source = '${source}';
 
@@ -54,9 +54,9 @@ export default function Page() {
 function validateConfigs() {
   const errors: string[] = [];
 
-  pagesToBuild.forEach(({ offer, brand, source }) => {
-    if (!offers[offer]) {
-      errors.push(`Offer "${offer}" not found in offers configuration`);
+  pagesToBuild.forEach(({ offerAbbrev, brand, source }) => {
+    if (!offers[offerAbbrev]) {
+      errors.push(`Offer "${offerAbbrev}" not found in offers configuration`);
     }
     if (!brands[brand]) {
       errors.push(`Brand "${brand}" not found in brands configuration`);
