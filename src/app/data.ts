@@ -21,16 +21,35 @@ export const HeaderData: HeaderDataType = {
 };
 
 export const FooterData: FooterDataType = {
-  className: 'bg-[#41464f]',
-  columns: [
-    {
-      title: 'Company',
-      links: [
-        { text: 'About Us', href: '/about' },
-        { text: 'Contact', href: '/contact' },
-      ],
-    },
-  ],
+  accordion: {
+    display: true,
+    items: [
+      {
+        title: 'Company',
+        links: [
+          { text: 'About Us', link: '/about' },
+          { text: 'Contact', link: '/contact' },
+        ],
+      },
+    ],
+  },
+  emailSubmitSection: {
+    display: false,
+    title: '',
+    text: '',
+    placeholder: '',
+  },
+  socialIconsSection: {
+    display: false,
+    icons: [],
+  },
+  companyLogo: {
+    src: '/images/pj-logo1.png',
+    alt: 'Company Logo',
+  },
+  companyName: companyName,
+  disclaimers: [],
+  bottomLinks: [],
 };
 
 export const NavigationData: NavigationDataType = {
