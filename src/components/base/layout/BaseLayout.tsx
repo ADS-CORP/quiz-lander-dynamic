@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
 import Footer from '@/components/base/footer';
-import { StaticHeader as Header } from '@/components/base/header/StaticHeader';
+import Header from '@/components/base/header/StaticHeader';
 import { BrandConfig } from '@/config/types';
 
 type LayoutProps = {

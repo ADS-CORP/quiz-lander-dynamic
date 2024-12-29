@@ -7,7 +7,7 @@ interface HeaderProps {
   brand: BrandConfig;
 }
 
-export const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
+const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -60,3 +60,5 @@ export const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
     </header>
   );
 };
+
+export default StaticHeader;

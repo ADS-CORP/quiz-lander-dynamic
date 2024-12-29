@@ -20,16 +20,22 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default function Page() {
-  const offerContent = offers['hairrelaxer'];
   const brandConfig = brands['pj'];
   const source = 'fb';
   
+  // Find the page configuration by matching the offer's abbreviation
+  const offerConfig = Object.entries(offers).find(([_, offer]) => offer.abbreviation === 'hair');
+  if (!offerConfig) {
+    throw new Error('Could not find offer with abbreviation: hair');
+  }
+  
+  const offerContent = offerConfig[1];
   const pageConfig = pagesToBuild.find(
-    page => page.offerAbbrev === 'hair' && page.brand === 'pj' && page.source === 'fb' && page.buyer === 'a4d'
+    page => page.offerAbbrev === offerConfig[1].abbreviation && page.brand === 'pj' && page.source === 'fb' && page.buyer === 'a4d'
   );
 
   if (!pageConfig) {
-    throw new Error(`Page configuration not found for offer: hairrelaxer, brand: pj, source: fb, buyer: a4d`);
+    throw new Error(`Page configuration not found for offer: ${offerConfig[0]}, brand: pj, source: fb, buyer: a4d`);
   }
 
   const buyerConfig = buyers[pageConfig.buyer];
