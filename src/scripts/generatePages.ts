@@ -12,7 +12,7 @@ function findOfferByAbbreviation(abbrev: string) {
 }
 
 function generatePage(pageConfig: typeof pagesToBuild[0]) {
-  const { offerAbbrev, brand, source } = pageConfig;
+  const { offerAbbrev, brand, source, quizId } = pageConfig;
   const routePath = `${offerAbbrev}-${brand}-${source}`;
   
   const offerContent = findOfferByAbbreviation(offerAbbrev);
@@ -54,6 +54,7 @@ export default function Page() {
         content={offerContent}
         brand={brandConfig}
         source={source}
+        quizId="${quizId}"
       />
     </BaseLayout>
   );
