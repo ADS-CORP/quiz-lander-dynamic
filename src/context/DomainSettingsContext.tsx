@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 
 interface DomainSettingsContextProps {
   urlParams: WebsiteUrlParams;
+  startUrl?: string;
 }
 
 const DomainSettingsContext = createContext<DomainSettingsContextProps | undefined>(undefined);

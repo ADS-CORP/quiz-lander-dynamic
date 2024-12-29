@@ -31,7 +31,7 @@ export default function BaseLayout({ children, brand, isRootLayout = false }: La
   }, [path]);
 
   return (
-    <DomainSettingsProvider value={{ urlParams }}>
+    <DomainSettingsProvider value={{ urlParams, startUrl: path }}>
       <div className="flex min-h-screen flex-col bg-transparent relative">
         <Header brand={brand} />
         <main className="flex-1 bg-transparent relative z-0">{children}</main>
