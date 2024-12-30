@@ -66,9 +66,10 @@ export function middleware(request: NextRequest) {
   });
 
   if (pageConfig) {
-    const response = NextResponse.next();
-    response.headers.set('x-brand-id', brandId);
-    return response;
+    // Rewrite to the brand-specific page
+    const url = request.nextUrl.clone();
+    url.pathname = `/${brandId}${pathname}`;
+    return NextResponse.rewrite(url);
   }
 
   // If it's not a valid page, let Next.js handle the 404

@@ -10,18 +10,6 @@ const nextConfig = {
   },
   async rewrites() {
     return [
-      // Handle brand-specific pages
-      {
-        source: '/:path*',
-        has: [
-          {
-            type: 'header',
-            key: 'x-brand-id',
-            value: '(?<brandId>.*)',
-          },
-        ],
-        destination: '/:brandId/:path*',
-      },
       // Handle quiz API routes
       {
         source: '/api/quizzes/:path*',
