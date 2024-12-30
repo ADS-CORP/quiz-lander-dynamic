@@ -152,6 +152,8 @@ export interface ThemeConfig {
 export interface BrandConfig {
   name: string;
   abbreviation: string;
+  domains: string[];
+  allowedOffers: string[];
   logo: {
     header: {
       src: string;

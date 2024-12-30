@@ -4,6 +4,12 @@ export const brands: Record<string, BrandConfig> = {
   'pj': {
     name: "People's Justice",
     abbreviation: "pj",
+    domains: [
+      'qualify.seekingsettlements.com',
+      'qualify.domain2.com',
+      'qualify.domain3.com'
+    ],
+    allowedOffers: ['hairrelaxer'],
     logo: {
       header: {
         src: "/images/pj-logo1.png",

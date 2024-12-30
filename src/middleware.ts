@@ -1,18 +1,20 @@
 // src/middleware.ts
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { brands } from './config/brands';
 
-// Add domain-specific brand configuration
-const domainBrands: Record<string, string> = {
-  'qualify.seekingsettlements.com': 'pj',
-  // Add more domains as needed
-  // 'qualify.domain2.com': 'brand2',
-  // 'qualify.domain3.com': 'brand3',
-};
+// Create a map of domains to brands for faster lookup
+const domainBrandMap = Object.entries(brands).reduce((acc, [brandId, brand]) => {
+  brand.domains.forEach(domain => {
+    acc[domain] = brandId;
+  });
+  return acc;
+}, {} as Record<string, string>);
 
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || '';
-  const brand = domainBrands[hostname];
+  const brandId = domainBrandMap[hostname];
+  const brand = brandId ? brands[brandId] : null;
 
   // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {
@@ -41,7 +43,17 @@ export function middleware(request: NextRequest) {
   // If we have a brand configuration, add it to the request headers
   if (brand) {
     const response = NextResponse.next();
-    response.headers.set('x-brand', brand);
+    response.headers.set('x-brand', brandId);
+    
+    // Check if the requested path is for an allowed offer
+    const pathParts = request.nextUrl.pathname.split('/');
+    const requestedOffer = pathParts[1]; // e.g., 'hair-ad-fb' -> 'hair'
+    
+    if (requestedOffer && !brand.allowedOffers.includes(requestedOffer)) {
+      // Redirect to 404 if offer is not allowed for this brand
+      return NextResponse.redirect(new URL('/404', request.url));
+    }
+    
     return response;
   }
   
