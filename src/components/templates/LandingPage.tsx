@@ -38,8 +38,12 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           preventDefaultStyles: true,
           container: '#quiz-widget',
           apiConfig: {
-            baseURL: window.location.origin + '/api',
-            withCredentials: false
+            baseURL: window.location.origin,
+            withCredentials: false,
+            proxyConfig: {
+              enabled: true,
+              prefix: '/api'
+            }
           },
           containerStyle: { 
             background: 'transparent',

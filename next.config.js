@@ -22,8 +22,15 @@ const nextConfig = {
       },
       // Handle proxy webhook requests - make this more specific
       {
-        source: '/api/proxy-webhook/:service/:path*',
-        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/proxy-webhook/:service/:path*'
+        source: '/api/proxy-webhook/:path*',
+        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/proxy-webhook/:path*',
+        has: [
+          {
+            type: 'query',
+            key: '[...params]',
+            value: undefined
+          }
+        ]
       }
     ];
   },
