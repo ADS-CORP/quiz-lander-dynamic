@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
     return new NextResponse(null, {
       status: 200,
       headers: {
-        'Access-Control-Allow-Origin': 'https://quiz-widget.netlify.app',
+        'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type, Authorization',
         'Access-Control-Allow-Credentials': 'true',
@@ -47,32 +47,34 @@ export async function middleware(request: NextRequest) {
 
   // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {
-    // Check if this is a proxy webhook request
-    if (request.nextUrl.pathname.startsWith('/api/proxy-webhook/')) {
-      const url = request.nextUrl.clone();
-      url.protocol = 'https:';
-      url.host = 'quiz-widget-backend-685730230e63.herokuapp.com';
-      const response = NextResponse.rewrite(url);
-      response.headers.set('Access-Control-Allow-Origin', '*');
-      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-      response.headers.set('Access-Control-Allow-Headers', '*');
-      response.headers.set('Access-Control-Allow-Credentials', 'true');
-      return response;
-    }
-
     // Check if this is a direct quiz ID request
     const quizIdMatch = request.nextUrl.pathname.match(/^\/api\/([a-f0-9-]+)$/);
     if (quizIdMatch) {
       const quizId = quizIdMatch[1];
-      const url = request.nextUrl.clone();
-      url.pathname = `/api/quizzes/${quizId}`;
+      const url = new URL(request.url);
       url.protocol = 'https:';
       url.host = 'quiz-widget-backend-685730230e63.herokuapp.com';
+      url.port = '';
+      url.pathname = `/api/quizzes/${quizId}`;
+      
       const response = NextResponse.rewrite(url);
       response.headers.set('Access-Control-Allow-Origin', '*');
       response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
       response.headers.set('Access-Control-Allow-Headers', '*');
-      response.headers.set('Access-Control-Allow-Credentials', 'true');
+      return response;
+    }
+
+    // Check if this is a proxy webhook request
+    if (request.nextUrl.pathname.startsWith('/api/proxy-webhook/')) {
+      const url = new URL(request.url);
+      url.protocol = 'https:';
+      url.host = 'quiz-widget-backend-685730230e63.herokuapp.com';
+      url.port = '';
+      
+      const response = NextResponse.rewrite(url);
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', '*');
       return response;
     }
 
@@ -81,7 +83,6 @@ export async function middleware(request: NextRequest) {
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     response.headers.set('Access-Control-Allow-Headers', '*');
-    response.headers.set('Access-Control-Allow-Credentials', 'true');
     return response;
   }
 

@@ -97,7 +97,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
   return (
     <div className="relative w-full overflow-x-hidden">
       <div 
-        className="border-b shadow-sm fixed top-[60px] w-full z-[1000] bg-[#e8f7ff]"
+        className="border-b shadow-sm fixed top-[60px] w-full z-[1100] bg-[#e8f7ff]"
       >
         <TrafficCounter />
       </div>
@@ -112,7 +112,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
               </h1>
               
               {/* Quiz Widget */}
-              <div className="w-full max-w-md md:max-w-2xl mx-auto relative" style={{ zIndex: 99999 }}>
+              <div className="w-full max-w-md md:max-w-2xl mx-auto relative" style={{ zIndex: 1000 }}>
                 <QuizWidget quizConfig={quizConfig} quizId={quizId} brand={brand} />
               </div>
 
