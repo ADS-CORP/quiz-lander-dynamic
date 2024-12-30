@@ -38,7 +38,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           preventDefaultStyles: true,
           container: '#quiz-widget',
           apiConfig: {
-            baseURL: '/api',
+            baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
             withCredentials: false
           },
           containerStyle: { 
