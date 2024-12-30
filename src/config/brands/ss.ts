@@ -48,15 +48,12 @@ export const seekingSettlementsBrand: BrandConfig = {
     footerText: '#ffffff',
     settlementCarouselBackground: '#1a1a1a',
     settlementCarouselText: '#ffffff',
-    faqBackground: '#ffffff',
     faqExpandedBackground: '#f8f9fa',
     faqText: '#000000',
     quizBackground: '#ffffff',
+    quizText: '#111827',
     trafficCounterBackground: '#f5f5f5',
     trafficCounterText: '#000000',
-    buttonBackground: '#000000',
-    buttonText: '#ffffff',
-    linkColor: '#000000',
     notificationDotColor: '#000000'
   }
 };

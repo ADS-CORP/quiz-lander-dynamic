@@ -50,7 +50,6 @@ export const yourTruthBrand: BrandConfig = {
     settlementCarouselText: '#ffffff',
     trafficCounterBackground: '#e1f5fe',
     trafficCounterText: '#014361',
-    faqBackground: '#ffffff',
     faqExpandedBackground: '#f8f9fa',
     faqText: '#000000',
     quizBackground: '#ffffff',

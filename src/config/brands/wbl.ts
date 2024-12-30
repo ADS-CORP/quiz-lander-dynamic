@@ -48,9 +48,12 @@ export const weBuyLawsuitsBrand: BrandConfig = {
     footerText: '#ffffff',
     settlementCarouselBackground: '#0284c7',
     settlementCarouselText: '#ffffff',
-    faqBackground: '#ffffff',
     faqExpandedBackground: '#f8f9fa',
     faqText: '#111827',
+    quizBackground: '#ffffff',
+    quizText: '#111827',
+    trafficCounterBackground: '#e1f5fe',
+    trafficCounterText: '#014361',
     notificationDotColor: '#d31516'
   }
 };
