@@ -112,7 +112,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'yt',
     buyer: 'loff',
     source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+    quizId: '90e0a970-52c4-4a7f-b0c1-7ccfdddcaf99'
   },
 
   // Asbestos pages
