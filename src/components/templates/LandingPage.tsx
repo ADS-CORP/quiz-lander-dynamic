@@ -38,8 +38,13 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           preventDefaultStyles: true,
           container: '#quiz-widget',
           apiConfig: {
-            baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
-            withCredentials: false
+            baseURL: window.location.origin + '/api',
+            withCredentials: false,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
+              'Access-Control-Allow-Headers': 'Content-Type'
+            }
           },
           containerStyle: { 
             background: 'transparent',
