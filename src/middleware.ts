@@ -4,9 +4,10 @@ import type { NextRequest } from 'next/server';
 
 // Add domain-specific brand configuration
 const domainBrands: Record<string, string> = {
-  'example1.com': 'pj',
-  'example2.com': 'pj',
+  'qualify.seekingsettlements.com': 'pj',
   // Add more domains as needed
+  // 'qualify.domain2.com': 'brand2',
+  // 'qualify.domain3.com': 'brand3',
 };
 
 export function middleware(request: NextRequest) {
