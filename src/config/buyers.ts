@@ -20,13 +20,13 @@ export const buyers: Record<string, BuyerConfig> = {
     abbreviation: 'typh',
     name: 'Typhon Interactive'
   },
+  'loff': {
+    abbreviation: 'loff',
+    name: 'Legal Offers'
+  },
   'nex': {
     abbreviation: 'nex',
     name: 'NextLevel Direct'
-  },
-  'loff': {
-    abbreviation: 'loff',
-    name: 'LegalOffers'
   },
   'oj': {
     abbreviation: 'oj',
