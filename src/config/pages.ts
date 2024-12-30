@@ -7,6 +7,22 @@ export interface PageBuildConfig {
 }
 
 export const pagesToBuild: PageBuildConfig[] = [
+  // Seeking Settlements pages
+  {
+    offerAbbrev: 'hair',
+    brand: 'ss',
+    buyer: 'a4d',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'hair',
+    brand: 'ss',
+    buyer: 'a4d',
+    source: 'tt',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  // People's Justice pages
   {
     offerAbbrev: 'hair',
     brand: 'pj',
@@ -21,24 +37,33 @@ export const pagesToBuild: PageBuildConfig[] = [
     source: 'tt',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
+  // Your Truth pages
   {
     offerAbbrev: 'hair',
-    brand: 'pj',
-    buyer: 'mlk',
-    source: 'ig',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  {
-    offerAbbrev: 'hair',
-    brand: 'pj',
-    buyer: 'sok',
+    brand: 'yt',
+    buyer: 'a4d',
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
   {
     offerAbbrev: 'hair',
-    brand: 'pj',
-    buyer: 'mlk',
+    brand: 'yt',
+    buyer: 'a4d',
+    source: 'tt',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  // Win Big Legal pages
+  {
+    offerAbbrev: 'hair',
+    brand: 'wbl',
+    buyer: 'a4d',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'hair',
+    brand: 'wbl',
+    buyer: 'a4d',
     source: 'tt',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   }
