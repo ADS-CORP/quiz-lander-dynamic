@@ -42,7 +42,11 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
             withCredentials: false,
             proxyConfig: {
               enabled: true,
-              prefix: '/api'
+              prefix: '/api',
+              overrides: {
+                ipapi: '/api/proxy-webhook/ipapi',
+                npiRegistry: '/api/proxy-webhook/npi-registry'
+              }
             }
           },
           containerStyle: { 
