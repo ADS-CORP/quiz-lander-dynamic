@@ -24,7 +24,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     }
 
     const script = document.createElement('script');
-    script.src = 'https://quiz-widget.netlify.app/embed.js';
+    script.src = 'https://qualify.peoplesjustice.info/quiz-widget.js';
     script.async = true;
     script.defer = true;
     script.setAttribute('loading', 'async');
