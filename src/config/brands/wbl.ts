@@ -8,7 +8,8 @@ export const weBuyLawsuitsBrand: BrandConfig = {
   logo: {
     header: {
       src: "/images/wbl-logo-black.png",
-      alt: "We Buy Lawsuits"
+      alt: "We Buy Lawsuits",
+      height: 48
     }
   },
   phone: "1-800-555-0000",

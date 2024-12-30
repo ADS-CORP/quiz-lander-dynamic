@@ -8,7 +8,8 @@ export const seekingSettlementsBrand: BrandConfig = {
   logo: {
     header: {
       src: "/images/ss-logo-black.png",
-      alt: "Seeking Settlements"
+      alt: "Seeking Settlements",
+      height: 48
     }
   },
   phone: "1-800-555-0000",

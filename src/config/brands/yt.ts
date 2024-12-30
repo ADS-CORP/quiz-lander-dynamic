@@ -8,7 +8,8 @@ export const yourTruthBrand: BrandConfig = {
   logo: {
     header: {
       src: "/images/yt-logo-black.png",
-      alt: "Your Truth"
+      alt: "Your Truth",
+      height: 48
     }
   },
   phone: "1-800-555-0000",
