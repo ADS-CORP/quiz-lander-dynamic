@@ -10,7 +10,7 @@ import { seekingSettlementsBrand } from '../config/brands/ss';
 import { peoplesJusticeBrand } from '../config/brands/pj';
 import { weBuyLawsuitsBrand } from '../config/brands/wbl';
 
-const brands = {
+const brands: Record<string, typeof yourTruthBrand> = {
   'yt': yourTruthBrand,
   'ss': seekingSettlementsBrand,
   'pj': peoplesJusticeBrand,
