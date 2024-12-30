@@ -15,5 +15,21 @@ export const buyers: Record<string, BuyerConfig> = {
   'a4d': {
     abbreviation: 'ad',
     name: 'A4D'
+  },
+  'typhon': {
+    abbreviation: 'typh',
+    name: 'Typhon Interactive'
+  },
+  'nextlevel': {
+    abbreviation: 'nex',
+    name: 'NextLevel Direct'
+  },
+  'legaloffers': {
+    abbreviation: 'loff',
+    name: 'LegalOffers'
+  },
+  'openjar': {
+    abbreviation: 'oj',
+    name: 'OpenJar'
   }
 };

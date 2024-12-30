@@ -5,7 +5,7 @@ export const brands: Record<string, BrandConfig> = {
     name: "Seeking Settlements",
     abbreviation: "ss",
     domains: ['qualify.seekingsettlements.com'],
-    allowedOffers: ['hair'],
+    allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
     logo: {
       header: {
         src: "/images/ss-logo.png",
@@ -61,7 +61,7 @@ export const brands: Record<string, BrandConfig> = {
     name: "People's Justice",
     abbreviation: "pj",
     domains: ['qualify.peoplesjustice.info'],
-    allowedOffers: ['hair'],
+    allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
     logo: {
       header: {
         src: "/images/pj-logo.png",
@@ -117,7 +117,7 @@ export const brands: Record<string, BrandConfig> = {
     name: "Your Truth",
     abbreviation: "yt",
     domains: ['qualify.yourtruth.info'],
-    allowedOffers: ['hair'],
+    allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
     logo: {
       header: {
         src: "/images/yt-logo.png",
@@ -173,7 +173,7 @@ export const brands: Record<string, BrandConfig> = {
     name: "Win Big Legal",
     abbreviation: "wbl",
     domains: ['qualify.winbiglegal.com'],
-    allowedOffers: ['hair'],
+    allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
     logo: {
       header: {
         src: "/images/wbl-logo.png",

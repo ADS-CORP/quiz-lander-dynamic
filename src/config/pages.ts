@@ -1,70 +1,117 @@
 export interface PageBuildConfig {
   offerAbbrev: string;
   brand: string;
-  buyer: string;
+  buyerAbbrev: string;
   source: string;
   quizId: string;
 }
 
 export const pagesToBuild: PageBuildConfig[] = [
-  // Seeking Settlements pages
+  // Hair Relaxer pages (seekingsettlements, PJ, wbl)
   {
     offerAbbrev: 'hair',
     brand: 'ss',
-    buyer: 'a4d',
-    source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  {
-    offerAbbrev: 'hair',
-    brand: 'ss',
-    buyer: 'a4d',
-    source: 'tt',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  // People's Justice pages
-  {
-    offerAbbrev: 'hair',
-    brand: 'pj',
-    buyer: 'a4d',
+    buyerAbbrev: 'ad',
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
   {
     offerAbbrev: 'hair',
     brand: 'pj',
-    buyer: 'a4d',
-    source: 'tt',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  // Your Truth pages
-  {
-    offerAbbrev: 'hair',
-    brand: 'yt',
-    buyer: 'a4d',
-    source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  {
-    offerAbbrev: 'hair',
-    brand: 'yt',
-    buyer: 'a4d',
-    source: 'tt',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
-  },
-  // Win Big Legal pages
-  {
-    offerAbbrev: 'hair',
-    brand: 'wbl',
-    buyer: 'a4d',
+    buyerAbbrev: 'ad',
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
   {
     offerAbbrev: 'hair',
     brand: 'wbl',
-    buyer: 'a4d',
-    source: 'tt',
+    buyerAbbrev: 'ad',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+
+  // LDS Abuse pages (yt, ss)
+  {
+    offerAbbrev: 'lds',
+    brand: 'yt',
+    buyerAbbrev: 'loff',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'lds',
+    brand: 'ss',
+    buyerAbbrev: 'loff',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+
+  // Depo-Provera pages (seekingsettlements, PJ, wbl)
+  {
+    offerAbbrev: 'depo',
+    brand: 'ss',
+    buyerAbbrev: 'ad',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'depo',
+    brand: 'pj',
+    buyerAbbrev: 'ad',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'depo',
+    brand: 'wbl',
+    buyerAbbrev: 'ad',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+
+  // Oxbryta pages (seekingsettlements, PJ, wbl)
+  {
+    offerAbbrev: 'oxb',
+    brand: 'ss',
+    buyerAbbrev: 'typh',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'oxb',
+    brand: 'pj',
+    buyerAbbrev: 'typh',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'oxb',
+    brand: 'wbl',
+    buyerAbbrev: 'typh',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+
+  // Asbestos pages (seekingsettlements, PJ, wbl)
+  {
+    offerAbbrev: 'asb',
+    brand: 'ss',
+    buyerAbbrev: 'nex',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'asb',
+    brand: 'pj',
+    buyerAbbrev: 'nex',
+    source: 'fb',
+    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+  {
+    offerAbbrev: 'asb',
+    brand: 'wbl',
+    buyerAbbrev: 'nex',
+    source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   }
 ];

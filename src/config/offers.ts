@@ -97,5 +97,180 @@ export const offers: Record<string, LandingPageContent & { abbreviation: string 
         }
       ]
     }
+  },
+  'roundup': {
+    abbreviation: 'ru',
+    title: "Roundup Lawsuit | Weed Killer Settlement",
+    headline: "Join Thousands Pursuing Justice",
+    description: "Find out if you qualify for compensation",
+    metaTitle: "Roundup Lawsuit Compensation - Free Case Review",
+    metaDescription: "Were you diagnosed with cancer after using Roundup weed killer? You may be eligible for significant compensation. Free case review available.",
+    quizConfig: {
+      apiUrl: "/api",
+      debug: true
+    },
+    faqSection: {
+      title: "Common Questions",
+      subtitle: "Quick answers about getting compensation for your Roundup injuries",
+      helpText: "Have more questions? Our team is here to help 24/7.",
+      faqs: [
+        {
+          question: "What's the average settlement payout?",
+          answer: "Settlement amounts vary based on individual circumstances, including exposure duration and medical conditions. Previous Roundup settlements have ranged from $5,000 to over $250,000."
+        },
+        {
+          question: "Who can file a Roundup lawsuit?",
+          answer: "If you were exposed to Roundup and later developed cancer, particularly Non-Hodgkin's Lymphoma, you may be eligible to file a claim. This includes agricultural workers, landscapers, and home gardeners."
+        },
+        {
+          question: "How long do I have to file a claim?",
+          answer: "Time limits vary by state. It's important to act quickly as there are strict deadlines. Contact us now for a free evaluation to understand your options."
+        },
+        {
+          question: "What evidence do I need?",
+          answer: "Helpful evidence includes proof of Roundup use (receipts, photos), medical records showing diagnosis, and documentation of exposure. However, don't worry if you don't have all of these - we can help gather evidence."
+        }
+      ]
+    }
+  },
+  'oxbryta': {
+    abbreviation: 'oxb',
+    title: "Oxbryta Lawsuit | Sickle Cell Treatment Settlement",
+    headline: "Join Thousands Pursuing Justice",
+    description: "Find out if you qualify for compensation",
+    metaTitle: "Oxbryta Lawsuit Compensation - Free Case Review",
+    metaDescription: "Did you experience serious side effects after taking Oxbryta for sickle cell disease? You may be eligible for significant compensation. Free case review available.",
+    quizConfig: {
+      apiUrl: "/api",
+      debug: true
+    },
+    faqSection: {
+      title: "Common Questions",
+      subtitle: "Quick answers about getting compensation for your Oxbryta injuries",
+      helpText: "Have more questions? Our team is here to help 24/7.",
+      faqs: [
+        {
+          question: "What's the average settlement payout?",
+          answer: "Settlement amounts vary based on individual circumstances, including the severity of side effects and medical complications. Each case is unique and evaluated individually."
+        },
+        {
+          question: "Who can file an Oxbryta lawsuit?",
+          answer: "If you or a loved one took Oxbryta for sickle cell disease and experienced serious side effects, you may be eligible to file a claim. This includes patients who suffered complications while taking the medication."
+        },
+        {
+          question: "How long do I have to file a claim?",
+          answer: "Time limits vary by state. It's important to act quickly as there are strict deadlines. Contact us now for a free evaluation to understand your options."
+        },
+        {
+          question: "What evidence do I need?",
+          answer: "Helpful evidence includes medical records showing Oxbryta prescription and treatment, documentation of side effects, and related medical expenses. Don't worry if you don't have all of these - we can help gather evidence."
+        }
+      ]
+    }
+  },
+  'depoprovera': {
+    abbreviation: 'depo',
+    title: "Depo-Provera Lawsuit | Birth Control Injection Settlement",
+    headline: "Join Thousands Pursuing Justice",
+    description: "Find out if you qualify for compensation",
+    metaTitle: "Depo-Provera Lawsuit Compensation - Free Case Review",
+    metaDescription: "Did you suffer bone density loss or other serious side effects after using Depo-Provera? You may be eligible for significant compensation. Free case review available.",
+    quizConfig: {
+      apiUrl: "/api",
+      debug: true
+    },
+    faqSection: {
+      title: "Common Questions",
+      subtitle: "Quick answers about getting compensation for your Depo-Provera injuries",
+      helpText: "Have more questions? Our team is here to help 24/7.",
+      faqs: [
+        {
+          question: "What's the average settlement payout?",
+          answer: "Settlement amounts vary based on individual circumstances, including the severity of bone density loss and other medical complications. Each case is unique and evaluated individually."
+        },
+        {
+          question: "Who can file a Depo-Provera lawsuit?",
+          answer: "If you received Depo-Provera injections and developed bone density loss or other serious side effects, you may be eligible to file a claim. This includes women who used the medication for birth control."
+        },
+        {
+          question: "How long do I have to file a claim?",
+          answer: "Time limits vary by state. It's important to act quickly as there are strict deadlines. Contact us now for a free evaluation to understand your options."
+        },
+        {
+          question: "What evidence do I need?",
+          answer: "Helpful evidence includes medical records showing Depo-Provera injections, bone density scans, and documentation of related medical complications. Don't worry if you don't have all of these - we can help gather evidence."
+        }
+      ]
+    }
+  },
+  'ldsabuse': {
+    abbreviation: 'lds',
+    title: "LDS Abuse Lawsuit | Mormon Church Settlement",
+    headline: "Join Thousands Pursuing Justice",
+    description: "Find out if you qualify for compensation",
+    metaTitle: "LDS Church Abuse Lawsuit Compensation - Free Case Review",
+    metaDescription: "Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.",
+    quizConfig: {
+      apiUrl: "/api",
+      debug: true
+    },
+    faqSection: {
+      title: "Common Questions",
+      subtitle: "Quick answers about getting compensation for LDS Church abuse",
+      helpText: "Have more questions? Our team is here to help 24/7.",
+      faqs: [
+        {
+          question: "What's the average settlement payout?",
+          answer: "Settlement amounts vary based on individual circumstances and the nature of abuse. Each case is unique and evaluated with the utmost care and confidentiality."
+        },
+        {
+          question: "Who can file an LDS abuse lawsuit?",
+          answer: "If you or a loved one experienced abuse within the Mormon Church or its affiliated organizations, you may be eligible to file a claim. This includes both recent and historical cases of abuse."
+        },
+        {
+          question: "How long do I have to file a claim?",
+          answer: "Time limits vary by state, and many states have extended deadlines for abuse cases. Contact us now for a free, confidential evaluation to understand your options."
+        },
+        {
+          question: "What evidence do I need?",
+          answer: "While documentation can be helpful, we understand that many survivors may not have physical evidence. Your testimony is important, and we can help gather supporting evidence. All consultations are completely confidential."
+        }
+      ]
+    }
+  },
+  'asbestos': {
+    abbreviation: 'asb',
+    title: "Asbestos Lawsuit | Mesothelioma Settlement",
+    headline: "Join Thousands Pursuing Justice",
+    description: "Find out if you qualify for compensation",
+    metaTitle: "Asbestos Exposure Lawsuit Compensation - Free Case Review",
+    metaDescription: "Were you diagnosed with mesothelioma or other asbestos-related diseases? You may be eligible for significant compensation. Free case review available.",
+    quizConfig: {
+      apiUrl: "/api",
+      debug: true
+    },
+    faqSection: {
+      title: "Common Questions",
+      subtitle: "Quick answers about getting compensation for asbestos exposure",
+      helpText: "Have more questions? Our team is here to help 24/7.",
+      faqs: [
+        {
+          question: "What's the average settlement payout?",
+          answer: "Settlement amounts vary based on exposure history, diagnosis, and other factors. Mesothelioma settlements have historically ranged from $100,000 to several million dollars."
+        },
+        {
+          question: "Who can file an asbestos lawsuit?",
+          answer: "If you were exposed to asbestos and developed mesothelioma, lung cancer, or other related diseases, you may be eligible. This includes workers in construction, shipyards, factories, and their family members exposed through secondary contact."
+        },
+        {
+          question: "How long do I have to file a claim?",
+          answer: "Time limits vary by state. It's important to act quickly after diagnosis as there are strict deadlines. Contact us now for a free evaluation to understand your options."
+        },
+        {
+          question: "What evidence do I need?",
+          answer: "Helpful evidence includes work history, medical records showing diagnosis, and documentation of asbestos exposure. Don't worry if you don't have all of these - we can help gather evidence and identify exposure sources."
+        }
+      ]
+    }
   }
 };
