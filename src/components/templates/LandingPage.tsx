@@ -45,8 +45,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
               prefix: '/api',
               overrides: {
                 ipapi: '/api/proxy-webhook/ipapi',
-                npiRegistry: '/api/proxy-webhook/npi-registry',
-                quiz: (id: string) => `/api/quizzes/${id}`
+                npiRegistry: '/api/proxy-webhook/npi-registry'
               }
             }
           },

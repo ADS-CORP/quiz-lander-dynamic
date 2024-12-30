@@ -46,6 +46,15 @@ export function middleware(request: NextRequest) {
       });
     }
 
+    // Check if this is a direct quiz ID request
+    const quizIdMatch = request.nextUrl.pathname.match(/^\/api\/([a-f0-9-]+)$/);
+    if (quizIdMatch) {
+      const quizId = quizIdMatch[1];
+      const url = request.nextUrl.clone();
+      url.pathname = `/api/quizzes/${quizId}`;
+      return NextResponse.rewrite(url);
+    }
+
     // Forward the request but add CORS headers
     const response = NextResponse.next();
     response.headers.set('Access-Control-Allow-Origin', '*');
