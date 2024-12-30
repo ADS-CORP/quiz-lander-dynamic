@@ -8,8 +8,12 @@ export const hairOffer: LandingPageContent = {
   metaTitle: "Hair Relaxer Lawsuit Compensation - Free Case Review",
   metaDescription: "Were you diagnosed with cancer after using hair relaxers? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
-    apiUrl: "/api",
-    debug: true
+    apiUrl: "https://quiz-widget-backend-685730230e63.herokuapp.com/api",
+    debug: true,
+    cors: {
+      origin: "*",
+      credentials: false
+    }
   },
   faqSection: {
     title: "Common Questions",

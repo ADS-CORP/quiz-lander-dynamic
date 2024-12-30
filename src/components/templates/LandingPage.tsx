@@ -37,15 +37,6 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           hideFooter: true,
           preventDefaultStyles: true,
           container: '#quiz-widget',
-          apiConfig: {
-            baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com',
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-              'Access-Control-Allow-Headers': 'Content-Type, Authorization'
-            },
-            withCredentials: false
-          },
           ipLookupConfig: {
             enabled: false,
             fallbackData: {
@@ -57,6 +48,14 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           },
           fingerprintConfig: {
             enabled: false
+          },
+          apiConfig: {
+            baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com',
+            withCredentials: false,
+            mode: 'cors',
+            headers: {
+              'Content-Type': 'application/json'
+            }
           },
           containerStyle: { 
             background: 'transparent',

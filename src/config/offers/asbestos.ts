@@ -8,8 +8,12 @@ export const asbestosOffer: LandingPageContent = {
   metaTitle: "Asbestos Exposure Lawsuit Compensation - Free Case Review",
   metaDescription: "Were you diagnosed with mesothelioma or other asbestos-related diseases? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
-    apiUrl: "/api",
-    debug: true
+    apiUrl: "https://quiz-widget-backend-685730230e63.herokuapp.com/api",
+    debug: true,
+    cors: {
+      origin: "*",
+      credentials: false
+    }
   },
   faqSection: {
     title: "Common Questions",

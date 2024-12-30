@@ -8,8 +8,12 @@ export const depoOffer: LandingPageContent = {
   metaTitle: "Depo-Provera Lawsuit Compensation - Free Case Review",
   metaDescription: "Did you suffer bone density loss or other serious side effects after using Depo-Provera? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
-    apiUrl: "/api",
-    debug: true
+    apiUrl: "https://quiz-widget-backend-685730230e63.herokuapp.com/api",
+    debug: true,
+    cors: {
+      origin: "*",
+      credentials: false
+    }
   },
   faqSection: {
     title: "Common Questions",
