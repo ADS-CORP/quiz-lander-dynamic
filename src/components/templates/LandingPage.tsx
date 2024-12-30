@@ -49,7 +49,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
             position: 'fixed',
             zIndex: 999999
           },
-          onQuestionChange: (questionNumber) => {
+          onQuestionChange: (questionNumber: number) => {
             window.dispatchEvent(
               new CustomEvent('quizProgress', { detail: { questionNumber } })
             );
