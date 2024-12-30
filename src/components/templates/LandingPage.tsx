@@ -38,13 +38,8 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           preventDefaultStyles: true,
           container: '#quiz-widget',
           apiConfig: {
-            baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com',
-            headers: {
-              'Content-Type': 'application/json',
-              'Origin': 'https://quiz-widget.netlify.app'
-            },
-            withCredentials: false,
-            mode: 'cors'
+            baseURL: '/api',
+            withCredentials: false
           },
           containerStyle: { 
             background: 'transparent',
