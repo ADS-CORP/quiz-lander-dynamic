@@ -24,7 +24,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     }
 
     const script = document.createElement('script');
-    script.src = 'https://qualify.peoplesjustice.info/quiz-widget.js';
+    script.src = 'https://quiz-widget.netlify.app/embed.js';
     script.async = true;
     script.defer = true;
     script.setAttribute('loading', 'async');
@@ -39,12 +39,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           container: '#quiz-widget',
           apiConfig: {
             baseURL: window.location.origin + '/api',
-            withCredentials: false,
-            headers: {
-              'Access-Control-Allow-Origin': '*',
-              'Access-Control-Allow-Methods': 'GET,POST,PUT,DELETE,OPTIONS',
-              'Access-Control-Allow-Headers': 'Content-Type'
-            }
+            withCredentials: false
           },
           containerStyle: { 
             background: 'transparent',
