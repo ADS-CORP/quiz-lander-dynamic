@@ -2,16 +2,16 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-// Add domain-specific configuration
-const domainConfigs: Record<string, { brand: string; buyer: string }> = {
-  'example1.com': { brand: 'pj', buyer: 'a4d' },
-  'example2.com': { brand: 'pj', buyer: 'mlk' },
+// Add domain-specific brand configuration
+const domainBrands: Record<string, string> = {
+  'example1.com': 'pj',
+  'example2.com': 'pj',
   // Add more domains as needed
 };
 
 export function middleware(request: NextRequest) {
   const hostname = request.headers.get('host') || '';
-  const domainConfig = domainConfigs[hostname];
+  const brand = domainBrands[hostname];
 
   // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {
@@ -37,11 +37,10 @@ export function middleware(request: NextRequest) {
     return response;
   }
 
-  // If we have a domain configuration, add it to the request headers
-  if (domainConfig) {
+  // If we have a brand configuration, add it to the request headers
+  if (brand) {
     const response = NextResponse.next();
-    response.headers.set('x-brand', domainConfig.brand);
-    response.headers.set('x-buyer', domainConfig.buyer);
+    response.headers.set('x-brand', brand);
     return response;
   }
   

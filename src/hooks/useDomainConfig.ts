@@ -2,23 +2,16 @@
 
 import { useEffect, useState } from 'react';
 
-interface DomainConfig {
-  brand: string;
-  buyer: string;
-}
-
-export function useDomainConfig() {
-  const [config, setConfig] = useState<DomainConfig | null>(null);
+export function useDomainBrand() {
+  const [brand, setBrand] = useState<string | null>(null);
 
   useEffect(() => {
-    // Get domain configuration from response headers
-    const brand = document.querySelector('meta[name="x-brand"]')?.getAttribute('content');
-    const buyer = document.querySelector('meta[name="x-buyer"]')?.getAttribute('content');
-
-    if (brand && buyer) {
-      setConfig({ brand, buyer });
+    // Get brand from response headers
+    const brandValue = document.querySelector('meta[name="x-brand"]')?.getAttribute('content');
+    if (brandValue) {
+      setBrand(brandValue);
     }
   }, []);
 
-  return config;
+  return brand;
 }
