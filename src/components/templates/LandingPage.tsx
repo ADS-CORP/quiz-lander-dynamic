@@ -41,7 +41,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
             baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com',
             headers: {
               'Content-Type': 'application/json',
-              'Origin': 'https://qualify.peoplesjustice.info'
+              'Origin': 'https://quiz-widget.netlify.app'
             },
             withCredentials: false,
             mode: 'cors'
