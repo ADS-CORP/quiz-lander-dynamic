@@ -1,14 +1,14 @@
 import { BrandConfig } from '../types';
 
 export const yourTruthBrand: BrandConfig = {
-  name: "Your Truth",
+  name: "YourTruth",
   abbreviation: "yt",
   domains: ['qualify.yourtruth.info', 'localhost:3000'],
   allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
   logo: {
     header: {
       src: "/images/yt-logo-black.png",
-      alt: "Your Truth",
+      alt: "YourTruth",
       height: 48
     }
   },
@@ -19,10 +19,10 @@ export const yourTruthBrand: BrandConfig = {
     secondary: "Chat With Us Now"
   },
   footer: {
-    companyName: "Your Truth",
+    companyName: "YourTruth",
     logo: {
       src: "/images/yt-logo-white.png",
-      alt: "Your Truth Logo"
+      alt: "YourTruth Logo"
     },
     emailSection: {
       title: "Stay Updated",
@@ -35,7 +35,7 @@ export const yourTruthBrand: BrandConfig = {
       { text: "Cookie Policy", href: "https://yourtruth.com/cookie-policy" },
       { text: "Do Not Sell or Share My Personal Info", href: "https://yourtruth.com/data-control" }
     ],
-    legalText: "Your Truth is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. Your Truth does not endorse or recommend any particular law firm and has not analyzed your submissions."
+    legalText: "YourTruth is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. YourTruth does not endorse or recommend any particular law firm and has not analyzed your submissions."
   },
   theme: {
     primaryColor: '#A020F0',
