@@ -8,37 +8,6 @@ const nextConfig = {
     domains: ['localhost'],
     unoptimized: true,
   },
-  async rewrites() {
-    return [
-      // Handle direct quiz ID requests
-      {
-        source: '/api/:quizId',
-        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/quizzes/:quizId',
-        has: [
-          {
-            type: 'query',
-            key: 'quizId',
-            value: undefined
-          }
-        ]
-      },
-      // Handle quiz API routes
-      {
-        source: '/api/quizzes/:path*',
-        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/quizzes/:path*'
-      },
-      // Handle ipapi proxy webhook
-      {
-        source: '/api/proxy-webhook/ipapi',
-        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/proxy-webhook/ipapi'
-      },
-      // Handle NPI registry proxy webhook
-      {
-        source: '/api/proxy-webhook/npi-registry',
-        destination: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api/proxy-webhook/npi-registry'
-      }
-    ];
-  },
   async headers() {
     return [
       {

@@ -25,6 +25,8 @@ const domainBrandMap = Object.entries(brands).reduce((acc, [brandId, brand]) => 
   return acc;
 }, {} as Record<string, string>);
 
+const BACKEND_URL = 'https://quiz-widget-backend-685730230e63.herokuapp.com';
+
 export function middleware(request: NextRequest) {
   const host = request.headers.get('host') || 'localhost:3000';
   const brandId = domainBrandMap[host];
@@ -46,16 +48,36 @@ export function middleware(request: NextRequest) {
       });
     }
 
+    // Check if this is a proxy webhook request
+    if (request.nextUrl.pathname.startsWith('/api/proxy-webhook/')) {
+      const url = request.nextUrl.clone();
+      url.protocol = 'https:';
+      url.host = 'quiz-widget-backend-685730230e63.herokuapp.com';
+      const response = NextResponse.rewrite(url);
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', '*');
+      response.headers.set('Access-Control-Allow-Credentials', 'true');
+      return response;
+    }
+
     // Check if this is a direct quiz ID request
     const quizIdMatch = request.nextUrl.pathname.match(/^\/api\/([a-f0-9-]+)$/);
     if (quizIdMatch) {
       const quizId = quizIdMatch[1];
       const url = request.nextUrl.clone();
       url.pathname = `/api/quizzes/${quizId}`;
-      return NextResponse.rewrite(url);
+      url.protocol = 'https:';
+      url.host = 'quiz-widget-backend-685730230e63.herokuapp.com';
+      const response = NextResponse.rewrite(url);
+      response.headers.set('Access-Control-Allow-Origin', '*');
+      response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+      response.headers.set('Access-Control-Allow-Headers', '*');
+      response.headers.set('Access-Control-Allow-Credentials', 'true');
+      return response;
     }
 
-    // Forward the request but add CORS headers
+    // Forward other API requests but add CORS headers
     const response = NextResponse.next();
     response.headers.set('Access-Control-Allow-Origin', '*');
     response.headers.set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
