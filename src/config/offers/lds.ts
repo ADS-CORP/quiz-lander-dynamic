@@ -8,12 +8,8 @@ export const ldsOffer: LandingPageContent = {
   metaTitle: "LDS Church Abuse Lawsuit Compensation - Free Case Review",
   metaDescription: "Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
-    apiUrl: "https://quiz-widget-backend-685730230e63.herokuapp.com/api",
-    debug: true,
-    cors: {
-      origin: "*",
-      credentials: false
-    }
+    apiUrl: "/api",
+    debug: true
   },
   faqSection: {
     title: "Common Questions",

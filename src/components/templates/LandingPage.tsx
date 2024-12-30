@@ -37,25 +37,10 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
           hideFooter: true,
           preventDefaultStyles: true,
           container: '#quiz-widget',
-          ipLookupConfig: {
-            enabled: false,
-            fallbackData: {
-              ip: '0.0.0.0',
-              country: 'US',
-              region: 'Unknown',
-              city: 'Unknown'
-            }
-          },
-          fingerprintConfig: {
-            enabled: false
-          },
           apiConfig: {
             baseURL: 'https://quiz-widget-backend-685730230e63.herokuapp.com',
             withCredentials: false,
-            mode: 'cors',
-            headers: {
-              'Content-Type': 'application/json'
-            }
+            mode: 'cors'
           },
           containerStyle: { 
             background: 'transparent',

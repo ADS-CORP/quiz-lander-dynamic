@@ -8,12 +8,8 @@ export const oxbrytaOffer: LandingPageContent = {
   metaTitle: "Oxbryta Lawsuit Compensation - Free Case Review",
   metaDescription: "Did you experience serious side effects after taking Oxbryta for sickle cell disease? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
-    apiUrl: "https://quiz-widget-backend-685730230e63.herokuapp.com/api",
-    debug: true,
-    cors: {
-      origin: "*",
-      credentials: false
-    }
+    apiUrl: "/api",
+    debug: true
   },
   faqSection: {
     title: "Common Questions",
