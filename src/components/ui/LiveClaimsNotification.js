@@ -34,7 +34,7 @@ const generateClaim = (minutes, userState) => {
   return { name: randomName, state, minutes };
 };
 
-export default function LiveClaimsNotification() {
+export default function LiveClaimsNotification({ brand }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -100,17 +100,21 @@ export default function LiveClaimsNotification() {
   const currentNotification = notifications[currentIndex];
 
   return (
-    <div className="fixed bottom-4 left-4 z-[2000] max-w-xs md:max-w-sm">
+    <div className="fixed bottom-4 left-4 max-w-xs md:max-w-sm" style={{ zIndex: 999999, position: 'fixed' }}>
       <div 
         className={`
           bg-white rounded-lg shadow-lg p-3 
-          transform transition-all duration-500 ease-in-out
-          ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
+          transform transition-all duration-300 ease-in-out
+          ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
           flex items-center space-x-3 border border-gray-200
+          relative
         `}
       >
         <div className="flex-shrink-0">
-          <div className="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center">
+          <div 
+            className="w-10 h-10 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: brand.theme.notificationDotColor }}
+          >
             <span className="text-white font-semibold">
               {currentNotification.name.charAt(0)}
             </span>

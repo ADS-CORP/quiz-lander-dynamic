@@ -1,6 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import { BrandConfig } from '@/config/types';
+import Image from 'next/image';
 
 interface FooterProps {
   brand: BrandConfig;
@@ -42,77 +43,77 @@ const Footer: React.FC<FooterProps> = ({ brand }) => {
   };
 
   return (
-    <footer style={{ backgroundColor: brand.theme.footerBackground, color: brand.theme.footerText }}>
-      <div className="max-w-screen-xl mx-auto px-6 pt-12 pb-8">
+    <footer className="w-full py-12" style={{ backgroundColor: brand.theme.footerBackground, color: brand.theme.footerText }}>
+      <div className="max-w-screen-xl mx-auto px-4 md:px-6">
         {/* Stay Updated - Centered */}
         <div className="max-w-md mx-auto mb-16 text-center">
-          <h3 className="text-white text-sm font-semibold uppercase mb-4">{brand.footer.emailSection.title}</h3>
-          <form onSubmit={handleSubmit} className="space-y-3">
-            <div className="relative">
+          <h3 className="text-sm font-semibold uppercase mb-4" style={{ color: brand.theme.footerText }}>{brand.footer.emailSection.title}</h3>
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={brand.footer.emailSection.placeholder}
-                className="w-full bg-gray-800 border-2 border-gray-400 rounded px-3 py-2 text-sm focus:outline-none focus:border-[#0098d9] transition-colors"
-                disabled={status === 'submitting'}
+                className="w-full px-4 py-2 rounded-full bg-transparent placeholder-gray-400"
+                style={{ 
+                  borderColor: brand.theme.footerText,
+                  color: brand.theme.footerText,
+                  border: '1px solid'
+                }}
+                required
               />
             </div>
-            {status === 'error' && (
-              <p className="text-red-500 text-xs">{errorMessage}</p>
-            )}
-            {status === 'success' && (
-              <p className="text-green-500 text-xs">Thank you for subscribing!</p>
-            )}
-            <button 
+            <button
               type="submit"
-              style={{ backgroundColor: brand.theme.primaryColor }}
-              className="w-full text-white rounded px-3 py-2 text-sm font-medium hover:opacity-90 transition-opacity disabled:opacity-50"
               disabled={status === 'submitting'}
+              style={{ 
+                backgroundColor: brand.theme.footerText,
+                color: brand.theme.footerBackground
+              }}
+              className="w-full px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity disabled:opacity-50"
             >
               {status === 'submitting' ? 'Subscribing...' : brand.footer.emailSection.buttonText}
             </button>
+            {status === 'success' && (
+              <p className="text-green-400">Thank you for subscribing!</p>
+            )}
+            {status === 'error' && (
+              <p className="text-red-400">{errorMessage}</p>
+            )}
           </form>
         </div>
 
-        {/* Company Links */}
-        <div className="mb-8">
-          <h3 className="text-white text-sm font-semibold uppercase mb-4 text-center">Company</h3>
-          <div className="flex flex-col items-center space-y-3">
-            {brand.footer.links.map((link, index) => (
-              <a 
-                key={index}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm hover:text-white transition-colors"
-              >
-                {link.text}
-              </a>
-            ))}
-          </div>
-        </div>
-
         {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <img
+        <div className="flex justify-center mb-6">
+          <Image
             src={brand.footer.logo.src}
             alt={brand.footer.logo.alt}
-            className="h-32 w-auto"
+            width={320}
+            height={160}
+            className="h-36 w-auto object-contain"
+            style={{ width: 'auto' }}
           />
         </div>
 
+        {/* Links */}
+        <div className="flex flex-wrap justify-center gap-4 mb-8">
+          {brand.footer.links.map((link, index) => (
+            <a
+              key={index}
+              href={link.href}
+              className="text-sm hover:opacity-80 transition-opacity"
+              style={{ color: brand.theme.footerText }}
+            >
+              {link.text}
+            </a>
+          ))}
+        </div>
+
         {/* Legal Text */}
-        <div className="border-t border-gray-800 pt-8 text-center">
-          <div className="mb-6">
-            <p className="text-xs leading-relaxed">
-              {brand.footer.legalText}
-            </p>
-          </div>
-          
-          <p className="text-xs">
-            {currentYear}. {brand.footer.companyName}. All rights reserved.
-          </p>
+        <div className="text-center text-xs opacity-80" style={{ color: brand.theme.footerText }}>
+          <p className="mb-4"> {currentYear} {brand.footer.companyName}. All rights reserved.</p>
+          <p className="max-w-4xl mx-auto">{brand.footer.legalText}</p>
         </div>
       </div>
     </footer>

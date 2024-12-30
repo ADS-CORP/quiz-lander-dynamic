@@ -10,6 +10,7 @@ import type { ReactNode } from 'react';
 
 import Footer from '@/components/base/footer';
 import Header from '@/components/base/header/StaticHeader';
+import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
 import { BrandConfig } from '@/config/types';
 
 type LayoutProps = {
@@ -36,7 +37,10 @@ export default function BaseLayout({ children, brand, isRootLayout = false }: La
         <Header brand={brand} />
         <main className="flex-1 bg-transparent relative z-0">{children}</main>
         {isRootLayout && (
-          <Footer brand={brand} />
+          <>
+            <Footer brand={brand} />
+            <LiveClaimsNotification brand={brand} />
+          </>
         )}
       </div>
       {process.env.NEXT_PUBLIC_GTM_ID && (

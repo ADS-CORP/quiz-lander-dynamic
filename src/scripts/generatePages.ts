@@ -1,102 +1,101 @@
 import fs from 'fs';
 import path from 'path';
-import { pagesToBuild } from '../config/pages';
+import { pagesToBuild } from '@/config/pages';
+import { buyers } from '../config/buyers';
 import { offers } from '../config/offers';
-import { brands } from '../config/brands';
+import { getUrlParams } from '../utils/user-data';
+import { getBrandFromDomain } from '../utils/brand';
+import { yourTruthBrand } from '../config/brands/yt';
+import { seekingSettlementsBrand } from '../config/brands/ss';
+import { peoplesJusticeBrand } from '../config/brands/pj';
+import { weBuyLawsuitsBrand } from '../config/brands/wbl';
 
-const PAGES_DIR = path.join(process.cwd(), 'src/app/pages');
+const brands = {
+  'yt': yourTruthBrand,
+  'ss': seekingSettlementsBrand,
+  'pj': peoplesJusticeBrand,
+  'wbl': weBuyLawsuitsBrand
+};
+
+console.log('Available brands:', Object.keys(brands));
+
+const PAGES_DIR = path.join(process.cwd(), 'src/app/(pages)');
+
+// Map offer abbreviations to their full names
+const offerAbbrevMap: Record<string, string> = {
+  'hair': 'hairrelaxer',
+  'ru': 'roundup',
+  'oxb': 'oxbryta',
+  'depo': 'depoprovera',
+  'lds': 'ldsabuse',
+  'asb': 'asbestos'
+};
 
 // Helper function to find offer by abbreviation
 function findOfferByAbbreviation(abbrev: string) {
-  return Object.values(offers).find(offer => offer.abbreviation === abbrev);
+  const offerKey = offerAbbrevMap[abbrev];
+  return offers[offerKey];
 }
 
 function generatePage(pageConfig: typeof pagesToBuild[0]) {
-  const { offerAbbrev, brand, source, quizId } = pageConfig;
-  const routePath = `${offerAbbrev}-${brand}-${source}`;
+  const { offerAbbrev, brand: brandId, source, quizId, buyer: buyerId } = pageConfig;
+  const routePath = `${offerAbbrev}-${buyerId}-${source}`;
   
-  const offerContent = findOfferByAbbreviation(offerAbbrev);
-  const brandConfig = brands[brand];
+  console.log(`Generating page for ${brandId}/${routePath}:`);
+  console.log('- Brand ID:', brandId);
+  console.log('- Brand config:', brands[brandId]);
   
-  if (!offerContent || !brandConfig) {
-    console.error(`Missing configuration for ${routePath}`);
+  const offer = findOfferByAbbreviation(offerAbbrev);
+  const brand = brands[brandId];
+  const buyer = buyers[buyerId];
+  
+  if (!offer || !brand || !buyer) {
+    console.error(`Missing configuration for ${brandId}/${routePath}:`, {
+      offer: !!offer,
+      brand: !!brand,
+      buyer: !!buyer
+    });
     return;
   }
 
-  const pageDir = path.join(PAGES_DIR, routePath);
-  const pagePath = path.join(pageDir, 'page.tsx');
-
-  // Create directory if it doesn't exist
+  // Create brand-specific directory path and page within it
+  const brandDir = path.join(PAGES_DIR, brandId);
+  const pageDir = path.join(brandDir, routePath);
+  
+  // Create directories if they don't exist
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true });
   }
 
-  // Find the offer key for the template
-  const offerKey = Object.entries(offers).find(([_, offer]) => offer.abbreviation === offerAbbrev)?.[0];
-  if (!offerKey) {
-    console.error(`Could not find offer key for abbreviation: ${offerAbbrev}`);
-    return;
-  }
+  const pageContent = `'use client';
 
-  const pageContent = `import { offers } from '@/config/offers';
-import { brands } from '@/config/brands';
-import BaseLayout from '@/components/base/layout/BaseLayout';
 import { LandingPage } from '@/components/templates/LandingPage';
 
 export default function Page() {
-  const offerContent = offers['${offerKey}'];
-  const brandConfig = brands['${brand}'];
-  const source = '${source}';
+  const brand = ${JSON.stringify(brand)};
+  const offerContent = ${JSON.stringify(offer)};
+  const buyer = ${JSON.stringify(buyer)};
 
   return (
-    <BaseLayout brand={brandConfig}>
-      <LandingPage
-        content={offerContent}
-        brand={brandConfig}
-        source={source}
-        quizId="${quizId}"
-      />
-    </BaseLayout>
+    <LandingPage
+      brand={brand}
+      content={offerContent}
+      source="${source}"
+      quizId="${quizId}"
+      buyer={buyer}
+    />
   );
 }`;
 
-  fs.writeFileSync(pagePath, pageContent);
-  console.log(`Generated page: ${routePath}`);
+  const pagePath = path.join(pageDir, 'page.tsx');
+  fs.writeFileSync(pagePath, pageContent, 'utf8');
+  
+  console.log(`Generated page: ${brandId}/${routePath}`);
 }
 
-function validateConfigs() {
-  const errors: string[] = [];
+console.log('Validating configurations...');
 
-  pagesToBuild.forEach(({ offerAbbrev, brand }) => {
-    const offer = findOfferByAbbreviation(offerAbbrev);
-    if (!offer) {
-      errors.push(`Offer with abbreviation "${offerAbbrev}" not found in offers configuration`);
-    }
-    if (!brands[brand]) {
-      errors.push(`Brand "${brand}" not found in brands configuration`);
-    }
-  });
-
-  if (errors.length > 0) {
-    console.error('Configuration validation failed:');
-    errors.forEach(error => console.error(`- ${error}`));
-    process.exit(1);
-  }
-}
-
-function main() {
-  console.log('Validating configurations...');
-  validateConfigs();
-
-  // Clean up pages directory
-  if (fs.existsSync(PAGES_DIR)) {
-    fs.rmSync(PAGES_DIR, { recursive: true });
-  }
-  fs.mkdirSync(PAGES_DIR, { recursive: true });
-
-  // Generate pages
-  pagesToBuild.forEach(generatePage);
-  console.log('Page generation complete!');
-}
-
-main();
+// Only generate the pages specified in pages.ts
+pagesToBuild.forEach(pageConfig => {
+  generatePage(pageConfig);
+});

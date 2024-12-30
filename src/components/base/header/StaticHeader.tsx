@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { BrandConfig } from '@/config/types';
 
 interface HeaderProps {
@@ -33,12 +34,15 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
               </svg>
             </button>
             <div className={`flex-1 flex ${isScrolled ? 'justify-start pl-12' : 'justify-center'}`}>
-              <Link href="/" className="h-12">
-                <img
+              <Link href="/" className="h-[60px] flex items-center">
+                <Image
                   src={brand.logo.header.src}
                   alt={brand.logo.header.alt}
-                  height={brand.logo.header.height}
-                  className="h-full w-auto object-contain"
+                  width={brand.logo.header.height ? brand.logo.header.height * 2.5 : 120}
+                  height={brand.logo.header.height || 48}
+                  priority
+                  className="h-12 w-auto object-contain"
+                  style={{ width: 'auto' }}
                 />
               </Link>
             </div>
@@ -49,7 +53,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
                   backgroundColor: brand.theme.ctaBackground,
                   color: brand.theme.ctaText
                 }}
-                className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity mr-2"
+                className="absolute right-6 px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
               >
                 {brand.headerCta.primary}
               </a>

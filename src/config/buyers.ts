@@ -4,7 +4,7 @@ interface BuyerConfig {
 }
 
 export const buyers: Record<string, BuyerConfig> = {
-  'sokolove': {
+  'sok': {
     abbreviation: 'sok',
     name: 'Sokolove Law'
   },
@@ -12,23 +12,23 @@ export const buyers: Record<string, BuyerConfig> = {
     abbreviation: 'mlk',
     name: 'MLK Law'
   },
-  'a4d': {
+  'ad': {
     abbreviation: 'ad',
     name: 'A4D'
   },
-  'typhon': {
+  'typh': {
     abbreviation: 'typh',
     name: 'Typhon Interactive'
   },
-  'nextlevel': {
+  'nex': {
     abbreviation: 'nex',
     name: 'NextLevel Direct'
   },
-  'legaloffers': {
+  'loff': {
     abbreviation: 'loff',
     name: 'LegalOffers'
   },
-  'openjar': {
+  'oj': {
     abbreviation: 'oj',
     name: 'OpenJar'
   }

@@ -32,6 +32,7 @@ export interface SettlementSection {
 }
 
 export interface LandingPageContent {
+  abbreviation: string;
   title: string;
   headline: string;
   description: string;
@@ -201,5 +202,6 @@ export interface BrandConfig {
     quizText: string;
     faqExpandedBackground: string;
     faqText: string;
+    notificationDotColor: string;
   };
 }
