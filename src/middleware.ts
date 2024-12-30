@@ -27,27 +27,26 @@ const domainBrandMap = Object.entries(brands).reduce((acc, [brandId, brand]) => 
 
 const BACKEND_URL = 'https://quiz-widget-backend-685730230e63.herokuapp.com';
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
+  // Handle CORS preflight requests
+  if (request.method === 'OPTIONS') {
+    return new NextResponse(null, {
+      status: 200,
+      headers: {
+        'Access-Control-Allow-Origin': 'https://quiz-widget.netlify.app',
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+        'Access-Control-Allow-Credentials': 'true',
+      },
+    });
+  }
+
   const host = request.headers.get('host') || 'localhost:3000';
   const brandId = domainBrandMap[host];
   const brand = brandId ? brands[brandId] : brands['yt']; // Default to Your Truth brand
 
   // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {
-    // Handle preflight requests
-    if (request.method === 'OPTIONS') {
-      return new NextResponse(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-          'Access-Control-Allow-Headers': '*',
-          'Access-Control-Max-Age': '86400',
-          'Access-Control-Allow-Credentials': 'true',
-        },
-      });
-    }
-
     // Check if this is a proxy webhook request
     if (request.nextUrl.pathname.startsWith('/api/proxy-webhook/')) {
       const url = request.nextUrl.clone();
