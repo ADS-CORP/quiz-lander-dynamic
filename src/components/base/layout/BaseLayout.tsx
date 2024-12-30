@@ -22,7 +22,7 @@ type LayoutProps = {
 export default function BaseLayout({ children, brand, isRootLayout = false }: LayoutProps) {
   const [urlParams, setUrlParams] = useState<WebsiteUrlParams>({});
   const rawPath = usePathname();
-  const path = rawPath?.endsWith('/') && rawPath !== '/' ? rawPath.slice(0, -1) : rawPath;
+  const path = rawPath?.endsWith('/') && rawPath !== '/' ? rawPath.slice(0, -1) : rawPath || '';
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
