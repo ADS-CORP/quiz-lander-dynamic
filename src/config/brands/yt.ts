@@ -3,7 +3,7 @@ import { BrandConfig } from '../types';
 export const yourTruthBrand: BrandConfig = {
   name: "Your Truth",
   abbreviation: "yt",
-  domains: ['qualify.yourtruth.com', 'localhost:3000'],
+  domains: ['qualify.yourtruth.info', 'localhost:3000'],
   allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
   logo: {
     header: {
