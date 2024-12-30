@@ -26,14 +26,38 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: "/api/:path*",
+        source: '/:path*',
         headers: [
+          {
+            key: 'X-Frame-Options',
+            value: 'DENY',
+          },
+          {
+            key: 'X-Content-Type-Options',
+            value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
+          },
           { key: "Access-Control-Allow-Credentials", value: "true" },
           { key: "Access-Control-Allow-Origin", value: "*" },
           { key: "Access-Control-Allow-Methods", value: "GET,POST,PUT,DELETE,OPTIONS" },
           { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version, Authorization" },
         ]
       }
+    ];
+  },
+  // Add domain configuration
+  async redirects() {
+    return [];
+  },
+  // Enable multi-zones support
+  async domains() {
+    return [
+      // Add your domains here
+      // Example: { domain: 'example1.com', defaultLocale: 'en-US' },
+      // Example: { domain: 'example2.com', defaultLocale: 'en-US' },
     ];
   }
 };

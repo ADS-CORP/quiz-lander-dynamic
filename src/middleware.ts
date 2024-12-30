@@ -2,8 +2,18 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+// Add domain-specific configuration
+const domainConfigs: Record<string, { brand: string; buyer: string }> = {
+  'example1.com': { brand: 'pj', buyer: 'a4d' },
+  'example2.com': { brand: 'pj', buyer: 'mlk' },
+  // Add more domains as needed
+};
+
 export function middleware(request: NextRequest) {
-  // Only run this middleware for API routes
+  const hostname = request.headers.get('host') || '';
+  const domainConfig = domainConfigs[hostname];
+
+  // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {
     // Handle preflight requests
     if (request.method === 'OPTIONS') {
@@ -26,10 +36,22 @@ export function middleware(request: NextRequest) {
     
     return response;
   }
+
+  // If we have a domain configuration, add it to the request headers
+  if (domainConfig) {
+    const response = NextResponse.next();
+    response.headers.set('x-brand', domainConfig.brand);
+    response.headers.set('x-buyer', domainConfig.buyer);
+    return response;
+  }
   
   return NextResponse.next();
 }
 
+// Update matcher to handle all routes
 export const config = {
-  matcher: '/api/:path*',
+  matcher: [
+    '/api/:path*',
+    '/((?!_next/static|_next/image|favicon.ico).*)',
+  ],
 };
