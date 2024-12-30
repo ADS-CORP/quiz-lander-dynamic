@@ -106,7 +106,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
 
-  // LDS Abuse pages
+  // LDS Abuse page
   {
     offerAbbrev: 'lds',
     brand: 'yt',
@@ -119,7 +119,7 @@ export const pagesToBuild: PageBuildConfig[] = [
   {
     offerAbbrev: 'asb',
     brand: 'ss',
-    buyer: 'nex',
+    buyer: 'ad',
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
   },
