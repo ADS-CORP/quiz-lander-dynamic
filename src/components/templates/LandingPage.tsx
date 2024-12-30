@@ -44,7 +44,19 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
               'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
               'Access-Control-Allow-Headers': 'Content-Type, Authorization'
             },
-            withCredentials: true
+            withCredentials: false
+          },
+          ipLookupConfig: {
+            enabled: false,
+            fallbackData: {
+              ip: '0.0.0.0',
+              country: 'US',
+              region: 'Unknown',
+              city: 'Unknown'
+            }
+          },
+          fingerprintConfig: {
+            enabled: false
           },
           containerStyle: { 
             background: 'transparent',
