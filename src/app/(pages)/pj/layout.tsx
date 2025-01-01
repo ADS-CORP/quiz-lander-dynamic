@@ -1,11 +1,11 @@
-import type { Metadata } from "next";
+import { Metadata } from "next";
 
 type Props = {
   params: { [key: string]: string | string[] | undefined };
   searchParams: { [key: string]: string | string[] | undefined };
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://peoplesjustice.info'),
     title: {
