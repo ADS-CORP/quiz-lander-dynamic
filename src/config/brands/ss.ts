@@ -13,10 +13,8 @@ export const seekingSettlementsBrand: BrandConfig = {
     }
   },
   favicon: '/images/ss-favicon-black.png',
-  phone: {
-    string: "1-800-555-0000",
-    domain: "seekingsettlements.com"
-  },
+  phone: "1-800-555-0000",
+  domain: "seekingsettlements.com",
   headerCta: {
     primary: "Call Now",
     secondary: "Chat With Us Now"
