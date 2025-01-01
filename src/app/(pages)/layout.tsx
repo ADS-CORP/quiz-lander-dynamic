@@ -1,6 +1,6 @@
-import type { Metadata } from "next";
+import type { Metadata, LayoutProps } from "next";
 
-export async function generateMetadata({ params }: { params: { brand: string } }): Promise<Metadata> {
+export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
   // You can get the brand and content from params if needed
   return {
     metadataBase: new URL('https://peoplesjustice.info'),
