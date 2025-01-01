@@ -1,6 +1,11 @@
-import type { Metadata, LayoutProps } from "next";
+import type { Metadata } from "next";
 
-export async function generateMetadata({ params }: LayoutProps): Promise<Metadata> {
+type Props = {
+  params: { [key: string]: string | string[] | undefined };
+  searchParams: { [key: string]: string | string[] | undefined };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     metadataBase: new URL('https://webuylawsuits.com'),
     title: {
