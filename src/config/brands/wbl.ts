@@ -5,6 +5,7 @@ export const weBuyLawsuitsBrand: BrandConfig = {
   abbreviation: "wbl",
   domains: ['webuylawsuits.com', 'localhost:3000'],
   allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
+  favicon: '/favicon.ico',
   logo: {
     header: {
       src: "/images/wbl-logo-black.png",

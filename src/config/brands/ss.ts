@@ -56,5 +56,6 @@ export const seekingSettlementsBrand: BrandConfig = {
     trafficCounterBackground: '#f5f5f5',
     trafficCounterText: '#000000',
     notificationDotColor: '#000000'
-  }
+  },
+  favicon: '/favicon.ico'
 };

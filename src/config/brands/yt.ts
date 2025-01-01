@@ -56,5 +56,6 @@ export const yourTruthBrand: BrandConfig = {
     quizBackground: '#ffffff',
     quizText: '#111827',
     notificationDotColor: '#A020F0'
-  }
+  },
+  favicon: '/favicon.ico'
 };
