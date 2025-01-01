@@ -1,13 +1,6 @@
-import { Metadata } from "next";
-import type { React } from "react";
-
-type Props = {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
+import type { Metadata } from "next";
 
 export async function generateMetadata(): Promise<Metadata> {
-  // You can get the brand and content from params if needed
   return {
     metadataBase: new URL('https://peoplesjustice.info'),
     title: {
@@ -30,10 +23,6 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
-export default function PagesLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function PagesLayout({ children }) {
   return children;
 }

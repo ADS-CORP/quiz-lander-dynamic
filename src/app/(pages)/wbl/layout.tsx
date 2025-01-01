@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
@@ -26,7 +27,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default function BrandLayout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
   return children;
 }
