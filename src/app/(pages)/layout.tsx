@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-export async function generateMetadata({ params }): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { brand: string } }): Promise<Metadata> {
   // You can get the brand and content from params if needed
   return {
     metadataBase: new URL('https://peoplesjustice.info'),
