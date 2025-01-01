@@ -3,7 +3,7 @@ import { BrandConfig } from '../types';
 export const yourTruthBrand: BrandConfig = {
   name: "YourTruth",
   abbreviation: "yt",
-  domains: ['qualify.yourtruth.info', 'localhost:3000'],
+  domains: ['qualify.yourtruth.com'],
   allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
   logo: {
     header: {
@@ -31,31 +31,30 @@ export const yourTruthBrand: BrandConfig = {
       buttonText: "Subscribe"
     },
     links: [
-      { text: "Privacy Policy", href: "https://yourtruth.today/privacy-policy" },
-      { text: "Terms of Service", href: "https://yourtruth.today/terms-of-service" },
-      { text: "Cookie Policy", href: "https://yourtruth.today/cookie-policy" },
-      { text: "Do Not Sell or Share My Personal Info", href: "https://yourtruth.today/data-control" }
+      { text: "Privacy Policy", href: "https://yourtruth.com/privacy-policy" },
+      { text: "Terms of Service", href: "https://yourtruth.com/terms-of-service" },
+      { text: "Cookie Policy", href: "https://yourtruth.com/cookie-policy" },
+      { text: "Do Not Sell or Share My Personal Info", href: "https://yourtruth.com/data-control" }
     ],
     legalText: "YourTruth is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. YourTruth does not endorse or recommend any particular law firm and has not analyzed your submissions."
   },
   theme: {
     primaryColor: '#A020F0',
-    secondaryColor: '#A020F0',
+    secondaryColor: '#1a1a1a',
     headerBackground: '#ffffff',
     headerText: '#000000',
     ctaBackground: '#A020F0',
     ctaText: '#ffffff',
-    footerBackground: '#1E1B2C',
+    footerBackground: '#000000',
     footerText: '#ffffff',
     settlementCarouselBackground: '#A020F0',
     settlementCarouselText: '#ffffff',
-    trafficCounterBackground: '#e1f5fe',
-    trafficCounterText: '#014361',
     faqExpandedBackground: '#f8f9fa',
     faqText: '#000000',
     quizBackground: '#ffffff',
     quizText: '#111827',
+    trafficCounterBackground: '#f5f5f5',
+    trafficCounterText: '#000000',
     notificationDotColor: '#A020F0'
-  },
-  favicon: '/favicon.ico'
+  }
 };
