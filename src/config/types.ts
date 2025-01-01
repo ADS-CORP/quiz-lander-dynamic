@@ -162,6 +162,7 @@ export interface BrandConfig {
       height: number;
     };
   };
+  favicon: string;
   phone: string;
   domain: string;
   headerCta: {

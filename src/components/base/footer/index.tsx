@@ -110,10 +110,10 @@ const Footer: React.FC<FooterProps> = ({ brand }) => {
           ))}
         </div>
 
-        {/* Legal Text */}
-        <div className="text-center text-xs opacity-80" style={{ color: brand.theme.footerText }}>
-          <p className="mb-4"> {currentYear} {brand.footer.companyName}. All rights reserved.</p>
-          <p className="max-w-4xl mx-auto">{brand.footer.legalText}</p>
+        {/* Copyright and Legal */}
+        <div className="text-center text-sm">
+          <p className="mb-4">&copy; {currentYear} {brand.name}. All rights reserved.</p>
+          <p className="max-w-3xl mx-auto text-xs opacity-80">{brand.footer.legalText}</p>
         </div>
       </div>
     </footer>

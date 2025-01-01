@@ -43,7 +43,7 @@ export async function middleware(request: NextRequest) {
 
   const host = request.headers.get('host') || 'localhost:3000';
   const brandId = domainBrandMap[host];
-  const brand = brandId ? brands[brandId] : brands['yt']; // Default to Your Truth brand
+  const brand = brandId ? brands[brandId] : brands['pj']; // Default to People's Justice brand
 
   // Handle API routes with CORS
   if (request.nextUrl.pathname.startsWith('/api/')) {

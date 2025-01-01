@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import { getBrandFromDomain } from "@/utils/brand";
-import { yourTruthBrand } from "@/config/brands/yt";
+import { peoplesJusticeBrand } from "@/config/brands/pj";
 import "./globals.css";
 import BaseLayout from "@/components/base/layout/BaseLayout";
 import { brands } from "@/config/brands";
@@ -23,11 +23,11 @@ export default async function RootLayout({
 }) {
   const headersList = await headers();
   const host = headersList.get('host') || 'localhost:3000';
-  const brandId = headersList.get('x-brand-id');
   const pathname = headersList.get('x-invoke-path') || '/';
   
-  // If we have a brand ID in headers, use it directly
-  const brand = brandId ? brands[brandId] : getBrandFromDomain(host, pathname) || yourTruthBrand;
+  // Extract brand from pathname (e.g., /pj/hair-ad-fb -> pj)
+  const brandId = pathname.split('/')[1];
+  const brand = brandId && brands[brandId] ? brands[brandId] : peoplesJusticeBrand;
 
   return (
     <html lang="en">

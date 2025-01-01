@@ -12,6 +12,7 @@ export const peoplesJusticeBrand: BrandConfig = {
       height: 48
     }
   },
+  favicon: '/images/pj-favicon-blue.png',
   phone: "1-800-555-0000",
   domain: "peoplesjustice.info",
   headerCta: {
@@ -30,10 +31,10 @@ export const peoplesJusticeBrand: BrandConfig = {
       buttonText: "Subscribe"
     },
     links: [
-      { text: "Privacy Policy", href: "https://peoplesjustice.info/privacy-policy" },
-      { text: "Terms of Service", href: "https://peoplesjustice.info/terms-of-service" },
-      { text: "Cookie Policy", href: "https://peoplesjustice.info/cookie-policy" },
-      { text: "Do Not Sell or Share My Personal Info", href: "https://peoplesjustice.info/data-control" }
+      { text: "Privacy Policy", href: "https://peoplesjustice.net/privacy-policy" },
+      { text: "Terms of Service", href: "https://peoplesjustice.net/terms-of-service" },
+      { text: "Cookie Policy", href: "https://peoplesjustice.net/cookie-policy" },
+      { text: "Do Not Sell or Share My Personal Info", href: "https://peoplesjustice.net/data-control" }
     ],
     legalText: "People's Justice is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. People's Justice does not endorse or recommend any particular law firm and has not analyzed your submissions."
   },

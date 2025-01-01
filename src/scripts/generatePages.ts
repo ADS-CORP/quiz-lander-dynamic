@@ -67,6 +67,62 @@ function generatePage(pageConfig: typeof pagesToBuild[0]) {
     fs.mkdirSync(pageDir, { recursive: true });
   }
 
+  // Generate layout.tsx for the brand directory if it doesn't exist
+  const layoutPath = path.join(brandDir, 'layout.tsx');
+  if (!fs.existsSync(layoutPath)) {
+    const layoutContent = `import type { Metadata } from "next";
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  return {
+    metadataBase: new URL('https://${brand.domain}'),
+    title: {
+      template: '%s | ${brand.name}',
+      default: '${brand.name} - Legal Claims Landing Pages',
+    },
+    description: 'Find out if you qualify for compensation. Free case review available.',
+    openGraph: {
+      type: 'website',
+      siteName: '${brand.name}',
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
+  };
+}
+
+export default function BrandLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return children;
+}`;
+
+    fs.writeFileSync(layoutPath, layoutContent, 'utf8');
+    console.log(`Generated brand layout: ${brandId}/layout.tsx`);
+  }
+
+  // Generate page metadata
+  const metadataContent = `import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "${offer.metaTitle}",
+  description: "${offer.metaDescription}",
+  openGraph: {
+    title: "${offer.metaTitle}",
+    description: "${offer.metaDescription}",
+  },
+};`;
+
+  const metadataPath = path.join(pageDir, 'metadata.ts');
+  fs.writeFileSync(metadataPath, metadataContent, 'utf8');
+
+  // Generate page component
   const pageContent = `'use client';
 
 import { LandingPage } from '@/components/templates/LandingPage';

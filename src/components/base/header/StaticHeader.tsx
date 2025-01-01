@@ -35,15 +35,16 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
             </button>
             <div className={`flex-1 flex ${isScrolled ? 'justify-start pl-12' : 'justify-center'}`}>
               <Link href="/" className="h-[60px] flex items-center">
-                <Image
-                  src={brand.logo.header.src}
-                  alt={brand.logo.header.alt}
-                  width={brand.logo.header.height ? brand.logo.header.height * 2.5 : 120}
-                  height={brand.logo.header.height || 48}
-                  priority
-                  className="h-12 w-auto object-contain"
-                  style={{ width: 'auto' }}
-                />
+                <div className="flex-shrink-0">
+                  <Image
+                    src={brand.logo.header.src}
+                    alt={brand.logo.header.alt}
+                    width={0}
+                    height={brand.logo.header.height}
+                    style={{ width: 'auto' }}
+                    className="h-12"
+                  />
+                </div>
               </Link>
             </div>
             {isScrolled && (

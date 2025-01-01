@@ -6,6 +6,8 @@ import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
 import TrafficCounter from '@/components/ui/TrafficCounter';
 import AsSeenOn from '@/components/ui/AsSeenOn';
 import { useEffect } from 'react';
+import Head from 'next/head';
+import Script from 'next/script';
 
 interface QuizWidgetProps {
   quizConfig: any;
@@ -53,15 +55,16 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
             background: 'transparent',
             maxHeight: '100vh',
             overflow: 'visible',
-            position: 'relative'
+            position: 'relative',
+            zIndex: 1000
           },
           dropdownStyle: {
             position: 'fixed',
-            zIndex: 999999
+            zIndex: 1001
           },
           popoverStyle: {
             position: 'fixed',
-            zIndex: 999999
+            zIndex: 1001
           },
           onQuestionChange: (questionNumber: number) => {
             window.dispatchEvent(
@@ -92,69 +95,119 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ brand, content, source, quizId, buyer }: LandingPageProps) {
-  const { quizConfig = {}, faqSection = {}, settlementSection = {} } = content || {};
-  
+  // Add structured data for SEO
+  const structuredData = {
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: content.metaTitle,
+    description: content.metaDescription,
+    url: `https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`,
+    publisher: {
+      '@type': 'Organization',
+      name: brand.name,
+      url: `https://${brand.domain}`,
+    },
+    mainEntity: {
+      '@type': 'Service',
+      name: content.title,
+      description: content.description,
+      provider: {
+        '@type': 'Organization',
+        name: brand.name,
+      },
+      serviceType: 'Legal Service',
+      areaServed: 'United States',
+    },
+    speakable: {
+      '@type': 'SpeakableSpecification',
+      cssSelector: ['h1', 'h2', '.description'],
+    },
+  };
+
   return (
-    <div className="relative w-full overflow-x-hidden">
-      <div 
-        className="border-b shadow-sm fixed top-[60px] w-full z-[9999] bg-[#e8f7ff]"
-      >
-        <TrafficCounter />
-      </div>
-
-      <main className="flex flex-col items-center w-full">
-        {/* Combined Quiz and Logos Section */}
-        <div className="w-full relative">
-          <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
-            <div className="pt-[120px]">
-              <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-slate-800">
-                {content?.headline}
-              </h1>
-              
-              {/* Quiz Widget */}
-              <div className="w-full max-w-md md:max-w-2xl mx-auto relative" style={{ zIndex: 1 }}>
-                <QuizWidget quizConfig={quizConfig} quizId={quizId} brand={brand} />
-              </div>
-
-              {/* As Seen On Section */}
-              <AsSeenOn />
-            </div>
-          </div>
+    <>
+      <Head>
+        <title>{content.metaTitle}</title>
+        <meta name="description" content={content.metaDescription} />
+        <meta property="og:title" content={content.metaTitle} />
+        <meta property="og:description" content={content.metaDescription} />
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content={`https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`} />
+        <meta property="og:site_name" content={brand.name} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={content.metaTitle} />
+        <meta name="twitter:description" content={content.metaDescription} />
+        <link rel="canonical" href={`https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`} />
+        <meta name="robots" content="index, follow" />
+        <meta name="googlebot" content="index, follow" />
+      </Head>
+      <Script id="structured-data" type="application/ld+json">
+        {JSON.stringify(structuredData)}
+      </Script>
+      <div className="relative w-full overflow-x-hidden">
+        <div 
+          className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
+          style={{ backgroundColor: brand.theme.trafficCounterBackground }}
+        >
+          <TrafficCounter />
         </div>
 
-        {/* Settlements Section */}
-        {settlementSection?.settlements?.length > 0 && (
-          <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme.settlementCarouselBackground }}>
-            <div className="max-w-[900px] mx-auto px-4 py-8">
-              <SettlementCarousel settlements={settlementSection.settlements} />
-            </div>
-          </div>
-        )}
+        <main className="flex flex-col items-center w-full">
+          {/* Combined Quiz and Logos Section */}
+          <div className="w-full relative">
+            <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
+              <div className="pt-[120px]">
+                <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-slate-800">
+                  {content?.headline}
+                </h1>
+                
+                {/* Quiz Widget */}
+                <div className="w-full max-w-md md:max-w-2xl mx-auto relative" style={{ zIndex: 1000 }}>
+                  <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
+                </div>
 
-        {/* FAQ Section */}
-        {faqSection?.faqs?.length > 0 && (
-          <div className="w-full bg-slate-50 py-16">
-            <div className="w-full max-w-4xl mx-auto px-4">
-              <CustomFaqSection 
-                faqSection={faqSection} 
-                expandedBackground={brand.theme.faqExpandedBackground}
-                textColor={brand.theme.faqText}
-              />
-              <div className="mt-8 text-center">
-                <button 
-                  style={{ 
-                    backgroundColor: brand.theme.ctaBackground,
-                    color: brand.theme.ctaText
-                  }}
-                  className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
-                >
-                  Chat With Us Now
-                </button>
+                {/* As Seen On Section */}
+                <div className="relative" style={{ zIndex: 1 }}>
+                  <AsSeenOn />
+                </div>
               </div>
             </div>
           </div>
-        )}
-      </main>
-    </div>
+
+          {/* Settlements Section */}
+          {content.settlementSection?.settlements?.length > 0 && (
+            <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme.settlementCarouselBackground }}>
+              <div className="max-w-[900px] mx-auto px-4 py-8">
+                <SettlementCarousel settlements={content.settlementSection.settlements} />
+              </div>
+            </div>
+          )}
+
+          {/* FAQ Section */}
+          {content.faqSection?.faqs?.length > 0 && (
+            <div className="w-full bg-slate-50 py-16">
+              <div className="w-full max-w-4xl mx-auto px-4">
+                <CustomFaqSection 
+                  faqSection={content.faqSection} 
+                  expandedBackground={brand.theme.faqExpandedBackground}
+                  textColor={brand.theme.faqText}
+                />
+                <div className="mt-8 text-center">
+                  <button 
+                    style={{ 
+                      backgroundColor: brand.theme.ctaBackground,
+                      color: brand.theme.ctaText
+                    }}
+                    className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+                  >
+                    Chat With Us Now
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </main>
+      </div>
+    </>
   );
 }
