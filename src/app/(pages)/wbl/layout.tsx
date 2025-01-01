@@ -1,11 +1,11 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { ReactNode } from "react";
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://webuylawsuits.com'),
     title: {
-      template: '%s | We Buy Lawsuits',
+      template: '{OfferName} Compensation | {BrandName}',
       default: 'We Buy Lawsuits - Legal Claims Landing Pages',
     },
     description: 'Find out if you qualify for compensation. Free case review available.',

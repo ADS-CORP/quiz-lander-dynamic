@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://seekingsettlements.com'),
     title: {
-      template: '%s | Seeking Settlements',
+      template: '{OfferName} Compensation | {BrandName}',
       default: 'Seeking Settlements - Legal Claims Landing Pages',
     },
     description: 'Find out if you qualify for compensation. Free case review available.',

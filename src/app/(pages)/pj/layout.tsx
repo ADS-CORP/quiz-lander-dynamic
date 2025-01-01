@@ -10,7 +10,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://peoplesjustice.info'),
     title: {
-      template: '%s | People\'s Justice',
+      template: '{OfferName} Compensation | {BrandName}',
       default: 'People\'s Justice - Legal Claims Landing Pages',
     },
     description: 'Find out if you qualify for compensation. Free case review available.',

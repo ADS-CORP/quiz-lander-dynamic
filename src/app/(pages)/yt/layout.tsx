@@ -5,7 +5,7 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     metadataBase: new URL('https://yourtruth.com'),
     title: {
-      template: '%s | YourTruth',
+      template: '{OfferName} Compensation | {BrandName}',
       default: 'YourTruth - Legal Claims Landing Pages',
     },
     description: 'Find out if you qualify for compensation. Free case review available.',
