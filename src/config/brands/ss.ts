@@ -5,6 +5,7 @@ export const seekingSettlementsBrand: BrandConfig = {
   abbreviation: "ss",
   domains: ['seekingsettlements.com', 'localhost:3000'],
   allowedOffers: ['hair', 'ru', 'oxb', 'depo', 'lds', 'asb'],
+  favicon: '/favicon.ico',
   logo: {
     header: {
       src: "/images/ss-logo.svg",
@@ -12,13 +13,11 @@ export const seekingSettlementsBrand: BrandConfig = {
       height: 40,
     },
   },
-  phone: {
-    string: '1-800-123-4567',
-    domain: 'seekingsettlements.com',
-  },
+  phone: "1-800-123-4567",
+  domain: "seekingsettlements.com",
   headerCta: {
-    primary: 'Call Now',
-    secondary: 'Free Case Review',
+    primary: "Call Now",
+    secondary: "Free Case Review",
   },
   footer: {
     text: ' 2024 Seeking Settlements. All rights reserved.',
@@ -41,5 +40,4 @@ export const seekingSettlementsBrand: BrandConfig = {
     trafficCounterText: '#000000',
     notificationDotColor: '#000000'
   },
-  favicon: '/favicon.ico'
 };
