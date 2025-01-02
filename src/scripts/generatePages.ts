@@ -149,7 +149,8 @@ const Page = () => {
   
   // Format CTA URL if needed
   const isPhoneNumber = typeof cta === 'string' && /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(cta);
-  const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
+  const hasProtocol = typeof cta === 'string' && (cta.startsWith('http://') || cta.startsWith('https://'));
+  const formattedCta = typeof cta === 'string' && !hasProtocol && !isPhoneNumber
     ? \`https://\${cta}\`
     : cta;
 
