@@ -27,27 +27,29 @@ const Page = () => {
   const formattedCta = (() => {
     if (typeof cta !== 'string') return cta;
     
-    // More lenient phone number regex that accepts various formats
-    const phoneRegex = /^[+]?[(]?[0-9]{1,3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4}$/;
-    const isPhoneNumber = phoneRegex.test(cta.replace(/D/g, ''));
-    
-    // Convert to string and check for protocols
+    // Convert to string and check for protocols first
     const ctaStr = String(cta);
     const hasHttp = ctaStr.startsWith('http://');
     const hasHttps = ctaStr.startsWith('https://');
     const hasTel = ctaStr.startsWith('tel:');
     
     if (hasTel) {
-      return cta; // Already has tel: protocol
-    } else if (isPhoneNumber) {
-      const cleanNumber = cta.replace(/D/g, '');
+      return ctaStr; // Already has tel: protocol
+    }
+    
+    // More lenient phone number regex that accepts various formats
+    const phoneRegex = /^[+]?[(]?[0-9]{1,3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4}$/;
+    const isPhoneNumber = phoneRegex.test(ctaStr.replace(/D/g, ''));
+    
+    if (isPhoneNumber) {
+      const cleanNumber = ctaStr.replace(/D/g, '');
       return 'tel:' + cleanNumber; // Add tel: protocol and strip non-digits
     } else if (hasHttp || hasHttps) {
-      return cta; // Already has http(s) protocol
-    } else if (cta.includes('.')) {
-      return 'https://' + cta; // Likely a domain name
+      return ctaStr; // Already has http(s) protocol
+    } else if (ctaStr.includes('.')) {
+      return 'https://' + ctaStr; // Likely a domain name
     }
-    return cta; // Return as is for other cases
+    return ctaStr; // Return as is for other cases
   })();
   
   // Helper function to safely check string equality
