@@ -163,13 +163,20 @@ export interface BrandConfig {
     };
   };
   favicon: string;
-  phone: string;
+  phone?: string;
   domain: string;
-  showEmail?: boolean;
-  headerCta: {
-    primary: string;
-    secondary: string;
+  cta?: string;
+  headerCtaText?: string;
+  footerCtaText?: string;
+  headerCta?: {
+    primary?: string;
+    secondary?: string;
   };
+  hideCta?: boolean;
+  hideHeaderCta?: boolean;
+  hideFooterCta?: boolean;
+  hideFaqHelpText?: boolean;
+  showEmail?: boolean;
   footer: {
     companyName: string;
     logo: {
