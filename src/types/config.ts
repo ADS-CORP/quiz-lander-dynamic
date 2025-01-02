@@ -15,4 +15,13 @@ export interface PageMetaConfigType {
   description: string;
 }
 
-export { BrandConfig } from '@/config/types';
+export interface ContentConfig {
+  abbreviation: string;
+  title: string;
+  headline: string;
+  description: string;
+  metaTitle: string;
+  metaDescription: string;
+}
+
+export type { BrandConfig } from '@/config/types';
