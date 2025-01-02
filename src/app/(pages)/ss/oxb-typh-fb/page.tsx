@@ -42,6 +42,9 @@ const Page = () => {
     return `https://${cta}`;
   })();
 
+  // Helper function to safely check string equality
+  const isEqual = (a: any, b: string) => typeof a === 'string' && a === b;
+
   const pageBrandConfig = {
     ...brand,
     ...(showCta === false ? {
@@ -57,12 +60,12 @@ const Page = () => {
       ...(formattedCta === 'none' ? { hideCta: true } : 
          formattedCta ? (typeof formattedCta === 'string' && /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),
-      ...(typeof ctaText === 'object' && ctaText !== null ? {
-        ...(ctaText.header === 'none' ? { hideHeaderCta: true } : 
-           ctaText.header ? { headerCtaText: ctaText.header } : 
+      ...((ctaText && typeof ctaText === 'object') ? {
+        ...(isEqual(ctaText.header, 'none') ? { hideHeaderCta: true } :
+           ctaText.header ? { headerCtaText: String(ctaText.header) } :
            {}),
-        ...(ctaText.footer === 'none' ? { hideFooterCta: true } : 
-           ctaText.footer ? { footerCtaText: ctaText.footer } : 
+        ...(isEqual(ctaText.footer, 'none') ? { hideFooterCta: true } :
+           ctaText.footer ? { footerCtaText: String(ctaText.footer) } :
            {})
       } : {})
     }),
