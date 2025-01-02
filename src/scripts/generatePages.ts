@@ -45,8 +45,8 @@ function generateMetadataFile(brand: any, offer: any, pagePath: string) {
     'wbl': 'weBuyLawsuitsBrand'
   };
 
-  const metadataContent = `import { generatePageMetadata } from '../utils/metadata';
-import { ${brandImportMap[brand.abbreviation]} } from '../../config/brands/${brand.abbreviation}';
+  const metadataContent = `import { generatePageMetadata } from '@/utils/metadata';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
 
 export const metadata = generatePageMetadata(
   '${offer.metaTitle}',
@@ -98,7 +98,7 @@ function generatePage(pageConfig: typeof pagesToBuild[0]) {
   const layoutPath = path.join(brandDir, 'layout.tsx');
   if (!fs.existsSync(layoutPath)) {
     const layoutContent = `import { ReactNode } from "react";
-import { ${brandImportMap[brand.abbreviation]} } from "../../config/brands/${brand.abbreviation}";
+import { ${brandImportMap[brand.abbreviation]} } from "@/config/brands/${brand.abbreviation}";
 import BaseLayout from "@/components/base/layout/BaseLayout";
 
 export default function Layout({
@@ -123,7 +123,7 @@ export default function Layout({
 
   // Generate page component
   const pageContent = `import { LandingPage } from '@/components/templates/LandingPage';
-import { ${brandImportMap[brand.abbreviation]} } from '../../config/brands/${brand.abbreviation}';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
 import { Metadata } from "next";
 
 // Import brand config
@@ -193,6 +193,18 @@ export default Page;`;
 
   fs.writeFileSync(path.join(pageDir, 'page.tsx'), pageContent);
   console.log(`Generated page: ${brandId}/${routePath}/page.tsx`);
+
+  // Generate metadata.ts
+  const metadataContent = `import { generatePageMetadata } from '@/utils/metadata';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
+
+export const metadata = generatePageMetadata(
+  '${offer.metaTitle}',
+  '${offer.metaDescription}',
+  ${brandImportMap[brand.abbreviation]}
+);`;
+
+  fs.writeFileSync(path.join(pageDir, 'metadata.ts'), metadataContent);
 }
 
 console.log('Validating configurations...');
