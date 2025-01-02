@@ -27,7 +27,7 @@ const Page = () => {
   const formattedCta = (() => {
     if (typeof cta !== 'string') return cta;
     
-    const phoneRegex = /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/;
+    const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-s.]?[0-9]{2,3}[-s.]?[0-9]{3,4}[-s.]?[0-9]{3,4}$/;
     const isPhoneNumber = phoneRegex.test(cta);
     
     // Convert to string and check for protocols
@@ -39,7 +39,7 @@ const Page = () => {
       return cta;
     }
     
-    return `https://${cta}`;
+    return 'https://' + cta;
   })();
 
   // Helper function to safely check string equality
@@ -55,7 +55,7 @@ const Page = () => {
 
   // Helper function to check if value is falsy
   const isFalsy = (value: any): boolean => {
-    return value === false || value === 'false' || !value;
+    return value === false || value === 'false';
   };
 
   const pageBrandConfig = {
@@ -71,15 +71,12 @@ const Page = () => {
       footerCtaText: undefined
     } : {
       ...(formattedCta === 'none' ? { hideCta: true } : 
-         formattedCta ? (typeof formattedCta === 'string' && /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
-         {}),
+         formattedCta ? { cta: formattedCta } : {}),
       ...((ctaText && typeof ctaText === 'object') ? {
         ...(getStringProp(ctaText, 'header') === 'none' ? { hideHeaderCta: true } :
-           getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } :
-           {}),
+           getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } : {}),
         ...(getStringProp(ctaText, 'footer') === 'none' ? { hideFooterCta: true } :
-           getStringProp(ctaText, 'footer') ? { footerCtaText: getStringProp(ctaText, 'footer') } :
-           {})
+           getStringProp(ctaText, 'footer') ? { footerCtaText: getStringProp(ctaText, 'footer') } : {})
       } : {})
     }),
     showEmail: showEmail

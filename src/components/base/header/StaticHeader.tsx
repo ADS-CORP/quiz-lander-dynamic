@@ -13,7 +13,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
 
   useEffect(() => {
     // If CTAs are hidden, ensure we're not scrolled and don't add listener
-    if (brand.hideCta) {
+    if (brand.hideCta === true) {
       setIsScrolled(false);
       return;
     }
@@ -33,18 +33,29 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
   }, [brand.hideCta]);
 
   const handleCtaClick = () => {
-    if (brand.cta) {
-      window.location.href = brand.cta;
+    // If there's a CTA URL, use that regardless of whether it's a phone number or web URL
+    if (brand.cta && brand.cta !== 'none') {
+      // Check if it's a phone number (handle various formats including country code)
+      if (/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/.test(brand.cta)) {
+        // Remove any non-digit characters for the tel: link
+        const phoneNumber = brand.cta.replace(/\D/g, '');
+        window.location.href = `tel:${phoneNumber}`;
+      } else {
+        // Add http:// if the URL doesn't have a protocol
+        const url = brand.cta.startsWith('http') ? brand.cta : `https://${brand.cta}`;
+        window.open(url, '_blank');
+      }
     } else if (brand.phone) {
-      window.location.href = `tel:${brand.phone}`;
+      // Remove any non-digit characters for the tel: link
+      const phoneNumber = brand.phone.replace(/\D/g, '');
+      window.location.href = `tel:${phoneNumber}`;
     }
   };
 
   // Get CTA text based on priority:
   // 1. Use headerCtaText if provided
-  // 2. Use headerCta.secondary if there's a CTA URL
-  // 3. Use headerCta.primary if there's a phone number
-  const ctaText = brand.headerCtaText || (brand.cta ? brand.headerCta?.secondary : brand.headerCta?.primary) || '';
+  // 2. Use headerCta.primary if there's a CTA (URL or phone)
+  const ctaText = brand.headerCtaText || (brand.cta ? brand.headerCta?.primary : '') || '';
 
   return (
     <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme?.headerBackground }}>
@@ -58,7 +69,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
             </button>
-            <div className={`flex-1 flex ${isScrolled && !brand.hideCta ? 'justify-start pl-12' : 'justify-center'}`}>
+            <div className={`flex-1 flex ${isScrolled && brand.hideCta !== true ? 'justify-start pl-12' : 'justify-center'}`}>
               <Link href="/" className="h-[60px] flex items-center">
                 <div className="flex-shrink-0">
                   <Image
@@ -72,7 +83,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
                 </div>
               </Link>
             </div>
-            {isScrolled && !brand.hideCta && !brand.hideHeaderCta && (brand.cta || brand.phone) && (
+            {isScrolled && brand.hideCta !== true && brand.hideHeaderCta !== true && (brand.cta || brand.phone) && (
               <button 
                 onClick={handleCtaClick}
                 style={{ 
