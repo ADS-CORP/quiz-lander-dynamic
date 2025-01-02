@@ -153,8 +153,11 @@ const Page = () => {
     
     const phoneRegex = /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/;
     const isPhoneNumber = phoneRegex.test(cta);
-    const hasHttp = cta.toLowerCase().indexOf('http://') >= 0;
-    const hasHttps = cta.toLowerCase().indexOf('https://') >= 0;
+    
+    // Convert to string and check for protocols
+    const ctaStr = String(cta);
+    const hasHttp = ctaStr.indexOf('http://') >= 0;
+    const hasHttps = ctaStr.indexOf('https://') >= 0;
     
     if (isPhoneNumber || hasHttp || hasHttps) {
       return cta;
