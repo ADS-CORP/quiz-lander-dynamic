@@ -177,9 +177,14 @@ const Page = () => {
     return undefined;
   };
 
+  // Helper function to check if value is falsy
+  const isFalsy = (value: any): boolean => {
+    return value === false || value === 'false' || !value;
+  };
+
   const pageBrandConfig = {
     ...brand,
-    ...(showCta === false || showCta === 'false' ? {
+    ...(isFalsy(showCta) ? {
       hideCta: true,
       hideHeaderCta: true,
       hideFooterCta: true,
