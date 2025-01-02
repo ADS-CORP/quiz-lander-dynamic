@@ -19,6 +19,9 @@ export interface BrandConfig {
   name: string;
   domain: string;
   abbreviation: string;
+  domains: string[];
+  allowedOffers: string[];
+  favicon: string;
   logo: {
     header: {
       src: string;
@@ -39,6 +42,23 @@ export interface BrandConfig {
   hideFooterCta?: boolean;
   hideFaqHelpText?: boolean;
   showEmail?: boolean;
+  footer: {
+    companyName: string;
+    logo: {
+      src: string;
+      alt: string;
+    };
+    emailSection: {
+      title: string;
+      placeholder: string;
+      buttonText: string;
+    };
+    links: Array<{
+      text: string;
+      href: string;
+    }>;
+    legalText: string;
+  };
   theme?: {
     primaryColor: string;
     secondaryColor: string;
