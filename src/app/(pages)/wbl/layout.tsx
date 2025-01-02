@@ -1,33 +1,34 @@
-import type { Metadata } from "next";
 import { ReactNode } from "react";
+import { weBuyLawsuitsBrand } from "@/config/brands/wbl";
+import BaseLayout from "@/components/base/layout/BaseLayout";
+import { Metadata } from "next";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://webuylawsuits.com'),
-    title: {
-      template: '{OfferName} Compensation | {BrandName}',
-      default: 'We Buy Lawsuits - Legal Claims Landing Pages',
+export const metadata: Metadata = {
+  icons: weBuyLawsuitsBrand.favicon ? [
+    {
+      rel: 'icon',
+      url: weBuyLawsuitsBrand.favicon,
+      sizes: 'any',
     },
-    description: 'Find out if you qualify for compensation. Free case review available.',
-    openGraph: {
-      type: 'website',
-      siteName: 'We Buy Lawsuits',
+    {
+      rel: 'apple-touch-icon',
+      url: weBuyLawsuitsBrand.favicon,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
-  };
-}
+    {
+      rel: 'shortcut icon',
+      url: weBuyLawsuitsBrand.favicon,
+    }
+  ] : []
+};
 
-export default function BrandLayout({
+export default function Layout({
   children,
 }: {
   children: ReactNode;
 }) {
-  return children;
+  return (
+    <BaseLayout brand={weBuyLawsuitsBrand} isRootLayout={true}>
+      {children}
+    </BaseLayout>
+  );
 }

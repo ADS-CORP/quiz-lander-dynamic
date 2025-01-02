@@ -165,6 +165,7 @@ export interface BrandConfig {
   favicon: string;
   phone: string;
   domain: string;
+  showEmail?: boolean;
   headerCta: {
     primary: string;
     secondary: string;

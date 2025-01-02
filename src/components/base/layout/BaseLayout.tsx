@@ -8,7 +8,6 @@ import { usePathname } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
 import type { ReactNode } from 'react';
 
-import Footer from '@/components/base/footer';
 import Header from '@/components/base/header/StaticHeader';
 import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
 import { BrandConfig } from '@/config/types';
@@ -16,10 +15,12 @@ import { BrandConfig } from '@/config/types';
 type LayoutProps = {
   children: ReactNode;
   brand: BrandConfig;
+  pageBrandConfig?: BrandConfig;
   isRootLayout?: boolean;
 };
 
-export default function BaseLayout({ children, brand, isRootLayout = false }: LayoutProps) {
+// Client component for dynamic features
+function BaseLayoutClient({ children, brand, pageBrandConfig, isRootLayout = false }: LayoutProps) {
   const [urlParams, setUrlParams] = useState<WebsiteUrlParams>({});
   const rawPath = usePathname();
   const path = rawPath?.endsWith('/') && rawPath !== '/' ? rawPath.slice(0, -1) : rawPath || '';
@@ -31,21 +32,24 @@ export default function BaseLayout({ children, brand, isRootLayout = false }: La
     }
   }, [path]);
 
+  // Use pageBrandConfig if provided, otherwise fallback to base brand
+  const headerBrand = pageBrandConfig || brand;
+
   return (
     <DomainSettingsProvider value={{ urlParams, startUrl: path }}>
       <div className="flex min-h-screen flex-col bg-transparent relative">
-        <Header brand={brand} />
+        <Header brand={headerBrand} />
         <main className="flex-1 bg-transparent relative z-0">{children}</main>
-        {isRootLayout && (
-          <>
-            <Footer brand={brand} />
-            <LiveClaimsNotification brand={brand} />
-          </>
-        )}
+        <LiveClaimsNotification brand={headerBrand} />
       </div>
       {process.env.NEXT_PUBLIC_GTM_ID && (
         <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
       )}
     </DomainSettingsProvider>
   );
+}
+
+// Server component wrapper
+export default function BaseLayout(props: LayoutProps) {
+  return <BaseLayoutClient {...props} />;
 }

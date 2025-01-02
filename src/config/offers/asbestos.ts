@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const asbestosOffer: LandingPageContent = {
   abbreviation: 'asb',
-  title: "Asbestos Lawsuit | Mesothelioma Settlement",
+  title: "Asbestos Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Asbestos Exposure Lawsuit Compensation - Free Case Review",
+  metaTitle: "Asbestos Compensation",
   metaDescription: "Were you diagnosed with mesothelioma or other asbestos-related diseases? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",

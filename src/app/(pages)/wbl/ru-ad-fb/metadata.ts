@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
+import { generatePageMetadata } from '@/utils/metadata';
+import { weBuyLawsuitsBrand } from '@/config/brands/wbl';
 
-export const metadata: Metadata = {
-  title: "Roundup Lawsuit Compensation - Free Case Review",
-  description: "Were you diagnosed with cancer after using Roundup weed killer? You may be eligible for significant compensation. Free case review available.",
-  openGraph: {
-    title: "Roundup Lawsuit Compensation - Free Case Review",
-    description: "Were you diagnosed with cancer after using Roundup weed killer? You may be eligible for significant compensation. Free case review available.",
-  },
-};
+export const metadata = generatePageMetadata(
+  'Roundup Compensation',
+  'Were you diagnosed with cancer after using Roundup weed killer? You may be eligible for significant compensation. Free case review available.',
+  weBuyLawsuitsBrand
+);

@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const depoOffer: LandingPageContent = {
   abbreviation: 'depo',
-  title: "Depo-Provera Lawsuit | Birth Control Injection Settlement",
+  title: "Depo-Provera Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Depo-Provera Lawsuit Compensation - Free Case Review",
+  metaTitle: "Depo-Provera Compensation",
   metaDescription: "Did you suffer bone density loss or other serious side effects after using Depo-Provera? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",

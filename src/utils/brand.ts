@@ -12,26 +12,30 @@ const brands: Record<string, BrandConfig> = {
 };
 
 export function getBrandFromDomain(domain: string, pathname?: string): BrandConfig | undefined {
-  console.log('getBrandFromDomain called with:', { domain, pathname });
-  
-  // First try to match by domain
-  const brand = Object.values(brands).find(b => b.domains.includes(domain));
-  console.log('Brand found by domain:', brand?.abbreviation);
-  
-  if (brand || !pathname) return brand;
-
-  // If on localhost and no brand found by domain, try to determine from pathname
-  if (domain.includes('localhost') && pathname) {
-    console.log('Checking pathname for brand on localhost');
-    // Extract brand from pathname (e.g., /ss/hair-ad-fb -> ss)
-    const brandId = pathname.split('/')[1];
-    console.log('Extracted brandId from pathname:', brandId);
+  // For localhost, extract brand from domain (e.g., localhost:3000/yt/... -> yt)
+  if (domain.includes('localhost')) {
+    const urlParts = pathname?.split('/') || [];
+    const brandId = urlParts[1];
     if (brandId && brands[brandId]) {
-      console.log('Found brand by pathname:', brands[brandId].abbreviation);
       return brands[brandId];
+    }
+    return undefined;
+  }
+
+  // For production domains, find brand by domain
+  for (const [brandId, brand] of Object.entries(brands)) {
+    if (brand.domains.some(d => domain.includes(d))) {
+      return brand;
     }
   }
 
-  console.log('No brand found');
   return undefined;
 }
+
+export function getBrandFromPathname(pathname: string): BrandConfig | undefined {
+  // Extract brand ID from pathname (e.g., /ss/hair-ad-fb -> ss)
+  const brandId = pathname.split('/')[1];
+  return brands[brandId];
+}
+
+export { brands };

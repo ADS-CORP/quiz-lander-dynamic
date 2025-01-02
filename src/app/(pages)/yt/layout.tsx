@@ -1,33 +1,34 @@
 import { Metadata } from "next";
 import { ReactNode } from "react";
+import { yourTruthBrand } from "@/config/brands/yt";
+import BaseLayout from "@/components/base/layout/BaseLayout";
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://yourtruth.com'),
-    title: {
-      template: '{OfferName} Compensation | {BrandName}',
-      default: 'YourTruth - Legal Claims Landing Pages',
+export const metadata: Metadata = {
+  icons: yourTruthBrand.favicon ? [
+    {
+      rel: 'icon',
+      url: yourTruthBrand.favicon,
+      sizes: 'any',
     },
-    description: 'Find out if you qualify for compensation. Free case review available.',
-    openGraph: {
-      type: 'website',
-      siteName: 'YourTruth',
+    {
+      rel: 'apple-touch-icon',
+      url: yourTruthBrand.favicon,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
-  };
-}
+    {
+      rel: 'shortcut icon',
+      url: yourTruthBrand.favicon,
+    }
+  ] : []
+};
 
-export default function BrandLayout({
+export default function Layout({
   children,
 }: {
   children: ReactNode;
 }) {
-  return children;
+  return (
+    <BaseLayout brand={yourTruthBrand} isRootLayout={true}>
+      {children}
+    </BaseLayout>
+  );
 }

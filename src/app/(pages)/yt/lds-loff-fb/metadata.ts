@@ -1,10 +1,8 @@
-import type { Metadata } from "next";
+import { generatePageMetadata } from '@/utils/metadata';
+import { yourTruthBrand } from '@/config/brands/yt';
 
-export const metadata: Metadata = {
-  title: "LDS Church Abuse Lawsuit Compensation - Free Case Review",
-  description: "Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.",
-  openGraph: {
-    title: "LDS Church Abuse Lawsuit Compensation - Free Case Review",
-    description: "Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.",
-  },
-};
+export const metadata = generatePageMetadata(
+  'LDS Abuse Compensation',
+  'Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.',
+  yourTruthBrand
+);

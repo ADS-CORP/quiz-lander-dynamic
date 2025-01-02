@@ -1,38 +1,34 @@
-import { Metadata } from "next";
 import { ReactNode } from "react";
+import { seekingSettlementsBrand } from "@/config/brands/ss";
+import BaseLayout from "@/components/base/layout/BaseLayout";
+import { Metadata } from "next";
 
-type Props = {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
+export const metadata: Metadata = {
+  icons: seekingSettlementsBrand.favicon ? [
+    {
+      rel: 'icon',
+      url: seekingSettlementsBrand.favicon,
+      sizes: 'any',
+    },
+    {
+      rel: 'apple-touch-icon',
+      url: seekingSettlementsBrand.favicon,
+    },
+    {
+      rel: 'shortcut icon',
+      url: seekingSettlementsBrand.favicon,
+    }
+  ] : []
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://seekingsettlements.com'),
-    title: {
-      template: '{OfferName} Compensation | {BrandName}',
-      default: 'Seeking Settlements - Legal Claims Landing Pages',
-    },
-    description: 'Find out if you qualify for compensation. Free case review available.',
-    openGraph: {
-      type: 'website',
-      siteName: 'Seeking Settlements',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
-  };
-}
-
-export default function BrandLayout({
+export default function Layout({
   children,
 }: {
   children: ReactNode;
 }) {
-  return children;
+  return (
+    <BaseLayout brand={seekingSettlementsBrand} isRootLayout={true}>
+      {children}
+    </BaseLayout>
+  );
 }

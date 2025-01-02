@@ -4,7 +4,7 @@ import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ChevronDown } from "lucide-react";
 
-export default function CustomFaqSection({ faqSection, expandedBackground, textColor }) {
+export default function CustomFaqSection({ faqSection, expandedBackground, textColor, brand }) {
   const { title, subtitle, helpText, faqs } = faqSection;
 
   return (
@@ -48,11 +48,32 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
           </Accordion>
         </div>
 
-        <div className="mt-8 text-center">
-          <p className="text-slate-500 text-sm">
-            {helpText}
-          </p>
-        </div>
+        {!brand?.hideFaqHelpText && (
+          <div className="mt-8 text-center">
+            <p className="text-slate-600 text-lg mb-8">
+              {helpText}
+            </p>
+            {!brand.hideFooterCta && !brand.hideCta && (
+              <button 
+                style={{ 
+                  backgroundColor: brand.theme.ctaBackground,
+                  color: brand.theme.ctaText
+                }}
+                className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+                onClick={() => {
+                  // Use the configured CTA (URL or phone)
+                  if (brand.cta) {
+                    window.location.href = brand.cta;
+                  } else if (brand.phone) {
+                    window.location.href = `tel:${brand.phone}`;
+                  }
+                }}
+              >
+                {brand.footerCtaText || brand.headerCta.secondary}
+              </button>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

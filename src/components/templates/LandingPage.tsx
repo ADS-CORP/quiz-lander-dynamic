@@ -5,7 +5,8 @@ import SettlementCarousel from '@/components/ui/SettlementCarousel';
 import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
 import TrafficCounter from '@/components/ui/TrafficCounter';
 import AsSeenOn from '@/components/ui/AsSeenOn';
-import { useEffect } from 'react';
+import Footer from '@/components/base/footer';
+import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
 
@@ -126,55 +127,35 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
 
   return (
     <>
-      <Head>
-        <title>{content.metaTitle}</title>
-        <meta name="description" content={content.metaDescription} />
-        <meta property="og:title" content={content.metaTitle} />
-        <meta property="og:description" content={content.metaDescription} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={`https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`} />
-        <meta property="og:site_name" content={brand.name} />
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={content.metaTitle} />
-        <meta name="twitter:description" content={content.metaDescription} />
-        <link rel="canonical" href={`https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`} />
-        <meta name="robots" content="index, follow" />
-        <meta name="googlebot" content="index, follow" />
-      </Head>
-      <Script id="structured-data" type="application/ld+json">
-        {JSON.stringify(structuredData)}
-      </Script>
-      <div className="relative w-full overflow-x-hidden">
+      <div className="min-h-screen bg-white">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
           style={{ backgroundColor: brand.theme.trafficCounterBackground }}
         >
-          <TrafficCounter />
+          <TrafficCounter brand={brand} />
         </div>
+        <div className="relative mt-[120px]">
+          <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-12">
+            <div className="text-center">
+              <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                {content.headline}
+              </h1>
+            </div>
+          </div>
 
-        <main className="flex flex-col items-center w-full">
-          {/* Combined Quiz and Logos Section */}
-          <div className="w-full relative">
-            <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
-              <div className="pt-[120px]">
-                <h1 className="text-4xl md:text-5xl font-bold text-center mb-8 text-slate-800">
-                  {content?.headline}
-                </h1>
-                
-                {/* Quiz Widget */}
-                <div className="w-full max-w-md md:max-w-2xl mx-auto relative" style={{ zIndex: 1000 }}>
+          <div className="relative bg-white">
+            <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
+              <div className="relative py-8">
+                <div id="quiz-widget-container" className="relative">
                   <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
-                </div>
-
-                {/* As Seen On Section */}
-                <div className="relative" style={{ zIndex: 1 }}>
-                  <AsSeenOn />
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Settlements Section */}
+          <div className="relative" style={{ zIndex: 1 }}>
+            <AsSeenOn />
+          </div>
           {content.settlementSection?.settlements?.length > 0 && (
             <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme.settlementCarouselBackground }}>
               <div className="max-w-[900px] mx-auto px-4 py-8">
@@ -182,8 +163,6 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
               </div>
             </div>
           )}
-
-          {/* FAQ Section */}
           {content.faqSection?.faqs?.length > 0 && (
             <div className="w-full bg-slate-50 py-16">
               <div className="w-full max-w-4xl mx-auto px-4">
@@ -191,23 +170,14 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
                   faqSection={content.faqSection} 
                   expandedBackground={brand.theme.faqExpandedBackground}
                   textColor={brand.theme.faqText}
+                  brand={brand}
                 />
-                <div className="mt-8 text-center">
-                  <button 
-                    style={{ 
-                      backgroundColor: brand.theme.ctaBackground,
-                      color: brand.theme.ctaText
-                    }}
-                    className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
-                  >
-                    Chat With Us Now
-                  </button>
-                </div>
               </div>
             </div>
           )}
-        </main>
+        </div>
       </div>
+      <Footer brand={brand} />
     </>
   );
 }

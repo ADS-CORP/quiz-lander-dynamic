@@ -4,6 +4,13 @@ export interface PageBuildConfig {
   buyer: string;
   source: string;
   quizId: string;
+  cta?: string;
+  ctaText?: {
+    header?: string;
+    footer?: string;
+  };
+  showEmail?: boolean;
+  showCta?: boolean;
 }
 
 export const pagesToBuild: PageBuildConfig[] = [
@@ -112,7 +119,13 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'yt',
     buyer: 'loff',
     source: 'fb',
-    quizId: '90e0a970-52c4-4a7f-b0c1-7ccfdddcaf99'
+    quizId: '90e0a970-52c4-4a7f-b0c1-7ccfdddcaf99',
+    showEmail: false,
+    showCta: true,
+    ctaText: {
+      header: 'Call Now',
+      footer: 'Chat With Us Now'
+    } 
   },
 
   // Asbestos pages

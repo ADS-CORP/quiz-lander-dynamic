@@ -37,8 +37,28 @@ function findOfferByAbbreviation(abbrev: string) {
   return offers[offerKey];
 }
 
+function generateMetadataFile(brand: any, offer: any, pagePath: string) {
+  const brandImportMap: Record<string, string> = {
+    'yt': 'yourTruthBrand',
+    'ss': 'seekingSettlementsBrand',
+    'pj': 'peoplesJusticeBrand',
+    'wbl': 'weBuyLawsuitsBrand'
+  };
+
+  const metadataContent = `import { generatePageMetadata } from '@/utils/metadata';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
+
+export const metadata = generatePageMetadata(
+  '${offer.metaTitle}',
+  '${offer.metaDescription}',
+  ${brandImportMap[brand.abbreviation]}
+);`;
+
+  fs.writeFileSync(path.join(pagePath, 'metadata.ts'), metadataContent);
+}
+
 function generatePage(pageConfig: typeof pagesToBuild[0]) {
-  const { offerAbbrev, brand: brandId, source, quizId, buyer: buyerId } = pageConfig;
+  const { offerAbbrev, brand: brandId, source, quizId, buyer: buyerId, cta, ctaText, showEmail, showCta } = pageConfig;
   const routePath = `${offerAbbrev}-${buyerId}-${source}`;
   
   console.log(`Generating page for ${brandId}/${routePath}:`);
@@ -70,83 +90,118 @@ function generatePage(pageConfig: typeof pagesToBuild[0]) {
   // Generate layout.tsx for the brand directory if it doesn't exist
   const layoutPath = path.join(brandDir, 'layout.tsx');
   if (!fs.existsSync(layoutPath)) {
-    const layoutContent = `import type { Metadata } from "next";
+    const brandImportMap: Record<string, string> = {
+      'yt': 'yourTruthBrand',
+      'ss': 'seekingSettlementsBrand',
+      'pj': 'peoplesJusticeBrand',
+      'wbl': 'weBuyLawsuitsBrand'
+    };
 
-export async function generateMetadata({ params }): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://${brand.domain}'),
-    title: {
-      template: '%s | ${brand.name}',
-      default: '${brand.name} - Legal Claims Landing Pages',
-    },
-    description: 'Find out if you qualify for compensation. Free case review available.',
-    openGraph: {
-      type: 'website',
-      siteName: '${brand.name}',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
-  };
-}
+    const layoutContent = `import { ReactNode } from "react";
+import { ${brandImportMap[brand.abbreviation]} } from "@/config/brands/${brand.abbreviation}";
+import BaseLayout from "@/components/base/layout/BaseLayout";
 
-export default function BrandLayout({
+export default function Layout({
   children,
 }: {
-  children: React.ReactNode;
+  children: ReactNode;
 }) {
-  return children;
+  // Get pageBrandConfig from the child component
+  const childComponent = children as any;
+  const pageBrandConfig = childComponent?.props?.brand;
+
+  return (
+    <BaseLayout brand={${brandImportMap[brand.abbreviation]}} pageBrandConfig={pageBrandConfig} isRootLayout={true}>
+      {children}
+    </BaseLayout>
+  );
 }`;
 
     fs.writeFileSync(layoutPath, layoutContent, 'utf8');
     console.log(`Generated brand layout: ${brandId}/layout.tsx`);
   }
 
-  // Generate page metadata
-  const metadataContent = `import type { Metadata } from "next";
+  // Generate page component
+  const brandImportMap: Record<string, string> = {
+    'yt': 'yourTruthBrand',
+    'ss': 'seekingSettlementsBrand',
+    'pj': 'peoplesJusticeBrand',
+    'wbl': 'weBuyLawsuitsBrand'
+  };
+
+  const pageContent = `import { LandingPage } from '@/components/templates/LandingPage';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
+import { Metadata } from "next";
+
+// Import brand config
+const brand = ${brandImportMap[brand.abbreviation]};
 
 export const metadata: Metadata = {
-  title: "${offer.metaTitle}",
+  title: "${offer.metaTitle} | ${brand.name}",
   description: "${offer.metaDescription}",
   openGraph: {
-    title: "${offer.metaTitle}",
+    title: "${offer.metaTitle} | ${brand.name}",
     description: "${offer.metaDescription}",
-  },
-};`;
+    siteName: "${brand.name}",
+    url: "https://${brand.domain}",
+    type: "website"
+  }
+};
 
-  const metadataPath = path.join(pageDir, 'metadata.ts');
-  fs.writeFileSync(metadataPath, metadataContent, 'utf8');
+const Page = () => {
+  const cta = ${cta ? `"${cta}"` : 'undefined'};
+  const ctaText = ${ctaText ? JSON.stringify(ctaText) : 'undefined'};
+  const showEmail = ${showEmail !== undefined ? showEmail : 'undefined'};
+  const showCta = ${showCta !== undefined ? showCta : 'undefined'};
+  // Format CTA URL if needed
+  const isPhoneNumber = cta && cta.match(/^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
+  const formattedCta = cta && !cta.includes('://') && !isPhoneNumber
+    ? \`https://\${cta}\` 
+    : cta;
 
-  // Generate page component
-  const pageContent = `'use client';
-
-import { LandingPage } from '@/components/templates/LandingPage';
-
-export default function Page() {
-  const brand = ${JSON.stringify(brand)};
-  const offerContent = ${JSON.stringify(offer)};
-  const buyer = ${JSON.stringify(buyer)};
+  const pageBrandConfig = {
+    ...brand,
+    ...(showCta === false ? {
+      // When showCta is false, hide all CTAs and remove CTA-related properties
+      hideCta: true,
+      hideHeaderCta: true,
+      hideFooterCta: true,
+      hideFaqHelpText: true,
+      phone: undefined,
+      cta: undefined,
+      headerCtaText: undefined,
+      footerCtaText: undefined
+    } : {
+      // When showCta is true, set up CTAs based on configuration
+      ...(formattedCta === 'none' ? { hideCta: true } : 
+         formattedCta ? (isPhoneNumber ? { phone: formattedCta } : { cta: formattedCta }) : 
+         {}),
+      ...(ctaText?.header === 'none' ? { hideHeaderCta: true } : 
+         ctaText?.header ? { headerCtaText: ctaText.header } : 
+         {}),
+      ...(ctaText?.footer === 'none' ? { hideFooterCta: true } : 
+         ctaText?.footer ? { footerCtaText: ctaText.footer } : 
+         {})
+    }),
+    showEmail: showEmail
+  };
 
   return (
-    <LandingPage
-      brand={brand}
-      content={offerContent}
+    <LandingPage 
+      brand={pageBrandConfig}
+      content={${JSON.stringify(offer)}}
       source="${source}"
       quizId="${quizId}"
-      buyer={buyer}
+      buyer={${JSON.stringify(buyer)}}
+      cta={${cta ? `"${cta}"` : 'undefined'}}
     />
   );
-}`;
+};
 
-  const pagePath = path.join(pageDir, 'page.tsx');
-  fs.writeFileSync(pagePath, pageContent, 'utf8');
-  
-  console.log(`Generated page: ${brandId}/${routePath}`);
+export default Page;`;
+
+  fs.writeFileSync(path.join(pageDir, 'page.tsx'), pageContent, 'utf8');
+  console.log(`Generated page: ${brandId}/${routePath}/page.tsx`);
 }
 
 console.log('Validating configurations...');

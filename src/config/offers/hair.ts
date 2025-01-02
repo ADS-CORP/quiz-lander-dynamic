@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const hairOffer: LandingPageContent = {
   abbreviation: 'hair',
-  title: "Hair Relaxer Lawsuit | Chemical Hair Straightener Settlement",
+  title: "Hair Relaxer Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Hair Relaxer Lawsuit Compensation - Free Case Review",
+  metaTitle: "Hair Relaxer Compensation",
   metaDescription: "Were you diagnosed with cancer after using hair relaxers? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",

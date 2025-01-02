@@ -1,58 +1,32 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 
-export default function TrafficCounter() {
-  // Use null initial state to prevent hydration mismatch
+export default function TrafficCounter({ brand }) {
   const [count, setCount] = useState(null);
-  const [trend, setTrend] = useState('up');
 
   useEffect(() => {
-    // Set initial count after component mounts
-    setCount(Math.floor(Math.random() * (30 - 10 + 1)) + 10);
-    
-    const getRandomChange = () => {
-      const changes = [1, 1, 1, 2, 2, 3];
-      return changes[Math.floor(Math.random() * changes.length)];
-    };
+    // Set initial count between 15-30
+    setCount(Math.floor(Math.random() * (30 - 15 + 1) + 15));
 
-    const getRandomInterval = () => {
-      return Math.floor(Math.random() * (15000 - 5000 + 1)) + 5000;
-    };
-
-    const updateCount = () => {
-      setCount(prevCount => {
-        if (!prevCount) return null;
-        let newCount;
-        if (trend === 'up') {
-          newCount = prevCount + getRandomChange();
-          if (newCount >= 78) {
-            setTrend('down');
-            return 78;
-          }
-        } else {
-          newCount = prevCount - getRandomChange();
-          if (newCount <= 2) {
-            setTrend('up');
-            return 2;
-          }
-        }
-        return newCount;
+    // Increment count every 5-15 seconds
+    const interval = setInterval(() => {
+      setCount((prevCount) => {
+        if (prevCount >= 99) return prevCount;
+        return prevCount + 1;
       });
+    }, Math.random() * (15000 - 5000) + 5000);
 
-      setTimeout(updateCount, getRandomInterval());
-    };
+    return () => clearInterval(interval);
+  }, []);
 
-    const initialTimeout = setTimeout(updateCount, getRandomInterval());
+  if (!count) return null;
 
-    return () => clearTimeout(initialTimeout);
-  }, [trend]);
-
-  // Don't render anything until we have a count
-  if (count === null) return null;
+  const bgColor = brand?.theme?.trafficCounterBackground || 'bg-gray-50';
+  const textColor = brand?.theme?.trafficCounterText || 'text-gray-900';
 
   return (
-    <div className="w-full py-2 text-center">
+    <div className={`sticky top-0 w-full py-2 text-center ${bgColor} ${textColor} z-[200]`}>
       <div className="max-w-4xl mx-auto px-4 flex items-center justify-center space-x-2">
         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
         <p className="text-sm">

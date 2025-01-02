@@ -1,38 +1,34 @@
-import { Metadata } from "next";
 import { ReactNode } from "react";
+import { peoplesJusticeBrand } from "@/config/brands/pj";
+import BaseLayout from "@/components/base/layout/BaseLayout";
+import { Metadata } from "next";
 
-type Props = {
-  params: { [key: string]: string | string[] | undefined };
-  searchParams: { [key: string]: string | string[] | undefined };
+export const metadata: Metadata = {
+  icons: peoplesJusticeBrand.favicon ? [
+    {
+      rel: 'icon',
+      url: peoplesJusticeBrand.favicon,
+      sizes: 'any',
+    },
+    {
+      rel: 'apple-touch-icon',
+      url: peoplesJusticeBrand.favicon,
+    },
+    {
+      rel: 'shortcut icon',
+      url: peoplesJusticeBrand.favicon,
+    }
+  ] : []
 };
 
-export async function generateMetadata(): Promise<Metadata> {
-  return {
-    metadataBase: new URL('https://peoplesjustice.info'),
-    title: {
-      template: '{OfferName} Compensation | {BrandName}',
-      default: 'People\'s Justice - Legal Claims Landing Pages',
-    },
-    description: 'Find out if you qualify for compensation. Free case review available.',
-    openGraph: {
-      type: 'website',
-      siteName: 'People\'s Justice',
-    },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-      },
-    },
-  };
-}
-
-export default function BrandLayout({
+export default function Layout({
   children,
 }: {
   children: ReactNode;
 }) {
-  return children;
+  return (
+    <BaseLayout brand={peoplesJusticeBrand} isRootLayout={true}>
+      {children}
+    </BaseLayout>
+  );
 }

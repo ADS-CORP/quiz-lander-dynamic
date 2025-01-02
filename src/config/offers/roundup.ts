@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const roundupOffer: LandingPageContent = {
   abbreviation: 'ru',
-  title: "Roundup Lawsuit | Weed Killer Settlement",
+  title: "Roundup Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Roundup Lawsuit Compensation - Free Case Review",
+  metaTitle: "Roundup Compensation",
   metaDescription: "Were you diagnosed with cancer after using Roundup weed killer? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",

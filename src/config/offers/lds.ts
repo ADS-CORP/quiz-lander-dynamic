@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const ldsOffer: LandingPageContent = {
   abbreviation: 'ldsabuse',
-  title: "LDS Abuse Lawsuit | Mormon Church Settlement",
+  title: "LDS Abuse Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "LDS Church Abuse Lawsuit Compensation - Free Case Review",
+  metaTitle: "LDS Abuse Compensation",
   metaDescription: "Were you a victim of abuse within the Mormon Church? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",

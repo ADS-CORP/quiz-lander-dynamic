@@ -31,30 +31,30 @@ export const yourTruthBrand: BrandConfig = {
       buttonText: "Subscribe"
     },
     links: [
-      { text: "Privacy Policy", href: "https://yourtruth.info/privacy-policy" },
-      { text: "Terms of Service", href: "https://yourtruth.info/terms-of-service" },
-      { text: "Cookie Policy", href: "https://yourtruth.info/cookie-policy" },
-      { text: "Do Not Sell or Share My Personal Info", href: "https://yourtruth.info/data-control" }
+      { text: "Privacy Policy", href: "https://www.yourtruthtoday.com/privacy-policy" },
+      { text: "Terms of Service", href: "https://www.yourtruthtoday.com/terms-of-service" },
+      { text: "Cookie Policy", href: "https://www.yourtruthtoday.com/cookie-policy" },
+      { text: "Do Not Sell or Share My Personal Info", href: "https://www.yourtruthtoday.com/data-control" }
     ],
     legalText: "YourTruth is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. YourTruth does not endorse or recommend any particular law firm and has not analyzed your submissions."
   },
   theme: {
-    primaryColor: '#A020F0',
+    primaryColor: '#a11ff0',
     secondaryColor: '#1a1a1a',
     headerBackground: '#ffffff',
     headerText: '#000000',
-    ctaBackground: '#A020F0',
+    ctaBackground: '#a11ff0',
     ctaText: '#ffffff',
     footerBackground: '#000000',
     footerText: '#ffffff',
-    settlementCarouselBackground: '#A020F0',
+    settlementCarouselBackground: '#a11ff0',
     settlementCarouselText: '#ffffff',
-    faqExpandedBackground: '#f8f9fa',
+    faqExpandedBackground: '#f4e3ff',
     faqText: '#000000',
     quizBackground: '#ffffff',
     quizText: '#111827',
     trafficCounterBackground: '#f5f5f5',
     trafficCounterText: '#000000',
-    notificationDotColor: '#A020F0'
+    notificationDotColor: '#a11ff0'
   }
 };

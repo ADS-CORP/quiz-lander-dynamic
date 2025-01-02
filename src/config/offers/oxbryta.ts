@@ -2,10 +2,10 @@ import { LandingPageContent } from '../types';
 
 export const oxbrytaOffer: LandingPageContent = {
   abbreviation: 'oxb',
-  title: "Oxbryta Lawsuit | Sickle Cell Treatment Settlement",
+  title: "Oxbryta Compensation",
   headline: "Join Thousands Pursuing Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Oxbryta Lawsuit Compensation - Free Case Review",
+  metaTitle: "Oxbryta Compensation",
   metaDescription: "Did you experience serious side effects after taking Oxbryta for sickle cell disease? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",
