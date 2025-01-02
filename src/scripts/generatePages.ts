@@ -179,7 +179,7 @@ const Page = () => {
 
   const pageBrandConfig = {
     ...brand,
-    ...(showCta === false ? {
+    ...(showCta === false || showCta === 'false' ? {
       hideCta: true,
       hideHeaderCta: true,
       hideFooterCta: true,
