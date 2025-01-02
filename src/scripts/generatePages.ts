@@ -181,12 +181,14 @@ const Page = () => {
       ...(formattedCta === 'none' ? { hideCta: true } : 
          formattedCta ? (typeof formattedCta === 'string' && /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),
-      ...(ctaText?.header === 'none' ? { hideHeaderCta: true } : 
-         ctaText?.header ? { headerCtaText: ctaText.header } : 
-         {}),
-      ...(ctaText?.footer === 'none' ? { hideFooterCta: true } : 
-         ctaText?.footer ? { footerCtaText: ctaText.footer } : 
-         {})
+      ...(typeof ctaText === 'object' && ctaText !== null ? {
+        ...(ctaText.header === 'none' ? { hideHeaderCta: true } : 
+           ctaText.header ? { headerCtaText: ctaText.header } : 
+           {}),
+        ...(ctaText.footer === 'none' ? { hideFooterCta: true } : 
+           ctaText.footer ? { footerCtaText: ctaText.footer } : 
+           {})
+      } : {})
     }),
     showEmail: showEmail
   };
