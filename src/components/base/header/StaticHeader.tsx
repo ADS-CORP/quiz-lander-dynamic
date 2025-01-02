@@ -44,10 +44,10 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
   // 1. Use headerCtaText if provided
   // 2. Use headerCta.secondary if there's a CTA URL
   // 3. Use headerCta.primary if there's a phone number
-  const ctaText = brand.headerCtaText || (brand.cta ? brand.headerCta.secondary : brand.headerCta.primary);
+  const ctaText = brand.headerCtaText || (brand.cta ? brand.headerCta?.secondary : brand.headerCta?.primary) || '';
 
   return (
-    <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme.headerBackground }}>
+    <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme?.headerBackground }}>
       <div className="border-b">
         <div className="w-full">
           <div className="h-[60px] px-6 flex items-center">
