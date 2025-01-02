@@ -30,6 +30,10 @@ export interface BrandConfig {
   cta?: string;
   headerCtaText?: string;
   footerCtaText?: string;
+  headerCta?: {
+    primary?: string;
+    secondary?: string;
+  };
   hideCta?: boolean;
   hideHeaderCta?: boolean;
   hideFooterCta?: boolean;
