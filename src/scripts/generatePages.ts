@@ -1,6 +1,6 @@
 import fs from 'fs';
 import path from 'path';
-import { pagesToBuild } from '@/config/pages';
+import { pagesToBuild } from '../config/pages';
 import { buyers } from '../config/buyers';
 import { offers } from '../config/offers';
 import { getUrlParams } from '../utils/user-data';
@@ -154,8 +154,8 @@ const Page = () => {
   const showEmail = ${showEmail !== undefined ? showEmail : 'undefined'};
   const showCta = ${showCta !== undefined ? showCta : 'undefined'};
   // Format CTA URL if needed
-  const isPhoneNumber = cta && cta.match(/^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
-  const formattedCta = cta && !cta.includes('://') && !isPhoneNumber
+  const isPhoneNumber = typeof cta === 'string' && cta.match(/^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
+  const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
     ? \`https://\${cta}\` 
     : cta;
 
@@ -193,14 +193,14 @@ const Page = () => {
       source="${source}"
       quizId="${quizId}"
       buyer={${JSON.stringify(buyer)}}
-      cta={${cta ? `"${cta}"` : 'undefined'}}
     />
   );
 };
 
 export default Page;`;
 
-  fs.writeFileSync(path.join(pageDir, 'page.tsx'), pageContent, 'utf8');
+  // Write page component
+  fs.writeFileSync(path.join(pageDir, 'page.tsx'), pageContent);
   console.log(`Generated page: ${brandId}/${routePath}/page.tsx`);
 }
 

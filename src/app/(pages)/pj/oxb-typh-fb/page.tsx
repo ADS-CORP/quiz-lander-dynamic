@@ -23,8 +23,8 @@ const Page = () => {
   const showEmail = undefined;
   const showCta = undefined;
   // Format CTA URL if needed
-  const isPhoneNumber = cta && cta.match(/^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
-  const formattedCta = cta && !cta.includes('://') && !isPhoneNumber
+  const isPhoneNumber = typeof cta === 'string' && cta.match(/^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
+  const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
     ? `https://${cta}` 
     : cta;
 
@@ -62,7 +62,6 @@ const Page = () => {
       source="fb"
       quizId="f7dd5270-117a-4c2e-9eec-bc20b73c8a03"
       buyer={{"abbreviation":"typh","name":"Typhon Interactive"}}
-      cta={undefined}
     />
   );
 };
