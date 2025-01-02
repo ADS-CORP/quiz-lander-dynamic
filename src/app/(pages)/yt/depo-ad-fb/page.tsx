@@ -1,5 +1,5 @@
 import { LandingPage } from '@/components/templates/LandingPage';
-import { yourTruthBrand } from '@/config/brands/yt';
+import { yourTruthBrand } from '../../config/brands/yt';
 import { Metadata } from "next";
 
 // Import brand config
@@ -24,7 +24,7 @@ const Page = () => {
   const showCta = undefined;
   
   // Format CTA URL if needed
-  const isPhoneNumber = typeof cta === 'string' && cta.match(/^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
+  const isPhoneNumber = typeof cta === 'string' && /^+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(cta);
   const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
     ? `https://${cta}`
     : cta;
