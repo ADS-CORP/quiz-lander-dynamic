@@ -151,6 +151,7 @@ const Page = () => {
   const formattedCta = (() => {
     if (typeof cta !== 'string') return cta;
     
+    // Match phone numbers with various formats including country code
     const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/;
     const isPhoneNumber = phoneRegex.test(cta);
     
@@ -159,7 +160,12 @@ const Page = () => {
     const hasHttp = ctaStr.indexOf('http://') >= 0;
     const hasHttps = ctaStr.indexOf('https://') >= 0;
     
-    if (isPhoneNumber || hasHttp || hasHttps) {
+    if (isPhoneNumber) {
+      // For phone numbers, just return as is - we'll handle it in the brand config
+      return cta;
+    }
+    
+    if (hasHttp || hasHttps) {
       return cta;
     }
     
@@ -195,7 +201,14 @@ const Page = () => {
       footerCtaText: undefined
     } : {
       ...(formattedCta === 'none' ? { hideCta: true } : 
-         formattedCta ? { cta: formattedCta } : {}),
+         formattedCta ? (() => {
+           // Check if formattedCta is a phone number
+           const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/;
+           if (phoneRegex.test(formattedCta)) {
+             return { phone: formattedCta };
+           }
+           return { cta: formattedCta };
+         })() : {}),
       ...((ctaText && typeof ctaText === 'object') ? {
         ...(getStringProp(ctaText, 'header') === 'none' ? { hideHeaderCta: true } :
            getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } : {}),

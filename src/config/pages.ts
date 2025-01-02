@@ -122,7 +122,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     quizId: '90e0a970-52c4-4a7f-b0c1-7ccfdddcaf99',
     showEmail: false,
     showCta: true,
-    cta: '1-717-586-8570',
+    cta: 'google.com',
     ctaText: {
       header: 'Call Now',
       footer: 'Chat With Us Now'
