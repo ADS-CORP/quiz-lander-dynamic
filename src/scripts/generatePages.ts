@@ -149,10 +149,14 @@ const Page = () => {
   
   // Format CTA URL if needed
   let formattedCta = cta;
+  
   if (typeof cta === 'string') {
-    const isPhoneNumber = /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(cta);
-    const hasProtocol = cta.indexOf('http://') === 0 || cta.indexOf('https://') === 0;
-    if (!hasProtocol && !isPhoneNumber) {
+    const phoneRegex = /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/;
+    const isPhoneNumber = phoneRegex.test(cta);
+    const hasHttp = String(cta).toLowerCase().indexOf('http://') >= 0;
+    const hasHttps = String(cta).toLowerCase().indexOf('https://') >= 0;
+    
+    if (!isPhoneNumber && !hasHttp && !hasHttps) {
       formattedCta = \`https://\${cta}\`;
     }
   }
