@@ -148,18 +148,20 @@ const Page = () => {
   const showCta = ${showCta !== undefined ? showCta : 'undefined'};
   
   // Format CTA URL if needed
-  let formattedCta = cta;
-  
-  if (typeof cta === 'string') {
+  const formattedCta = (() => {
+    if (typeof cta !== 'string') return cta;
+    
     const phoneRegex = /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/;
     const isPhoneNumber = phoneRegex.test(cta);
-    const hasHttp = String(cta).toLowerCase().indexOf('http://') >= 0;
-    const hasHttps = String(cta).toLowerCase().indexOf('https://') >= 0;
+    const hasHttp = cta.toLowerCase().indexOf('http://') >= 0;
+    const hasHttps = cta.toLowerCase().indexOf('https://') >= 0;
     
-    if (!isPhoneNumber && !hasHttp && !hasHttps) {
-      formattedCta = \`https://\${cta}\`;
+    if (isPhoneNumber || hasHttp || hasHttps) {
+      return cta;
     }
-  }
+    
+    return \`https://\${cta}\`;
+  })();
 
   const pageBrandConfig = {
     ...brand,
