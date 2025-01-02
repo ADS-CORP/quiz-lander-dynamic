@@ -169,6 +169,14 @@ const Page = () => {
   // Helper function to safely check string equality
   const isEqual = (a: any, b: string) => typeof a === 'string' && a === b;
 
+  // Helper function to safely get string property
+  const getStringProp = (obj: any, prop: string) => {
+    if (obj && typeof obj === 'object' && prop in obj) {
+      return String(obj[prop]);
+    }
+    return undefined;
+  };
+
   const pageBrandConfig = {
     ...brand,
     ...(showCta === false ? {
@@ -185,11 +193,11 @@ const Page = () => {
          formattedCta ? (typeof formattedCta === 'string' && /^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),
       ...((ctaText && typeof ctaText === 'object') ? {
-        ...(isEqual(ctaText.header, 'none') ? { hideHeaderCta: true } :
-           ctaText.header ? { headerCtaText: String(ctaText.header) } :
+        ...(getStringProp(ctaText, 'header') === 'none' ? { hideHeaderCta: true } :
+           getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } :
            {}),
-        ...(isEqual(ctaText.footer, 'none') ? { hideFooterCta: true } :
-           ctaText.footer ? { footerCtaText: String(ctaText.footer) } :
+        ...(getStringProp(ctaText, 'footer') === 'none' ? { hideFooterCta: true } :
+           getStringProp(ctaText, 'footer') ? { footerCtaText: getStringProp(ctaText, 'footer') } :
            {})
       } : {})
     }),
