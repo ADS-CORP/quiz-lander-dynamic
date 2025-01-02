@@ -24,11 +24,14 @@ const Page = () => {
   const showCta = undefined;
   
   // Format CTA URL if needed
-  const isPhoneNumber = typeof cta === 'string' && /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(cta);
-  const hasProtocol = typeof cta === 'string' && (cta.startsWith('http://') || cta.startsWith('https://'));
-  const formattedCta = typeof cta === 'string' && !hasProtocol && !isPhoneNumber
-    ? `https://${cta}`
-    : cta;
+  let formattedCta = cta;
+  if (typeof cta === 'string') {
+    const isPhoneNumber = /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(cta);
+    const hasProtocol = cta.indexOf('http://') === 0 || cta.indexOf('https://') === 0;
+    if (!hasProtocol && !isPhoneNumber) {
+      formattedCta = `https://${cta}`;
+    }
+  }
 
   const pageBrandConfig = {
     ...brand,
@@ -43,7 +46,7 @@ const Page = () => {
       footerCtaText: undefined
     } : {
       ...(formattedCta === 'none' ? { hideCta: true } : 
-         formattedCta ? (isPhoneNumber ? { phone: formattedCta } : { cta: formattedCta }) : 
+         formattedCta ? (typeof formattedCta === 'string' && /^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),
       ...(ctaText?.header === 'none' ? { hideHeaderCta: true } : 
          ctaText?.header ? { headerCtaText: ctaText.header } : 
