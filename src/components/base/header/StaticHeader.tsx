@@ -36,7 +36,8 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
 
     const ctaStr = String(ctaValue);
     const hasProtocol = /^(https?:|tel:)/.test(ctaStr);
-    const isPhoneNumber = /^[+]?[(]?[0-9]{1,3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4}$/.test(ctaStr.replace(/\D/g, ''));
+    // Only test for phone number if we have a value and no protocol
+    const isPhoneNumber = !hasProtocol && /^[+]?[(]?[0-9]{1,3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4}$/.test(ctaStr.replace(/\D/g, ''));
 
     let finalUrl = ctaStr;
     if (!hasProtocol) {
