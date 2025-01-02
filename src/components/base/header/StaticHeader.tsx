@@ -51,7 +51,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
       <div className="border-b">
         <div className="w-full">
           <div className="h-[60px] px-6 flex items-center">
-            <button className="p-1 absolute left-6" style={{ color: brand.theme.headerText }}>
+            <button className="p-1 absolute left-6" style={{ color: brand.theme?.headerText }}>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
@@ -76,8 +76,8 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
               <button 
                 onClick={handleCtaClick}
                 style={{ 
-                  backgroundColor: brand.theme.ctaBackground,
-                  color: brand.theme.ctaText
+                  backgroundColor: brand.theme?.ctaBackground,
+                  color: brand.theme?.ctaText
                 }}
                 className="absolute right-6 px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
               >
