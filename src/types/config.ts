@@ -20,8 +20,11 @@ export interface BrandConfig {
   domain: string;
   abbreviation: string;
   logo: {
-    src: string;
-    alt: string;
+    header: {
+      src: string;
+      alt: string;
+      height: number;
+    };
   };
   phone?: string;
   cta?: string;
@@ -32,4 +35,10 @@ export interface BrandConfig {
   hideFooterCta?: boolean;
   hideFaqHelpText?: boolean;
   showEmail?: boolean;
+  theme?: {
+    primaryColor: string;
+    secondaryColor: string;
+    headerBackground: string;
+    headerText: string;
+  };
 }
