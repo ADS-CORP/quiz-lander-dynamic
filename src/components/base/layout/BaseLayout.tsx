@@ -14,9 +14,10 @@ interface BaseLayoutProps {
     };
   };
   children: React.ReactNode;
+  isRootLayout?: boolean;
 }
 
-const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, children }) => {
+const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, children, isRootLayout }) => {
   // Create the header brand config (without CTA fields)
   const headerBrand = {
     ...brand,
