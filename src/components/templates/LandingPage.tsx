@@ -85,7 +85,15 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     };
   }, [quizConfig, quizId]);
 
-  return <div id="quiz-widget-container" className="w-full h-full" style={{ backgroundColor: brand.theme.quizBackground, position: 'relative', overflow: 'visible' }} />;
+  return <div 
+    id="quiz-widget-container" 
+    className="w-full h-full" 
+    style={{ 
+      backgroundColor: brand.theme?.quizBackground || '#ffffff', 
+      position: 'relative', 
+      overflow: 'visible' 
+    }} 
+  />;
 }
 
 interface LandingPageProps {
@@ -131,7 +139,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
       <div className="min-h-screen bg-white">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
-          style={{ backgroundColor: brand.theme.trafficCounterBackground }}
+          style={{ backgroundColor: brand.theme?.trafficCounterBackground || '#ffffff' }}
         >
           <TrafficCounter brand={brand} />
         </div>
@@ -158,7 +166,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
             <AsSeenOn />
           </div>
           {content.settlementSection?.settlements?.length > 0 && (
-            <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme.settlementCarouselBackground }}>
+            <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme?.settlementCarouselBackground || '#ffffff' }}>
               <div className="max-w-[900px] mx-auto px-4 py-8">
                 <SettlementCarousel settlements={content.settlementSection.settlements} />
               </div>
@@ -169,8 +177,8 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
               <div className="w-full max-w-4xl mx-auto px-4">
                 <CustomFaqSection 
                   faqSection={content.faqSection} 
-                  expandedBackground={brand.theme.faqExpandedBackground}
-                  textColor={brand.theme.faqText}
+                  expandedBackground={brand.theme?.faqExpandedBackground || '#ffffff'}
+                  textColor={brand.theme?.faqText || '#000000'}
                   brand={brand}
                 />
               </div>

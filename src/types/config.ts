@@ -46,5 +46,6 @@ export interface BrandConfig {
     headerText: string;
     ctaBackground?: string;
     ctaText?: string;
+    quizBackground?: string;
   };
 }
