@@ -44,5 +44,7 @@ export interface BrandConfig {
     secondaryColor: string;
     headerBackground: string;
     headerText: string;
+    ctaBackground?: string;
+    ctaText?: string;
   };
 }
