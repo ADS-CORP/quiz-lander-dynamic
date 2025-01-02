@@ -124,7 +124,7 @@ export default function LiveClaimsNotification({ brand }: LiveClaimsNotification
         <div className="flex-shrink-0">
           <div 
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: brand.theme?.primary || '#4CAF50' }}
+            style={{ backgroundColor: brand.theme?.primaryColor || '#4CAF50' }}
           >
             <span className="text-white font-semibold">
               {currentNotification.name.charAt(0)}
