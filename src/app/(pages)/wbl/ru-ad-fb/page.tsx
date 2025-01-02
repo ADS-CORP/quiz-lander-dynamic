@@ -1,5 +1,5 @@
 import { LandingPage } from '@/components/templates/LandingPage';
-import { weBuyLawsuitsBrand } from '@/config/brands/wbl';
+import { weBuyLawsuitsBrand } from '@/config/brands';
 import { Metadata } from "next";
 
 // Import brand config

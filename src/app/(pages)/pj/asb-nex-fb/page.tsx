@@ -1,5 +1,5 @@
 import { LandingPage } from '@/components/templates/LandingPage';
-import { peoplesJusticeBrand } from '@/config/brands/pj';
+import { peoplesJusticeBrand } from '@/config/brands';
 import { Metadata } from "next";
 
 // Import brand config

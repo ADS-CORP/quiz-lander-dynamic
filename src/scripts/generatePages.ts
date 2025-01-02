@@ -123,7 +123,7 @@ export default function Layout({
 
   // Generate page component
   const pageContent = `import { LandingPage } from '@/components/templates/LandingPage';
-import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
+import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands';
 import { Metadata } from "next";
 
 // Import brand config

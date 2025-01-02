@@ -1,5 +1,5 @@
 import { LandingPage } from '@/components/templates/LandingPage';
-import { seekingSettlementsBrand } from '@/config/brands/ss';
+import { seekingSettlementsBrand } from '@/config/brands';
 import { Metadata } from "next";
 
 // Import brand config

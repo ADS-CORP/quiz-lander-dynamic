@@ -1,5 +1,5 @@
 import { LandingPage } from '@/components/templates/LandingPage';
-import { yourTruthBrand } from '@/config/brands/yt';
+import { yourTruthBrand } from '@/config/brands';
 import { Metadata } from "next";
 
 // Import brand config
