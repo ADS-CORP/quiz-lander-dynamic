@@ -22,16 +22,16 @@ const Page = () => {
   const ctaText = undefined;
   const showEmail = undefined;
   const showCta = undefined;
+  
   // Format CTA URL if needed
   const isPhoneNumber = typeof cta === 'string' && cta.match(/^\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
   const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
-    ? `https://${cta}` 
+    ? `https://${cta}`
     : cta;
 
   const pageBrandConfig = {
     ...brand,
     ...(showCta === false ? {
-      // When showCta is false, hide all CTAs and remove CTA-related properties
       hideCta: true,
       hideHeaderCta: true,
       hideFooterCta: true,
@@ -41,7 +41,6 @@ const Page = () => {
       headerCtaText: undefined,
       footerCtaText: undefined
     } : {
-      // When showCta is true, set up CTAs based on configuration
       ...(formattedCta === 'none' ? { hideCta: true } : 
          formattedCta ? (isPhoneNumber ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),

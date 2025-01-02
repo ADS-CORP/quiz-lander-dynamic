@@ -45,8 +45,8 @@ function generateMetadataFile(brand: any, offer: any, pagePath: string) {
     'wbl': 'weBuyLawsuitsBrand'
   };
 
-  const metadataContent = `import { generatePageMetadata } from '@/utils/metadata';
-import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
+  const metadataContent = `import { generatePageMetadata } from '../utils/metadata';
+import { ${brandImportMap[brand.abbreviation]} } from '../config/brands/${brand.abbreviation}';
 
 export const metadata = generatePageMetadata(
   '${offer.metaTitle}',
@@ -58,6 +58,13 @@ export const metadata = generatePageMetadata(
 }
 
 function generatePage(pageConfig: typeof pagesToBuild[0]) {
+  const brandImportMap: Record<string, string> = {
+    'yt': 'yourTruthBrand',
+    'ss': 'seekingSettlementsBrand',
+    'pj': 'peoplesJusticeBrand',
+    'wbl': 'weBuyLawsuitsBrand'
+  };
+
   const { offerAbbrev, brand: brandId, source, quizId, buyer: buyerId, cta, ctaText, showEmail, showCta } = pageConfig;
   const routePath = `${offerAbbrev}-${buyerId}-${source}`;
   
@@ -90,13 +97,6 @@ function generatePage(pageConfig: typeof pagesToBuild[0]) {
   // Generate layout.tsx for the brand directory if it doesn't exist
   const layoutPath = path.join(brandDir, 'layout.tsx');
   if (!fs.existsSync(layoutPath)) {
-    const brandImportMap: Record<string, string> = {
-      'yt': 'yourTruthBrand',
-      'ss': 'seekingSettlementsBrand',
-      'pj': 'peoplesJusticeBrand',
-      'wbl': 'weBuyLawsuitsBrand'
-    };
-
     const layoutContent = `import { ReactNode } from "react";
 import { ${brandImportMap[brand.abbreviation]} } from "@/config/brands/${brand.abbreviation}";
 import BaseLayout from "@/components/base/layout/BaseLayout";
@@ -117,18 +117,11 @@ export default function Layout({
   );
 }`;
 
-    fs.writeFileSync(layoutPath, layoutContent, 'utf8');
+    fs.writeFileSync(layoutPath, layoutContent);
     console.log(`Generated brand layout: ${brandId}/layout.tsx`);
   }
 
   // Generate page component
-  const brandImportMap: Record<string, string> = {
-    'yt': 'yourTruthBrand',
-    'ss': 'seekingSettlementsBrand',
-    'pj': 'peoplesJusticeBrand',
-    'wbl': 'weBuyLawsuitsBrand'
-  };
-
   const pageContent = `import { LandingPage } from '@/components/templates/LandingPage';
 import { ${brandImportMap[brand.abbreviation]} } from '@/config/brands/${brand.abbreviation}';
 import { Metadata } from "next";
@@ -153,16 +146,16 @@ const Page = () => {
   const ctaText = ${ctaText ? JSON.stringify(ctaText) : 'undefined'};
   const showEmail = ${showEmail !== undefined ? showEmail : 'undefined'};
   const showCta = ${showCta !== undefined ? showCta : 'undefined'};
+  
   // Format CTA URL if needed
   const isPhoneNumber = typeof cta === 'string' && cta.match(/^\\+?[0-9]{3}-?[0-9]{3}-?[0-9]{4}$/);
   const formattedCta = typeof cta === 'string' && !cta.includes('://') && !isPhoneNumber
-    ? \`https://\${cta}\` 
+    ? \`https://\${cta}\`
     : cta;
 
   const pageBrandConfig = {
     ...brand,
     ...(showCta === false ? {
-      // When showCta is false, hide all CTAs and remove CTA-related properties
       hideCta: true,
       hideHeaderCta: true,
       hideFooterCta: true,
@@ -172,7 +165,6 @@ const Page = () => {
       headerCtaText: undefined,
       footerCtaText: undefined
     } : {
-      // When showCta is true, set up CTAs based on configuration
       ...(formattedCta === 'none' ? { hideCta: true } : 
          formattedCta ? (isPhoneNumber ? { phone: formattedCta } : { cta: formattedCta }) : 
          {}),
@@ -199,7 +191,6 @@ const Page = () => {
 
 export default Page;`;
 
-  // Write page component
   fs.writeFileSync(path.join(pageDir, 'page.tsx'), pageContent);
   console.log(`Generated page: ${brandId}/${routePath}/page.tsx`);
 }
