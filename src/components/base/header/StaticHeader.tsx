@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { BrandConfig } from '@/config/types';
+import { BrandConfig } from '@/types/config';
 
 interface HeaderProps {
   brand: BrandConfig;

@@ -9,11 +9,12 @@ import Footer from '@/components/base/footer';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
+import { BrandConfig } from '@/types/config';
 
 interface QuizWidgetProps {
   quizConfig: any;
   quizId: string;
-  brand: any;
+  brand: BrandConfig;
 }
 
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
@@ -88,7 +89,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
 }
 
 interface LandingPageProps {
-  brand: any;
+  brand: BrandConfig;
   content: any;
   source: any;
   quizId: string;
