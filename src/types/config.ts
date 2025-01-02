@@ -46,6 +46,16 @@ export interface BrandConfig {
     headerText: string;
     ctaBackground?: string;
     ctaText?: string;
+    footerBackground: string;
+    footerText: string;
+    settlementCarouselBackground?: string;
+    settlementCarouselText?: string;
+    faqExpandedBackground?: string;
+    faqText?: string;
     quizBackground?: string;
+    quizText?: string;
+    trafficCounterBackground?: string;
+    trafficCounterText?: string;
+    notificationDotColor?: string;
   };
 }
