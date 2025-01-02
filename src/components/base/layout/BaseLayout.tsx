@@ -1,55 +1,37 @@
 'use client';
+import React from 'react';
+import StaticHeader from '@/components/base/header/StaticHeader';
+import { BrandConfig } from '@/types/config';
 
-import { WebsiteUrlParams } from '@/components/controls/TrackedLink';
-import { DomainSettingsProvider } from '@/context/DomainSettingsContext';
-import { getUrlParams } from '@/utils/user-data';
-import { GoogleTagManager } from '@next/third-parties/google';
-import { usePathname } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
-
-import Header from '@/components/base/header/StaticHeader';
-import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
-import { BrandConfig } from '@/config/types';
-
-type LayoutProps = {
-  children: ReactNode;
+interface BaseLayoutProps {
   brand: BrandConfig;
-  pageBrandConfig?: BrandConfig;
-  isRootLayout?: boolean;
-};
+  pageBrandConfig?: {
+    cta?: string;
+    showCta?: boolean;
+    ctaText?: {
+      header?: string;
+      footer?: string;
+    };
+  };
+  children: React.ReactNode;
+}
 
-// Client component for dynamic features
-function BaseLayoutClient({ children, brand, pageBrandConfig, isRootLayout = false }: LayoutProps) {
-  const [urlParams, setUrlParams] = useState<WebsiteUrlParams>({});
-  const rawPath = usePathname();
-  const path = rawPath?.endsWith('/') && rawPath !== '/' ? rawPath.slice(0, -1) : rawPath || '';
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const currentUrlParams = getUrlParams();
-      setUrlParams(currentUrlParams);
-    }
-  }, [path]);
-
-  // Use pageBrandConfig if provided, otherwise fallback to base brand
-  const headerBrand = pageBrandConfig || brand;
+const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, children }) => {
+  // Create the header brand config (without CTA fields)
+  const headerBrand = {
+    ...brand,
+    cta: undefined,
+    headerCta: undefined,
+    headerCtaText: undefined,
+    footerCtaText: undefined,
+  };
 
   return (
-    <DomainSettingsProvider value={{ urlParams, startUrl: path }}>
-      <div className="flex min-h-screen flex-col bg-transparent relative">
-        <Header brand={headerBrand} />
-        <main className="flex-1 bg-transparent relative z-0">{children}</main>
-        <LiveClaimsNotification brand={headerBrand} />
-      </div>
-      {process.env.NEXT_PUBLIC_GTM_ID && (
-        <GoogleTagManager gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-      )}
-    </DomainSettingsProvider>
+    <div className="flex flex-col min-h-screen">
+      <StaticHeader brand={headerBrand} pageConfig={pageBrandConfig} />
+      <main className="flex-grow">{children}</main>
+    </div>
   );
-}
+};
 
-// Server component wrapper
-export default function BaseLayout(props: LayoutProps) {
-  return <BaseLayoutClient {...props} />;
-}
+export default BaseLayout;

@@ -4,8 +4,17 @@ import React from 'react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { ChevronDown } from "lucide-react";
 
-export default function CustomFaqSection({ faqSection, expandedBackground, textColor, brand }) {
+export default function CustomFaqSection({ faqSection, expandedBackground, textColor, brand, page }) {
   const { title, subtitle, helpText, faqs } = faqSection;
+  
+  // Show CTA by default unless explicitly set to false in page config
+  const shouldShowCta = !(page?.showCta === false);
+
+  // Helper to check if a string is a phone number
+  const isPhoneNumber = (str) => {
+    if (typeof str !== 'string') return false;
+    return str.startsWith('tel:') || /^[+]?[(]?[0-9]{1,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/.test(str.replace(/\D/g, ''));
+  };
 
   return (
     <div className="w-full" style={{ color: textColor }}>
@@ -53,7 +62,7 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
             <p className="text-slate-600 text-lg mb-8">
               {helpText}
             </p>
-            {!brand.hideFooterCta && !brand.hideCta && (
+            {shouldShowCta && (
               <button 
                 style={{ 
                   backgroundColor: brand.theme.ctaBackground,
@@ -61,15 +70,15 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
                 }}
                 className="px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
                 onClick={() => {
-                  // Use the configured CTA (URL or phone)
+                  // Use CTA directly since it's already formatted with tel: if it's a phone number
                   if (brand.cta) {
                     window.location.href = brand.cta;
                   } else if (brand.phone) {
-                    window.location.href = `tel:${brand.phone}`;
+                    window.location.href = `tel:${brand.phone.replace(/\D/g, '')}`;
                   }
                 }}
               >
-                {brand.footerCtaText || brand.headerCta.secondary}
+                {brand.footerCtaText || brand.headerCta?.secondary || 'Contact Us'}
               </button>
             )}
           </div>

@@ -6,56 +6,54 @@ import { BrandConfig } from '@/types/config';
 
 interface HeaderProps {
   brand: BrandConfig;
+  pageConfig?: {
+    cta?: string;
+    showCta?: boolean;
+    ctaText?: {
+      header?: string;
+      footer?: string;
+    };
+  };
 }
 
-const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
+const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
   const [isScrolled, setIsScrolled] = useState(false);
 
+  // Simple scroll handler
   useEffect(() => {
-    // If CTAs are hidden, ensure we're not scrolled and don't add listener
-    if (brand.hideCta === true) {
-      setIsScrolled(false);
-      return;
-    }
-
-    // Only add scroll listener if CTAs are not hidden
     const handleScroll = () => {
-      const scrolled = window.scrollY > 10;
-      setIsScrolled(scrolled);
+      setIsScrolled(window.scrollY > 10);
     };
 
     window.addEventListener('scroll', handleScroll);
-    
-    // Initial check
-    handleScroll();
-
+    handleScroll(); // Check initial scroll position
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [brand.hideCta]);
+  }, []);
 
-  const handleCtaClick = () => {
-    // If there's a CTA URL, use that regardless of whether it's a phone number or web URL
-    if (brand.cta && brand.cta !== 'none') {
-      // Check if it's a phone number (handle various formats including country code)
-      if (/^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/.test(brand.cta)) {
-        // Remove any non-digit characters for the tel: link
-        const phoneNumber = brand.cta.replace(/\D/g, '');
-        window.location.href = `tel:${phoneNumber}`;
-      } else {
-        // Add http:// if the URL doesn't have a protocol
-        const url = brand.cta.startsWith('http') ? brand.cta : `https://${brand.cta}`;
-        window.open(url, '_blank');
-      }
-    } else if (brand.phone) {
-      // Remove any non-digit characters for the tel: link
-      const phoneNumber = brand.phone.replace(/\D/g, '');
-      window.location.href = `tel:${phoneNumber}`;
+  // Handle CTA click
+  const handleCtaClick = (ctaValue: string) => {
+    if (!ctaValue) return;
+
+    const ctaStr = String(ctaValue);
+    const hasProtocol = /^(https?:|tel:)/.test(ctaStr);
+    const isPhoneNumber = /^[+]?[(]?[0-9]{1,3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4}$/.test(ctaStr.replace(/\D/g, ''));
+
+    let finalUrl = ctaStr;
+    if (!hasProtocol) {
+      finalUrl = isPhoneNumber ? `tel:${ctaStr.replace(/\D/g, '')}` : `https://${ctaStr}`;
+    }
+
+    if (finalUrl.startsWith('tel:')) {
+      window.location.href = finalUrl;
+    } else {
+      window.open(finalUrl, '_blank', 'noopener,noreferrer');
     }
   };
 
-  // Get CTA text based on priority:
-  // 1. Use headerCtaText if provided
-  // 2. Use headerCta.primary if there's a CTA (URL or phone)
-  const ctaText = brand.headerCtaText || (brand.cta ? brand.headerCta?.primary : '') || '';
+  // Get CTA values
+  const showCta = pageConfig?.showCta ?? true;
+  const ctaText = pageConfig?.ctaText?.header ?? 'Call Now';
+  const ctaValue = pageConfig?.cta;
 
   return (
     <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme?.headerBackground }}>
@@ -69,26 +67,28 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand }) => {
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
             </button>
-            <div className={`flex-1 flex ${isScrolled && brand.hideCta !== true ? 'justify-start pl-12' : 'justify-center'}`}>
-              <Link href="/" className="h-[60px] flex items-center">
-                <div className="flex-shrink-0">
-                  <Image
-                    src={brand.logo.header.src}
-                    alt={brand.logo.header.alt}
-                    width={0}
-                    height={brand.logo.header.height}
-                    style={{ width: 'auto' }}
-                    className="h-12"
-                  />
-                </div>
-              </Link>
+            <div className={`flex-1 flex ${isScrolled && showCta ? 'justify-start pl-12' : 'justify-center'}`}>
+              {brand.logo?.header && (
+                <Link href="/" className="h-[60px] flex items-center">
+                  <div className="flex-shrink-0">
+                    <Image
+                      src={brand.logo.header.src}
+                      alt={brand.logo.header.alt}
+                      width={0}
+                      height={brand.logo.header.height}
+                      style={{ width: 'auto' }}
+                      className="h-12"
+                    />
+                  </div>
+                </Link>
+              )}
             </div>
-            {isScrolled && brand.hideCta !== true && brand.hideHeaderCta !== true && (brand.cta || brand.phone) && (
+            {isScrolled && showCta && ctaValue && (
               <button 
-                onClick={handleCtaClick}
+                onClick={() => handleCtaClick(ctaValue)}
                 style={{ 
-                  backgroundColor: brand.theme?.ctaBackground,
-                  color: brand.theme?.ctaText
+                  backgroundColor: brand.theme?.ctaBackground || '#0066FF',
+                  color: brand.theme?.ctaText || '#FFFFFF'
                 }}
                 className="absolute right-6 px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
               >

@@ -8,26 +8,23 @@ const nextConfig = {
     domains: ['localhost'],
     unoptimized: true,
   },
+  // Enable static exports
   output: 'standalone',
-  distDir: '.next',
-  assetPrefix: '',
-  webpack: (config, { isServer }) => {
-    // Add font file handling
-    config.module.rules.push({
-      test: /\.(woff|woff2|eot|ttf|otf)$/i,
-      type: 'asset/resource',
-    });
-    return config;
+  // Disable static optimization to ensure proper chunk loading
+  experimental: {
+    optimizeCss: false,
+    optimizePackageImports: [],
   },
-  async rewrites() {
-    return {
-      beforeFiles: [
-        {
-          source: '/_next/static/:path*',
-          destination: '/_next/static/:path*',
-        },
-      ],
-    };
+  webpack: (config, { dev, isServer }) => {
+    // Force development mode for better debugging
+    config.mode = dev ? 'development' : 'production';
+    
+    // Add source maps in development
+    if (dev) {
+      config.devtool = 'eval-source-map';
+    }
+
+    return config;
   },
   async headers() {
     return [
@@ -41,17 +38,12 @@ const nextConfig = {
         ]
       },
       {
-        source: '/_next/static/:path*',
+        // Add headers for static files
+        source: "/_next/static/:path*",
         headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
-      {
-        source: '/static/:path*',
-        headers: [
-          { key: 'Cache-Control', value: 'public, max-age=31536000, immutable' },
-        ],
-      },
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+        ]
+      }
     ];
   }
 };

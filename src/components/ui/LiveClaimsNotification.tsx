@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import { BrandConfig } from '@/config/types';
 
 // Complete list of US states for validation
 const US_STATES = [
@@ -13,18 +14,25 @@ const US_STATES = [
   'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island', 'South Carolina',
   'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
   'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-];
+] as const;
 
 // States to use for random selection (can be a subset of popular states)
 const RANDOM_STATES = [
   'New York', 'Texas', 'Florida', 'Illinois', 'Washington', 
   'Colorado', 'Arizona', 'Oregon', 'Massachusetts', 'Virginia',
   'California', 'Nevada', 'Georgia', 'Michigan', 'Pennsylvania'
-];
+] as const;
 
 const getRandomState = () => RANDOM_STATES[Math.floor(Math.random() * RANDOM_STATES.length)];
 
-const generateClaim = (minutes, userState) => {
+interface Claim {
+  name: string;
+  state: string;
+  minutes: number;
+  showAt?: number;
+}
+
+const generateClaim = (minutes: number, userState?: string): Claim => {
   const firstNames = ['Morgan', 'Tina', 'Jane', 'Robert', 'Amy', 'David', 'Sarah', 'Michael', 'Emma', 'James', 'Laura', 'Chris', 'Lisa', 'Kevin', 'Rachel'];
   const lastInitials = ['F', 'P', 'L', 'S', 'W', 'M', 'R', 'T', 'B', 'H', 'C', 'D', 'G', 'K', 'N'];
   
@@ -34,10 +42,14 @@ const generateClaim = (minutes, userState) => {
   return { name: randomName, state, minutes };
 };
 
-export default function LiveClaimsNotification({ brand }) {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
-  const [notifications, setNotifications] = useState([]);
+interface LiveClaimsNotificationProps {
+  brand: BrandConfig;
+}
+
+export default function LiveClaimsNotification({ brand }: LiveClaimsNotificationProps) {
+  const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
+  const [notifications, setNotifications] = useState<Claim[]>([]);
 
   useEffect(() => {
     const apiKey = 'e4c3b8cc8d6113790fc353fbd0624476';
@@ -85,7 +97,7 @@ export default function LiveClaimsNotification({ brand }) {
         setTimeout(() => {
           setIsVisible(false);
         }, 5000);
-      }, notification.showAt);
+      }, notification.showAt || 0);
     });
 
     return () => {
@@ -100,20 +112,19 @@ export default function LiveClaimsNotification({ brand }) {
   const currentNotification = notifications[currentIndex];
 
   return (
-    <div className="fixed bottom-4 left-4 max-w-xs md:max-w-sm" style={{ zIndex: 999999, position: 'fixed' }}>
+    <div className="fixed bottom-4 left-4 z-50 max-w-xs md:max-w-sm">
       <div 
         className={`
           bg-white rounded-lg shadow-lg p-3 
-          transform transition-all duration-300 ease-in-out
-          ${isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-4'}
+          transform transition-all duration-500 ease-in-out
+          ${isVisible ? 'translate-x-0 opacity-100' : '-translate-x-full opacity-0'}
           flex items-center space-x-3 border border-gray-200
-          relative
         `}
       >
         <div className="flex-shrink-0">
           <div 
             className="w-10 h-10 rounded-full flex items-center justify-center"
-            style={{ backgroundColor: brand.theme.notificationDotColor }}
+            style={{ backgroundColor: brand.theme?.primary || '#4CAF50' }}
           >
             <span className="text-white font-semibold">
               {currentNotification.name.charAt(0)}

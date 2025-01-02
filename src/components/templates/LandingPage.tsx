@@ -6,6 +6,7 @@ import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
 import TrafficCounter from '@/components/ui/TrafficCounter';
 import AsSeenOn from '@/components/ui/AsSeenOn';
 import Footer from '@/components/base/footer';
+import BaseLayout from '@/components/base/layout/BaseLayout';
 import { useEffect, useState } from 'react';
 import Head from 'next/head';
 import Script from 'next/script';
@@ -134,8 +135,21 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
     },
   };
 
+  // Extract page-specific config
+  const pageConfig = {
+    // For backward compatibility, check both content.cta and brand.cta
+    cta: content.cta ?? brand.cta,
+    // Use content.page?.showCta for new structure, fall back to content.showCta for old
+    showCta: content.page?.showCta ?? content.showCta ?? true,
+    ctaText: {
+      // Use content.ctaText for header/footer if available
+      header: content.ctaText?.header ?? brand.headerCtaText,
+      footer: content.ctaText?.footer ?? brand.footerCtaText
+    }
+  };
+
   return (
-    <>
+    <BaseLayout brand={brand} pageBrandConfig={pageConfig}>
       <div className="min-h-screen bg-white">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
@@ -180,6 +194,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
                   expandedBackground={brand.theme?.faqExpandedBackground || '#ffffff'}
                   textColor={brand.theme?.faqText || '#000000'}
                   brand={brand}
+                  page={content.page}
                 />
               </div>
             </div>
@@ -187,6 +202,6 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
         </div>
       </div>
       <Footer brand={brand} />
-    </>
+    </BaseLayout>
   );
 }

@@ -151,27 +151,29 @@ const Page = () => {
   const formattedCta = (() => {
     if (typeof cta !== 'string') return cta;
     
-    // Match phone numbers with various formats including country code
-    const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/;
-    const isPhoneNumber = phoneRegex.test(cta);
+    // More lenient phone number regex that accepts various formats
+    const phoneRegex = /^[+]?[(]?[0-9]{1,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/;
+    const isPhoneNumber = phoneRegex.test(cta.replace(/\D/g, ''));
     
     // Convert to string and check for protocols
     const ctaStr = String(cta);
-    const hasHttp = ctaStr.indexOf('http://') >= 0;
-    const hasHttps = ctaStr.indexOf('https://') >= 0;
+    const hasHttp = ctaStr.startsWith('http://');
+    const hasHttps = ctaStr.startsWith('https://');
+    const hasTel = ctaStr.startsWith('tel:');
     
-    if (isPhoneNumber) {
-      // For phone numbers, just return as is - we'll handle it in the brand config
-      return cta;
+    if (hasTel) {
+      return cta; // Already has tel: protocol
+    } else if (isPhoneNumber) {
+      const cleanNumber = cta.replace(/\D/g, '');
+      return 'tel:' + cleanNumber; // Add tel: protocol and strip non-digits
+    } else if (hasHttp || hasHttps) {
+      return cta; // Already has http(s) protocol
+    } else if (cta.includes('.')) {
+      return 'https://' + cta; // Likely a domain name
     }
-    
-    if (hasHttp || hasHttps) {
-      return cta;
-    }
-    
-    return 'https://' + cta;
+    return cta; // Return as is for other cases
   })();
-
+  
   // Helper function to safely check string equality
   const isEqual = (a: any, b: string) => typeof a === 'string' && a === b;
 
@@ -185,7 +187,7 @@ const Page = () => {
 
   // Helper function to check if value is falsy
   const isFalsy = (value: any): boolean => {
-    return value === false || value === 'false';
+    return value === false || value === 'false' || !value;
   };
 
   const pageBrandConfig = {
@@ -201,19 +203,15 @@ const Page = () => {
       footerCtaText: undefined
     } : {
       ...(formattedCta === 'none' ? { hideCta: true } : 
-         formattedCta ? (() => {
-           // Check if formattedCta is a phone number
-           const phoneRegex = /^[+]?[(]?[0-9]{1,4}[)]?[-\s.]?[0-9]{2,3}[-\s.]?[0-9]{3,4}[-\s.]?[0-9]{3,4}$/;
-           if (phoneRegex.test(formattedCta)) {
-             return { phone: formattedCta };
-           }
-           return { cta: formattedCta };
-         })() : {}),
+         formattedCta ? (typeof formattedCta === 'string' && /^[+]?[(]?[0-9]{1,3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4}$/.test(formattedCta) ? { phone: formattedCta } : { cta: formattedCta }) : 
+         {}),
       ...((ctaText && typeof ctaText === 'object') ? {
         ...(getStringProp(ctaText, 'header') === 'none' ? { hideHeaderCta: true } :
-           getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } : {}),
+           getStringProp(ctaText, 'header') ? { headerCtaText: getStringProp(ctaText, 'header') } :
+           {}),
         ...(getStringProp(ctaText, 'footer') === 'none' ? { hideFooterCta: true } :
-           getStringProp(ctaText, 'footer') ? { footerCtaText: getStringProp(ctaText, 'footer') } : {})
+           getStringProp(ctaText, 'footer') ? { footerCtaText: getStringProp(ctaText, 'footer') } :
+           {})
       } : {})
     }),
     showEmail: showEmail
@@ -222,7 +220,13 @@ const Page = () => {
   return (
     <LandingPage 
       brand={pageBrandConfig}
-      content={${JSON.stringify(offer)}}
+      content={{
+        ...${JSON.stringify(offer)},
+        page: {
+          showCta,
+          showEmail
+        }
+      }}
       source="${source}"
       quizId="${quizId}"
       buyer={${JSON.stringify(buyer)}}
