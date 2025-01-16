@@ -39,7 +39,7 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
                 className="rounded-xl bg-white shadow-lg transition-all duration-200 border border-slate-100 overflow-hidden"
               >
                 <AccordionTrigger className="group flex w-full px-6 py-4 text-lg text-slate-800 font-medium">
-                  <span className="flex-1 text-left group-data-[state=open]:text-blue-600">
+                  <span className="flex-1 text-left">
                     {faq.question}
                   </span>
                   <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
@@ -48,7 +48,7 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
                   className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
                   style={{ backgroundColor: expandedBackground }}
                 >
-                  <div className="px-6 pb-5 text-slate-600 text-base leading-relaxed">
+                  <div className="px-6 pt-6 pb-5 text-slate-600 text-base leading-relaxed">
                     {faq.answer}
                   </div>
                 </AccordionContent>
