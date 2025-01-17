@@ -106,7 +106,7 @@ const Page = () => {
         }
       }}
       source="fb"
-      quizId="f7dd5270-117a-4c2e-9eec-bc20b73c8a03"
+      quizId="fb3786c8-f187-44ef-9dce-77d0ec379c7f"
       buyer={{"abbreviation":"typh","name":"Typhon Interactive"}}
     />
   );

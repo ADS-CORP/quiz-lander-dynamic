@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 };
 
 const Page = () => {
-  const cta = undefined;
+  const cta = "tel:17175868570";
   const ctaText = {"header":"Call Now","footer":"Chat With Us Now"};
   const showEmail = true;
   const showCta = true;

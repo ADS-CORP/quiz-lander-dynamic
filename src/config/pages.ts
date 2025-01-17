@@ -29,7 +29,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03',
     showEmail: true,
-    cta: '',
+    cta: 'tel:17175868570',
     showCta: true,
     ctaText: {
       header: 'Call Now',
@@ -73,21 +73,21 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'ss',
     buyer: 'typh',
     source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+    quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
   {
     offerAbbrev: 'oxb',
     brand: 'pj',
     buyer: 'typh',
     source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+    quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
   {
     offerAbbrev: 'oxb',
     brand: 'wbl',
     buyer: 'typh',
     source: 'fb',
-    quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+    quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
 
   // Depo Provera pages
