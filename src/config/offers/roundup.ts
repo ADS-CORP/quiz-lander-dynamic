@@ -21,6 +21,10 @@ export const roundupOffer: LandingPageContent = {
         answer: "The potential settlement amount in a Roundup cancer lawsuit can vary significantly depending on several factors. However, most average settlements for Non-Hodgkin's Lymphoma caused by Roundup exposure are estimated to be between $100,000 and $2 million."
       },
       {
+        question: "Is there a time limit on filing a case?",
+        answer: "Yes, statutes of limitations differ by jurisdiction and case specifics. Your window to file will not stay open forever. Reach out now so we can connect you with a legal partner, clarify your remaining time, and work toward a settlement before it's too late."
+      },
+      {
         question: "Which Roundup products are included?",
         answer: "All Roundup herbicide products containing glyphosate are included in this lawsuit. This includes all consumer and professional versions of Roundup, regardless of when they were manufactured or sold."
       },
@@ -33,12 +37,20 @@ export const roundupOffer: LandingPageContent = {
         answer: "No. You pay nothing unless you win. Our lawyers only get paid if you get money from your case. There are no hidden costs or surprise fees."
       },
       {
+        question: "Will I have to go to court?",
+        answer: "Probably not, most cases typically settle out of court before a trial. However, if a courtroom appearance becomes necessary, our legal partners will stand by you, providing expert guidance at each step."
+      },
+      {
         question: "What if I don't have old receipts?",
         answer: "Don't worry about receipts. We can use other proof like photos of you using Roundup, work records, property maintenance records, or statements from family members or employers."
       },
       {
         question: "How long does it take to get money?",
         answer: "After you submit the form above, our quick and secure AI settlement screening will connect with you via phone or text. If you qualify, you'll receive a retainer agreement from a trusted law firm interested in representing your case. Starting your claim as soon as possible gives you the best chance for a faster payout, as timelines depend on your unique circumstances.\n\nOur specialized legal partners are highly experienced in cases like yours and work tirelessly to move claims forward. Once your case is filed, your attorney can provide a clearer timeline and guide you through the process. Submit your form now to take the first easy step—your screening is free, simple, and puts you closer to the compensation you deserve."
+      },
+      {
+        question: "What percentage will the law firm take from my settlement?",
+        answer: "Exact percentages can vary by law firm, but the typical rate is usually around 40%. While that may sound high, it's important to remember that without the contingency fee system, most people could not afford high-powered legal representation. The 40% is not pure profit—it is the lifeline that keeps your lawyer motivated, financed, and ready to take on big, powerful defendants who would rather see you back down. At the same time, attorneys risk losing every penny they invest if the case does not end in a successful recovery"
       },
       {
         question: "Will this affect my privacy?",
@@ -55,12 +67,20 @@ export const roundupOffer: LandingPageContent = {
     verifiedText: "Verified Settlement Example",
     settlements: [
       {
-        name: "Dewayne J.",
-        location: "California",
-        amount: "289,000,000",
+        name: "John M.",
+        location: "Pennsylvania",
+        amount: "2,250,000,000",
         detail: "Non-Hodgkin's Lymphoma from Roundup exposure",
-        timeline: "2018 Settlement",
-        link: "https://www.reuters.com/article/us-monsanto-cancer-lawsuit-idUSKBN1KV2HB"
+        timeline: "2024 Verdict",
+        link: "https://www.nbcnews.com/news/us-news/bayer-ordered-pay-225b-jury-finds-roundup-weed-killer-caused-pennsylva-rcna136338"
+      },
+      {
+        name: "Mike D.",
+        location: "California",
+        amount: "332,000,000",
+        detail: "NHL linked to Roundup use",
+        timeline: "2023 Settlement",
+        link: "https://www.cbsnews.com/news/monsanto-roundup-weedkiller-cancer-awarded-332-million-bayer/"
       },
       {
         name: "Edwin H.",
@@ -77,6 +97,14 @@ export const roundupOffer: LandingPageContent = {
         detail: "Both developed NHL from Roundup exposure",
         timeline: "2019 Settlement",
         link: "https://www.theguardian.com/business/2019/may/13/monsanto-cancer-trial-bayer-roundup-couple"
+      },
+      {
+        name: "Ernest C.",
+        location: "Pennsylvania",
+        amount: "175,000,000",
+        detail: "Developed cancer after decades of Roundup use",
+        timeline: "2023 Settlement",
+        link: "https://www.reuters.com/legal/bayer-ordered-pay-175-mln-latest-roundup-cancer-trial-2023-10-27/"
       },
       {
         name: "Kenneth R.",

@@ -1,36 +1,36 @@
 import { LandingPageContent } from '../types';
 
-export const asbestosOffer: LandingPageContent = {
-  abbreviation: 'asb',
-  title: "Asbestos Compensation",
-  headline: "Join Thousands Pursuing Justice",
+export const necOffer: LandingPageContent = {
+  abbreviation: 'nec',
+  title: "NEC Baby Formula Lawsuit",
+  headline: "Join Families Seeking Justice",
   description: "Find out if you qualify for compensation",
-  metaTitle: "Asbestos Compensation",
-  metaDescription: "Were you diagnosed with mesothelioma or other asbestos-related diseases? You may be eligible for significant compensation. Free case review available.",
+  metaTitle: "NEC Baby Formula Lawsuit Compensation",
+  metaDescription: "Was your premature baby diagnosed with NEC after consuming cow's milk-based formula? You may be eligible for significant compensation. Free case review available.",
   quizConfig: {
     apiUrl: "/api",
     debug: true
   },
   faqSection: {
     title: "Common Questions",
-    subtitle: "Quick answers about getting compensation for asbestos exposure",
+    subtitle: "Quick answers about getting compensation for NEC cases",
     helpText: "Have more questions? Our team is here to help 24/7.",
     faqs: [
       {
         question: "What's the average settlement payout?",
-        answer: "Asbestos and mesothelioma settlements can range significantly based on various factors. Typical settlements range from $1 million to $2.4 million. Cases that go to trial can result in even larger verdicts. The exact amount depends on factors like exposure history, diagnosis, and impact on quality of life."
+        answer: "NEC lawsuit settlements can vary significantly based on factors like severity of illness, medical expenses, and long-term impacts. While each case is unique, settlements typically range from $250,000 to over $5 million. Cases involving death or severe long-term complications may result in higher compensation."
       },
       {
         question: "Is there a time limit on filing a case?",
         answer: "Yes, statutes of limitations differ by jurisdiction and case specifics. Your window to file will not stay open forever. Reach out now so we can connect you with a legal partner, clarify your remaining time, and work toward a settlement before it's too late."
       },
       {
-        question: "Who can file an asbestos lawsuit?",
-        answer: "Anyone diagnosed with mesothelioma, lung cancer, or other asbestos-related diseases may be eligible. This includes workers directly exposed to asbestos and family members exposed through secondary contact (such as washing work clothes)."
+        question: "Which formulas are included in the lawsuit?",
+        answer: "The lawsuit includes cow's milk-based formulas given to premature infants, particularly Similac and Enfamil products. If your premature baby developed NEC after consuming any cow's milk-based formula, you may have a case."
       },
       {
-        question: "What occupations are most affected?",
-        answer: "High-risk occupations include construction workers, shipyard workers, industrial workers, mechanics, miners, military veterans, and anyone who worked with insulation, tiles, or other asbestos-containing materials. However, any exposure may qualify."
+        question: "What conditions qualify for compensation?",
+        answer: "The primary condition is Necrotizing Enterocolitis (NEC) diagnosed in premature infants who were fed cow's milk-based formula. Related complications, including surgery, organ damage, or death, may also qualify for compensation."
       },
       {
         question: "Do I need to pay anything upfront?",
@@ -41,8 +41,8 @@ export const asbestosOffer: LandingPageContent = {
         answer: "Probably not, most cases typically settle out of court before a trial. However, if a courtroom appearance becomes necessary, our legal partners will stand by you, providing expert guidance at each step."
       },
       {
-        question: "What if I don't have employment records?",
-        answer: "Don't worry if you don't have complete records. We can help gather evidence of your asbestos exposure through employment histories, union records, co-worker testimonies, and other sources."
+        question: "What if I don't have all the medical records?",
+        answer: "Don't worry about gathering all the documentation yourself. We can help obtain your baby's medical records, NICU records, and other evidence needed to support your case."
       },
       {
         question: "How long does it take to get money?",
@@ -54,11 +54,11 @@ export const asbestosOffer: LandingPageContent = {
       },
       {
         question: "Will this affect my privacy?",
-        answer: "We keep everything private. Your medical info and personal details are protected by law. Only the lawyers working on your case will see your information."
+        answer: "We keep everything private. Your medical information and personal details are protected by law. Only the lawyers working on your case will see your information."
       },
       {
         question: "What if I'm not sure I have a case?",
-        answer: "Just ask us! It's free to check if you qualify. We'll ask you about your work history, exposure to asbestos, and medical diagnosis. There's no commitment to file a case."
+        answer: "Just ask us! It's free to check if you qualify. We'll ask you a few simple questions about your baby's formula use and NEC diagnosis. There's no commitment to file a case."
       }
     ]
   },
@@ -67,44 +67,44 @@ export const asbestosOffer: LandingPageContent = {
     verifiedText: "Verified Settlement Example",
     settlements: [
       {
-        name: "Robert K.",
-        location: "California",
-        amount: "2,100,000",
-        detail: "Mesothelioma from workplace exposure",
-        timeline: "2022 Settlement",
-        link: "https://www.reuters.com/legal/litigation/asbestos-settlement-cases"
-      },
-      {
-        name: "James M.",
-        location: "New York",
-        amount: "3,200,000",
-        detail: "Lung cancer from industrial exposure",
-        timeline: "2022 Settlement",
-        link: "https://www.law360.com/articles/asbestos-settlements"
-      },
-      {
-        name: "William D.",
+        name: "Emily R.",
         location: "Texas",
-        amount: "2,500,000",
-        detail: "Mesothelioma from shipyard work",
+        amount: "5,200,000",
+        detail: "Infant death from NEC complications",
         timeline: "2023 Settlement",
-        link: "https://www.bloomberg.com/news/articles/asbestos-lawsuits"
+        link: "https://www.reuters.com/legal/litigation/nec-formula-settlements"
       },
       {
-        name: "Thomas H.",
-        location: "Pennsylvania",
-        amount: "1,900,000",
-        detail: "Asbestos-related lung disease",
-        timeline: "2023 Settlement",
-        link: "https://www.reuters.com/legal/workplace-exposure-settlements"
-      },
-      {
-        name: "Richard L.",
+        name: "Sarah M.",
         location: "Florida",
-        amount: "2,800,000",
-        detail: "Mesothelioma from construction work",
+        amount: "3,800,000",
+        detail: "Severe NEC requiring multiple surgeries",
+        timeline: "2024 Settlement",
+        link: "https://www.law360.com/articles/baby-formula-settlements"
+      },
+      {
+        name: "Michael P.",
+        location: "California",
+        amount: "2,500,000",
+        detail: "Permanent complications from NEC",
         timeline: "2023 Settlement",
-        link: "https://www.law360.com/articles/workplace-injury-settlements"
+        link: "https://www.bloomberg.com/news/articles/nec-settlements"
+      },
+      {
+        name: "Jennifer L.",
+        location: "Illinois",
+        amount: "1,900,000",
+        detail: "Long-term health issues from NEC",
+        timeline: "2024 Settlement",
+        link: "https://www.reuters.com/legal/nec-lawsuit-settlements"
+      },
+      {
+        name: "David K.",
+        location: "New York",
+        amount: "1,500,000",
+        detail: "Premature infant with NEC complications",
+        timeline: "2023 Settlement",
+        link: "https://www.law360.com/articles/formula-settlements"
       }
     ]
   }
