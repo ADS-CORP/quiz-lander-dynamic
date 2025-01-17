@@ -73,7 +73,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'ss',
     buyer: 'typh',
     source: 'fb',
-    showEmail: true,
+    showEmail: false,
     quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
   {
@@ -81,7 +81,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'pj',
     buyer: 'typh',
     source: 'fb',
-    showEmail: true,
+    showEmail: false,
     quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
   {
@@ -89,7 +89,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'wbl',
     buyer: 'typh',
     source: 'fb',
-    showEmail: true,
+    showEmail: false,
     quizId: 'fb3786c8-f187-44ef-9dce-77d0ec379c7f'
   },
 
