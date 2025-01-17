@@ -20,7 +20,7 @@ export const metadata: Metadata = {
 const Page = () => {
   const cta = undefined;
   const ctaText = undefined;
-  const showEmail = undefined;
+  const showEmail = true;
   const showCta = undefined;
   
   // Format CTA URL if needed
