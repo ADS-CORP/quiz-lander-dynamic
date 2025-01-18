@@ -90,9 +90,10 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     
     // Initialize as soon as possible
     script.onload = () => {
-      if (typeof window.qw === 'function') {
+      const qw = window.qw;
+      if (typeof qw === 'function') {
         requestAnimationFrame(() => {
-          window.qw('init', window.__quizConfig);
+          qw('init', window.__quizConfig);
         });
       }
     };
