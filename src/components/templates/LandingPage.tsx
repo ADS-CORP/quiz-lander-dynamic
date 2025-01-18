@@ -15,7 +15,7 @@ import { BrandConfig } from '@/types/config';
 // Extend Window interface to include our custom properties
 declare global {
   interface Window {
-    qw: any;
+    qw?: (command: string, config?: any) => void;
     __quizConfig?: any;
   }
 }
