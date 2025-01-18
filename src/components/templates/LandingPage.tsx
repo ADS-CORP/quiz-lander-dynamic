@@ -12,6 +12,14 @@ import Head from 'next/head';
 import Script from 'next/script';
 import { BrandConfig } from '@/types/config';
 
+// Extend Window interface to include our custom properties
+declare global {
+  interface Window {
+    qw: any;
+    __quizConfig?: any;
+  }
+}
+
 interface QuizWidgetProps {
   quizConfig: any;
   quizId: string;
