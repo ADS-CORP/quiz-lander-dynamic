@@ -20,60 +20,71 @@ interface QuizWidgetProps {
 
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
   useEffect(() => {
-    // Create container if it doesn't exist
-    let container = document.getElementById('quiz-widget');
-    if (!container) {
-      container = document.createElement('div');
-      container.id = 'quiz-widget';
-      document.getElementById('quiz-widget-container')?.appendChild(container);
-    }
+    // Add preload link
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'script';
+    preloadLink.href = 'https://quiz-widget.netlify.app/embed.js';
+    document.head.appendChild(preloadLink);
+
+    // Pre-create the container immediately
+    const container = document.createElement('div');
+    container.id = 'quiz-widget';
+    document.getElementById('quiz-widget-container')?.appendChild(container);
+
+    // Pre-initialize configuration object on window
+    window.__quizConfig = {
+      ...quizConfig,
+      quizId,
+      hideFooter: true,
+      preventDefaultStyles: true,
+      container: '#quiz-widget',
+      apiConfig: {
+        baseURL: window.location.origin,
+        withCredentials: false,
+        proxyConfig: {
+          enabled: true,
+          prefix: '/api',
+          overrides: {
+            ipapi: '/api/proxy-webhook/ipapi',
+            npiRegistry: '/api/proxy-webhook/npi-registry'
+          }
+        }
+      },
+      containerStyle: { 
+        background: 'transparent',
+        maxHeight: '100vh',
+        overflow: 'visible',
+        position: 'relative',
+        zIndex: 1000
+      },
+      dropdownStyle: {
+        position: 'fixed',
+        zIndex: 1001
+      },
+      popoverStyle: {
+        position: 'fixed',
+        zIndex: 1001
+      },
+      onQuestionChange: (questionNumber: number) => {
+        window.dispatchEvent(
+          new CustomEvent('quizProgress', { detail: { questionNumber } })
+        );
+      }
+    };
 
     const script = document.createElement('script');
     script.src = 'https://quiz-widget.netlify.app/embed.js';
     script.async = true;
-    script.defer = true;
-    script.setAttribute('loading', 'async');
+    script.defer = false;
+    script.setAttribute('loading', 'eager');
+    script.setAttribute('importance', 'high');
     
+    // Initialize as soon as possible
     script.onload = () => {
       if (typeof window.qw === 'function') {
-        window.qw('init', {
-          ...quizConfig,
-          quizId,
-          hideFooter: true,
-          preventDefaultStyles: true,
-          container: '#quiz-widget',
-          apiConfig: {
-            baseURL: window.location.origin,
-            withCredentials: false,
-            proxyConfig: {
-              enabled: true,
-              prefix: '/api',
-              overrides: {
-                ipapi: '/api/proxy-webhook/ipapi',
-                npiRegistry: '/api/proxy-webhook/npi-registry'
-              }
-            }
-          },
-          containerStyle: { 
-            background: 'transparent',
-            maxHeight: '100vh',
-            overflow: 'visible',
-            position: 'relative',
-            zIndex: 1000
-          },
-          dropdownStyle: {
-            position: 'fixed',
-            zIndex: 1001
-          },
-          popoverStyle: {
-            position: 'fixed',
-            zIndex: 1001
-          },
-          onQuestionChange: (questionNumber: number) => {
-            window.dispatchEvent(
-              new CustomEvent('quizProgress', { detail: { questionNumber } })
-            );
-          }
+        requestAnimationFrame(() => {
+          window.qw('init', window.__quizConfig);
         });
       }
     };
@@ -83,6 +94,8 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     return () => {
       script.remove();
       container?.remove();
+      preloadLink.remove();
+      delete window.__quizConfig;
     };
   }, [quizConfig, quizId]);
 
