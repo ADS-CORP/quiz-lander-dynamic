@@ -18,7 +18,7 @@ export const oxbrytaOffer: LandingPageContent = {
     faqs: [
       {
         question: "What's the average settlement payout?",
-        answer: "The potential settlement amount in an Oxbryta lawsuit can vary significantly depending on several factors. Settlement amounts are typically based on the severity of side effects, medical expenses, and other damages. Cases involving serious complications may result in settlements ranging from $150,000 to over $1 million."
+        answer: "The potential settlement amount in an Oxbryta lawsuit can vary significantly depending on several factors. Settlement amounts are typically based on the severity of side effects, medical expenses, and other damages. That being said, potential settlement values could range from $400,000 to $1 million according to lawsuit-information-center.com."
       },
       {
         question: "Is there a time limit on filing a case?",

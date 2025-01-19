@@ -222,6 +222,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
             </div>
           )}
         </div>
+        <LiveClaimsNotification brand={brand} />
       </div>
       <Footer brand={brand} />
     </BaseLayout>

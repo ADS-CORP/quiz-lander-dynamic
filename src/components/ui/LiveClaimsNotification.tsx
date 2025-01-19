@@ -50,16 +50,37 @@ export default function LiveClaimsNotification({ brand }: LiveClaimsNotification
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isVisible, setIsVisible] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Claim[]>([]);
+  const [mounted, setMounted] = useState<boolean>(false);
 
   useEffect(() => {
-    const apiKey = 'e4c3b8cc8d6113790fc353fbd0624476';
-    fetch(`https://api.ipapi.com/api/check?access_key=${apiKey}`)
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
+    const apiKey = process.env.NEXT_PUBLIC_IPAPI_KEY;
+
+    if (!apiKey) {
+      const randomState = getRandomState();
+      const notificationsData = [
+        { ...generateClaim(0, randomState), showAt: 5000 },
+        { ...generateClaim(0), showAt: 15000 },
+        { ...generateClaim(1, randomState), showAt: 30000 },
+        { ...generateClaim(1), showAt: 60000 },
+        { ...generateClaim(2), showAt: 120000 }
+      ];
+      setNotifications(notificationsData);
+      return;
+    }
+
+    fetch(`http://api.ipapi.com/api/check?access_key=${apiKey}`)
       .then(res => res.json())
       .then(data => {
-        console.log('Location data:', data);
-        // Check if region_name is a valid US state, if not use random state
-        const userState = US_STATES.includes(data.region_name) ? data.region_name : getRandomState();
-        console.log('User state:', userState);
+        if (data.error) {
+          throw new Error(data.error.info || 'IPAPI error');
+        }
+        const userState = US_STATES.includes(data.region_name as any) ? data.region_name : getRandomState();
         
         const notificationsData = [
           { ...generateClaim(0, userState), showAt: 5000 },
@@ -68,11 +89,9 @@ export default function LiveClaimsNotification({ brand }: LiveClaimsNotification
           { ...generateClaim(1), showAt: 60000 },
           { ...generateClaim(2), showAt: 120000 }
         ];
-        
         setNotifications(notificationsData);
       })
       .catch(error => {
-        console.log('Location fetch error:', error);
         const randomState = getRandomState();
         const notificationsData = [
           { ...generateClaim(0, randomState), showAt: 5000 },
@@ -84,35 +103,39 @@ export default function LiveClaimsNotification({ brand }: LiveClaimsNotification
         
         setNotifications(notificationsData);
       });
-  }, []);
+  }, [mounted]);
 
   useEffect(() => {
-    if (notifications.length === 0) return;
+    if (!mounted || notifications.length === 0) return;
+
+    const timeouts: NodeJS.Timeout[] = [];
 
     notifications.forEach((notification, index) => {
       const showTimeout = setTimeout(() => {
         setCurrentIndex(index);
         setIsVisible(true);
 
-        setTimeout(() => {
+        const hideTimeout = setTimeout(() => {
           setIsVisible(false);
         }, 5000);
+        
+        timeouts.push(hideTimeout);
       }, notification.showAt || 0);
+
+      timeouts.push(showTimeout);
     });
 
     return () => {
-      for (let i = 0; i <= notifications.length * 2; i++) {
-        clearTimeout(i);
-      }
+      timeouts.forEach(timeout => clearTimeout(timeout));
     };
-  }, [notifications]);
+  }, [notifications, mounted]);
 
-  if (notifications.length === 0) return null;
+  if (!mounted || notifications.length === 0) return null;
 
   const currentNotification = notifications[currentIndex];
 
   return (
-    <div className="fixed bottom-4 left-4 z-50 max-w-xs md:max-w-sm">
+    <div className="fixed bottom-4 left-4 z-[9999] max-w-xs md:max-w-sm">
       <div 
         className={`
           bg-white rounded-lg shadow-lg p-3 

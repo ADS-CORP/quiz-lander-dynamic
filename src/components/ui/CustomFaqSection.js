@@ -17,7 +17,7 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
   };
 
   return (
-    <div className="w-full" style={{ color: textColor }}>
+    <div className="w-full">
       <div className="max-w-4xl mx-auto px-0 md:px-6">
         <h2 className="text-3xl md:text-4xl font-bold text-center mb-6 text-slate-800 whitespace-nowrap px-4">
           {title}
@@ -36,19 +36,19 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="rounded-xl bg-white shadow-lg transition-all duration-200 border border-slate-100 overflow-hidden"
+                className="group data-[state=open]:shadow-md data-[state=open]:bg-blue-50 transition-all duration-200"
               >
-                <AccordionTrigger className="group flex w-full px-6 py-4 text-lg text-slate-800 font-medium">
+                <AccordionTrigger className="group transition-all">
                   <span className="flex-1 text-left">
                     {faq.question}
                   </span>
                   <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                 </AccordionTrigger>
-                <AccordionContent 
-                  className="overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
-                  style={{ backgroundColor: expandedBackground }}
-                >
-                  <div className="px-6 pt-6 pb-5 text-slate-600 text-base leading-relaxed">
+                <AccordionContent>
+                  <div 
+                    className="transition-all duration-200"
+                    style={{ backgroundColor: expandedBackground }}
+                  >
                     {faq.answer}
                   </div>
                 </AccordionContent>
