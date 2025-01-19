@@ -48,7 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
   // Only add title template if we have a brand
   if (brand?.name) {
     metadata.title = {
-      template: `%s | ${brand.name}`,
+      template: '%s',
       default: brand.name,
     };
   }
