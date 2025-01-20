@@ -31,10 +31,10 @@ export const seekingSettlementsBrand: BrandConfig = {
       buttonText: "Subscribe"
     },
     links: [
-      { text: "Privacy Policy", href: "https://seekingsettlements.com/privacy-policy" },
-      { text: "Terms of Service", href: "https://seekingsettlements.com/terms-of-service" },
-      { text: "Cookie Policy", href: "https://seekingsettlements.com/cookie-policy" },
-      { text: "Do Not Sell or Share My Personal Info", href: "https://seekingsettlements.com/data-control" }
+      { text: "Privacy Policy", href: "https://us.seekingsettlements.com/privacy-policy/" },
+      { text: "Terms of Service", href: "https://us.seekingsettlements.com/terms-of-service/" },
+      { text: "Cookie Policy", href: "https://us.seekingsettlements.com/cookie-policy/" },
+      { text: "Do Not Sell or Share My Personal Info", href: "https://us.seekingsettlements.com/do-not-sell-data/" }
     ],
     legalText: "Seeking Settlements is not a law firm, does not provide legal or medical advice, and should not be relied upon as such. Our free Service provides your submissions to law firms at no cost. Results are not guaranteed and past performance is not an indication of future success. Seeking Settlements does not endorse or recommend any particular law firm and has not analyzed your submissions."
   },
