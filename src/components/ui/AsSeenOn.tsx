@@ -41,16 +41,26 @@ export default function AsSeenOn() {
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
-                className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${logo.alt === 'USA Today' ? 'object-contain' : ''}`}
+                className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'object-contain' : ''}`}
                 style={{ 
                   color: 'transparent',
-                  width: logo.alt === 'USA Today' ? 'auto' : `${logo.width}px`,
+                  width: ['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'auto' : `${logo.width}px`,
                   height: `${logo.height}px`,
                   ...(logo.alt === 'USA Today' ? {
                     objectFit: 'contain',
                     padding: '2px 0',
                     transform: 'scale(1.2)',
                     transformOrigin: 'center'
+                  } : {}),
+                  ...(logo.alt === 'The New York Times' ? {
+                    objectFit: 'contain',
+                    width: 'auto',
+                    maxWidth: '100%'
+                  } : {}),
+                  ...(logo.alt === 'Yahoo!' ? {
+                    objectFit: 'contain',
+                    width: 'auto',
+                    maxWidth: '100%'
                   } : {})
                 }}
                 priority={true}
@@ -74,11 +84,27 @@ export default function AsSeenOn() {
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
-                className="grayscale opacity-75 hover:opacity-100 transition-opacity"
+                className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'object-contain' : ''}`}
                 style={{ 
                   color: 'transparent',
-                  width: `${logo.width}px`,
-                  height: `${logo.height}px`
+                  width: ['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'auto' : `${logo.width}px`,
+                  height: `${logo.height}px`,
+                  ...(logo.alt === 'USA Today' ? {
+                    objectFit: 'contain',
+                    padding: '2px 0',
+                    transform: 'scale(1.2)',
+                    transformOrigin: 'center'
+                  } : {}),
+                  ...(logo.alt === 'The New York Times' ? {
+                    objectFit: 'contain',
+                    width: 'auto',
+                    maxWidth: '100%'
+                  } : {}),
+                  ...(logo.alt === 'Yahoo!' ? {
+                    objectFit: 'contain',
+                    width: 'auto',
+                    maxWidth: '100%'
+                  } : {})
                 }}
                 priority={true}
               />
@@ -102,16 +128,26 @@ export default function AsSeenOn() {
               alt={logo.alt}
               width={logo.width}
               height={logo.height}
-              className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${logo.alt === 'USA Today' ? 'object-contain' : ''}`}
+              className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'object-contain' : ''}`}
               style={{ 
                 color: 'transparent',
-                width: logo.alt === 'USA Today' ? 'auto' : `${logo.width}px`,
+                width: ['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'auto' : `${logo.width}px`,
                 height: `${logo.height}px`,
                 ...(logo.alt === 'USA Today' ? {
                   objectFit: 'contain',
                   padding: '2px 0',
                   transform: 'scale(1.2)',
                   transformOrigin: 'center'
+                } : {}),
+                ...(logo.alt === 'The New York Times' ? {
+                  objectFit: 'contain',
+                  width: 'auto',
+                  maxWidth: '100%'
+                } : {}),
+                ...(logo.alt === 'Yahoo!' ? {
+                  objectFit: 'contain',
+                  width: 'auto',
+                  maxWidth: '100%'
                 } : {})
               }}
               priority={true}
