@@ -191,7 +191,16 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
           <div className="relative bg-white">
             <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
               <div className="relative py-3">
-                <div id="quiz-widget-container" className="relative">
+                <div 
+                  id="quiz-widget-container" 
+                  className="relative w-full h-full"
+                  style={{
+                    backgroundColor: "#ffffff",
+                    position: "relative",
+                    overflow: "visible",
+                    minHeight: "500px"
+                  }}
+                >
                   <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
                 </div>
               </div>
