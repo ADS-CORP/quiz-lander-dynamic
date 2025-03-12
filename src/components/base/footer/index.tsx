@@ -94,7 +94,7 @@ const Footer: React.FC<FooterProps> = ({ brand }) => {
             width={320}
             height={160}
             className="h-36 w-auto object-contain"
-            style={{ width: 'auto' }}
+            style={{ color: "transparent", width: "auto" }}
           />
         </div>
 

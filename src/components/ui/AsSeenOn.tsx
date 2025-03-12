@@ -66,7 +66,9 @@ export default function AsSeenOn() {
                     objectFit: 'contain', 
                     padding: '2px 0',
                     transform: 'scale(1.2)',
-                    transformOrigin: 'center'
+                    transformOrigin: 'center',
+                    width: 'auto',
+                    height: `${logo.height}px`
                   } : {})
                 }}
                 priority={true}
@@ -103,7 +105,9 @@ export default function AsSeenOn() {
                     objectFit: 'contain', 
                     padding: '2px 0',
                     transform: 'scale(1.2)',
-                    transformOrigin: 'center'
+                    transformOrigin: 'center',
+                    width: 'auto',
+                    height: `${logo.height}px`
                   } : {})
                 }}
                 priority={true}
@@ -141,7 +145,9 @@ export default function AsSeenOn() {
                   objectFit: 'contain', 
                   padding: '2px 0',
                   transform: 'scale(1.2)',
-                  transformOrigin: 'center'
+                  transformOrigin: 'center',
+                  width: 'auto',
+                  height: `${logo.height}px`
                 } : {})
               }}
               priority={true}

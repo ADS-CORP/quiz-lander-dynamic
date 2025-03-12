@@ -183,6 +183,8 @@ export interface BrandConfig {
     logo: {
       src: string;
       alt: string;
+      width?: number;
+      height?: number;
     };
     emailSection: {
       title: string;
