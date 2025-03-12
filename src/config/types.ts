@@ -160,6 +160,7 @@ export interface BrandConfig {
       src: string;
       alt: string;
       height: number;
+      width?: number;
     };
   };
   favicon: string;

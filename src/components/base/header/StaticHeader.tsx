@@ -75,10 +75,15 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
                     <Image
                       src={brand.logo.header.src}
                       alt={brand.logo.header.alt}
-                      width={0}
-                      height={brand.logo.header.height}
-                      style={{ width: 'auto' }}
-                      className="h-12"
+                      width={brand.logo.header.width || 150}
+                      height={brand.logo.header.height || 48}
+                      style={{ 
+                        width: brand.logo.header.width ? `${brand.logo.header.width}px` : '150px',
+                        height: brand.logo.header.height ? `${brand.logo.header.height}px` : '48px',
+                        maxHeight: '48px'
+                      }}
+                      className="object-contain"
+                      priority={true}
                     />
                   </div>
                 </Link>
