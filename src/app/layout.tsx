@@ -1,12 +1,18 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Montserrat } from "next/font/google";
 import { headers } from "next/headers";
 import { getBrandFromDomain, getBrandFromPathname } from "@/utils/brand";
 import { peoplesJusticeBrand, yourTruthBrand } from "@/config/brands";
 import "./globals.css";
 
-const inter = Inter({
+// Load Montserrat with optimized settings to prevent font shifts
+const montserrat = Montserrat({
   subsets: ["latin"],
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "sans-serif"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-montserrat",
 });
 
 async function getBrand() {
@@ -62,8 +68,16 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html lang="en" className={montserrat.variable}>
+      <head>
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
+          as="style"
+          crossOrigin="anonymous"
+        />
+      </head>
+      <body className={montserrat.className}>{children}</body>
     </html>
   );
 }

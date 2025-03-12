@@ -34,6 +34,7 @@
     --ring: 215 20.2% 65.1%;
 
     --radius: 0.5rem;
+    --font-montserrat: 'Montserrat', sans-serif;
   }
 
   .dark {
@@ -74,5 +75,14 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-montserrat), system-ui, sans-serif;
+    font-display: swap;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  
+  /* Size-adjust property to minimize CLS */
+  html {
+    font-size-adjust: 100%;
   }
 }
