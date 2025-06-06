@@ -8,8 +8,6 @@ import AsSeenOn from '@/components/ui/AsSeenOn';
 import Footer from '@/components/base/footer';
 import BaseLayout from '@/components/base/layout/BaseLayout';
 import { useEffect, useState } from 'react';
-import Head from 'next/head';
-import Script from 'next/script';
 import { BrandConfig } from '@/types/config';
 
 // Extend Window interface to include our custom properties
@@ -28,6 +26,11 @@ interface QuizWidgetProps {
 
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
   useEffect(() => {
+    // Pre-create the container
+    const container = document.createElement('div');
+    container.id = 'quiz-widget';
+    document.getElementById('quiz-widget-container')?.appendChild(container);
+
     // Pre-initialize configuration object on window
     window.__quizConfig = {
       ...quizConfig,
@@ -69,13 +72,31 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       }
     };
 
-    // If quiz widget is already loaded (from Script component), initialize immediately
-    if (window.qw && typeof window.qw === 'function') {
+    // Check if script is already loaded
+    const existingScript = document.querySelector('script[src="https://quiz-widget.netlify.app/embed.js"]');
+    
+    if (existingScript && window.qw) {
+      // Script already loaded, initialize immediately
       window.qw('init', window.__quizConfig);
+      return;
+    }
+
+    if (!existingScript) {
+      const script = document.createElement('script');
+      script.src = 'https://quiz-widget.netlify.app/embed.js';
+      script.async = true;
+      
+      script.onload = () => {
+        if (window.qw && typeof window.qw === 'function') {
+          window.qw('init', window.__quizConfig);
+        }
+      };
+      
+      document.head.appendChild(script);
     }
 
     return () => {
-      // Cleanup config but keep script loaded for reuse
+      container?.remove();
       delete window.__quizConfig;
     };
   }, [quizConfig, quizId]);
@@ -160,32 +181,6 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
 
   return (
     <BaseLayout brand={brand} pageBrandConfig={pageConfig}>
-      <Head>
-        {/* Preconnect to quiz widget domain for faster loading */}
-        <link rel="preconnect" href="https://quiz-widget.netlify.app" />
-        <link rel="dns-prefetch" href="https://quiz-widget.netlify.app" />
-        
-        {/* Preload the quiz widget script */}
-        <link 
-          rel="preload" 
-          href="https://quiz-widget.netlify.app/embed.js" 
-          as="script"
-          crossOrigin="anonymous"
-        />
-      </Head>
-      
-      {/* Load quiz widget script early with Next.js Script component */}
-      <Script
-        src="https://quiz-widget.netlify.app/embed.js"
-        strategy="afterInteractive"
-        onLoad={() => {
-          // Initialize quiz if config is ready
-          if (window.__quizConfig && window.qw) {
-            window.qw('init', window.__quizConfig);
-          }
-        }}
-      />
-      
       <div className="min-h-screen bg-white">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
