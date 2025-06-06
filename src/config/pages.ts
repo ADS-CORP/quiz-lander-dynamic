@@ -152,5 +152,35 @@ export const pagesToBuild: PageBuildConfig[] = [
     buyer: 'nex',
     source: 'fb',
     quizId: 'f7dd5270-117a-4c2e-9eec-bc20b73c8a03'
+  },
+
+  // PFAS pages
+  {
+    offerAbbrev: 'pfas',
+    brand: 'ss',
+    buyer: 'ad',
+    source: 'fb',
+    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+  },
+  {
+    offerAbbrev: 'pfas',
+    brand: 'pj',
+    buyer: 'ad',
+    source: 'fb',
+    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+  },
+  {
+    offerAbbrev: 'pfas',
+    brand: 'wbl',
+    buyer: 'ad',
+    source: 'fb',
+    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+  },
+  {
+    offerAbbrev: 'pfas',
+    brand: 'yt',
+    buyer: 'ad',
+    source: 'fb',
+    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
   }
 ];

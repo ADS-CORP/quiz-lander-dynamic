@@ -4,6 +4,7 @@ import { oxbrytaOffer } from './oxbryta';
 import { depoOffer } from './depo';
 import { ldsOffer } from './lds';
 import { asbestosOffer } from './asbestos';
+import { pfasOffer } from './pfas';
 import { LandingPageContent } from '../types';
 
 export const offers: Record<string, LandingPageContent> = {
@@ -12,5 +13,6 @@ export const offers: Record<string, LandingPageContent> = {
   'oxbryta': oxbrytaOffer,
   'depoprovera': depoOffer,
   'ldsabuse': ldsOffer,
-  'asbestos': asbestosOffer
+  'asbestos': asbestosOffer,
+  'pfas': pfasOffer
 };

@@ -28,7 +28,8 @@ const offerAbbrevMap: Record<string, string> = {
   'oxb': 'oxbryta',
   'depo': 'depoprovera',
   'lds': 'ldsabuse',
-  'asb': 'asbestos'
+  'asb': 'asbestos',
+  'pfas': 'pfas'
 };
 
 // Helper function to find offer by abbreviation
