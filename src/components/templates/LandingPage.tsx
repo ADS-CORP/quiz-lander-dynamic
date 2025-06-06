@@ -28,18 +28,6 @@ interface QuizWidgetProps {
 
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
   useEffect(() => {
-    // Add preload link
-    const preloadLink = document.createElement('link');
-    preloadLink.rel = 'preload';
-    preloadLink.as = 'script';
-    preloadLink.href = 'https://quiz-widget.netlify.app/embed.js';
-    document.head.appendChild(preloadLink);
-
-    // Pre-create the container immediately
-    const container = document.createElement('div');
-    container.id = 'quiz-widget';
-    document.getElementById('quiz-widget-container')?.appendChild(container);
-
     // Pre-initialize configuration object on window
     window.__quizConfig = {
       ...quizConfig,
@@ -81,42 +69,42 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       }
     };
 
-    const script = document.createElement('script');
-    script.src = 'https://quiz-widget.netlify.app/embed.js';
-    script.async = true;
-    script.defer = false;
-    script.setAttribute('loading', 'eager');
-    script.setAttribute('importance', 'high');
-    
-    // Initialize as soon as possible
-    script.onload = () => {
-      const qw = window.qw;
-      if (typeof qw === 'function') {
-        requestAnimationFrame(() => {
-          qw('init', window.__quizConfig);
-        });
-      }
-    };
-    
-    document.body.appendChild(script);
+    // If quiz widget is already loaded (from Script component), initialize immediately
+    if (window.qw && typeof window.qw === 'function') {
+      window.qw('init', window.__quizConfig);
+    }
 
     return () => {
-      script.remove();
-      container?.remove();
-      preloadLink.remove();
+      // Cleanup config but keep script loaded for reuse
       delete window.__quizConfig;
     };
   }, [quizConfig, quizId]);
 
-  return <div 
-    id="quiz-widget-container" 
-    className="w-full h-full" 
-    style={{ 
-      backgroundColor: brand.theme?.quizBackground || '#ffffff', 
-      position: 'relative', 
-      overflow: 'visible' 
-    }} 
-  />;
+  return (
+    <div className="w-full h-full relative">
+      <div 
+        id="quiz-widget-container" 
+        className="w-full h-full" 
+        style={{ 
+          backgroundColor: brand.theme?.quizBackground || '#ffffff', 
+          position: 'relative', 
+          overflow: 'visible',
+          minHeight: '600px' // Prevent layout shift
+        }} 
+      />
+      {/* Loading placeholder to prevent layout shift */}
+      <div 
+        id="quiz-loading-placeholder" 
+        className="absolute inset-0 flex items-center justify-center"
+        style={{ display: 'none' }}
+      >
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading quiz...</p>
+        </div>
+      </div>
+    </div>
+  );
 }
 
 interface LandingPageProps {
@@ -128,7 +116,7 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ brand, content, source, quizId, buyer }: LandingPageProps) {
-  // Add structured data for SEO
+  // Add structured data for SEO (removed buyer from params since it's not used)
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -172,6 +160,32 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
 
   return (
     <BaseLayout brand={brand} pageBrandConfig={pageConfig}>
+      <Head>
+        {/* Preconnect to quiz widget domain for faster loading */}
+        <link rel="preconnect" href="https://quiz-widget.netlify.app" />
+        <link rel="dns-prefetch" href="https://quiz-widget.netlify.app" />
+        
+        {/* Preload the quiz widget script */}
+        <link 
+          rel="preload" 
+          href="https://quiz-widget.netlify.app/embed.js" 
+          as="script"
+          crossOrigin="anonymous"
+        />
+      </Head>
+      
+      {/* Load quiz widget script early with Next.js Script component */}
+      <Script
+        src="https://quiz-widget.netlify.app/embed.js"
+        strategy="afterInteractive"
+        onLoad={() => {
+          // Initialize quiz if config is ready
+          if (window.__quizConfig && window.qw) {
+            window.qw('init', window.__quizConfig);
+          }
+        }}
+      />
+      
       <div className="min-h-screen bg-white">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"

@@ -160,27 +160,27 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'ss',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+    quizId: 'b46b7bc9-a132-4233-bf58-94253619dc35'
   },
   {
     offerAbbrev: 'pfas',
     brand: 'pj',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+    quizId: 'b46b7bc9-a132-4233-bf58-94253619dc35'
   },
   {
     offerAbbrev: 'pfas',
     brand: 'wbl',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+    quizId: 'b46b7bc9-a132-4233-bf58-94253619dc35'
   },
   {
     offerAbbrev: 'pfas',
     brand: 'yt',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054'
+    quizId: 'b46b7bc9-a132-4233-bf58-94253619dc35'
   }
 ];

@@ -68,7 +68,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
                 <line x1="3" y1="18" x2="21" y2="18"></line>
               </svg>
             </button>
-            <div className={`flex-1 flex ${isScrolled && showCta ? 'justify-start pl-12' : 'justify-center'}`}>
+            <div className={`flex-1 flex ${isScrolled && showCta && ctaValue ? 'justify-start pl-12' : 'justify-center'}`}>
               {brand.logo?.header && (
                 <Link href="/" className="h-[60px] flex items-center">
                   <div className="flex-shrink-0">
