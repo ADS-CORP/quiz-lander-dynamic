@@ -45,7 +45,8 @@ export default function AsSeenOn() {
                 style={{ 
                   color: 'transparent',
                   width: ['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'auto' : `${logo.width}px`,
-                  height: `${logo.height}px`,
+                  height: ['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'auto' : `${logo.height}px`,
+                  maxHeight: `${logo.height}px`,
                   ...(logo.alt === 'USA Today' ? {
                     objectFit: 'contain',
                     padding: '2px 0',
@@ -54,12 +55,10 @@ export default function AsSeenOn() {
                   } : {}),
                   ...(logo.alt === 'The New York Times' ? {
                     objectFit: 'contain',
-                    width: 'auto',
                     maxWidth: '100%'
                   } : {}),
                   ...(logo.alt === 'Yahoo!' ? {
                     objectFit: 'contain',
-                    width: 'auto',
                     maxWidth: '100%'
                   } : {})
                 }}

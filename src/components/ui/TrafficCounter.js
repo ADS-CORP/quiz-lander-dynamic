@@ -3,11 +3,13 @@
 import { useState, useEffect } from 'react';
 
 export default function TrafficCounter({ brand }) {
-  const [count, setCount] = useState(null);
+  // Initialize with a fixed value to prevent hydration mismatch
+  const [count, setCount] = useState(20);
 
   useEffect(() => {
-    // Set initial count between 15-30
-    setCount(Math.floor(Math.random() * (30 - 15 + 1) + 15));
+    // Set random count only on client side after mount
+    const newCount = Math.floor(Math.random() * (30 - 15 + 1) + 15);
+    setCount(newCount);
 
     // Increment count every 5-15 seconds
     const interval = setInterval(() => {
@@ -20,7 +22,8 @@ export default function TrafficCounter({ brand }) {
     return () => clearInterval(interval);
   }, []);
 
-  if (!count) return null;
+  // Always render to prevent layout shift
+  // if (!count) return null;
 
   const bgColor = brand?.theme?.trafficCounterBackground || 'bg-gray-50';
   const textColor = brand?.theme?.trafficCounterText || 'text-gray-900';

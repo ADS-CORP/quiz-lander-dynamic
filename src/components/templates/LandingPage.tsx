@@ -25,8 +25,12 @@ interface QuizWidgetProps {
 }
 
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
+
   useEffect(() => {
-    // Pre-create the container
+    setIsMounted(true);
+    // Pre-create the quiz widget container
     const container = document.createElement('div');
     container.id = 'quiz-widget';
     document.getElementById('quiz-widget-container')?.appendChild(container);
@@ -78,6 +82,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     if (existingScript && window.qw) {
       // Script already loaded, initialize immediately
       window.qw('init', window.__quizConfig);
+      setIsLoaded(true);
       return;
     }
 
@@ -89,6 +94,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       script.onload = () => {
         if (window.qw && typeof window.qw === 'function') {
           window.qw('init', window.__quizConfig);
+          setIsLoaded(true);
         }
       };
       
@@ -101,30 +107,22 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     };
   }, [quizConfig, quizId]);
 
+  // Only show loading state on client side to prevent hydration mismatch
   return (
-    <div className="w-full h-full relative">
-      <div 
-        id="quiz-widget-container" 
-        className="w-full h-full" 
-        style={{ 
-          backgroundColor: brand.theme?.quizBackground || '#ffffff', 
-          position: 'relative', 
-          overflow: 'visible',
-          minHeight: '600px' // Prevent layout shift
-        }} 
-      />
-      {/* Loading placeholder to prevent layout shift */}
-      <div 
-        id="quiz-loading-placeholder" 
-        className="absolute inset-0 flex items-center justify-center"
-        style={{ display: 'none' }}
-      >
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading quiz...</p>
+    <>
+      {isMounted && !isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-white">
+          <div className="text-center">
+            <div className="animate-pulse space-y-4 w-full max-w-md mx-auto p-6">
+              <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto"></div>
+              <div className="h-12 bg-gray-200 rounded"></div>
+              <div className="h-12 bg-gray-200 rounded"></div>
+              <div className="h-12 bg-gray-200 rounded"></div>
+            </div>
+          </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 
@@ -199,7 +197,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
 
           <div className="relative bg-white">
             <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
-              <div className="relative py-3">
+              <div className="relative pt-3">
                 <div 
                   id="quiz-widget-container" 
                   className="relative w-full h-full"
@@ -207,7 +205,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
                     backgroundColor: "#ffffff",
                     position: "relative",
                     overflow: "visible",
-                    minHeight: "500px"
+                    minHeight: "650px" // Reserve space for quiz to prevent layout shift
                   }}
                 >
                   <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
