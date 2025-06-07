@@ -51,8 +51,6 @@ const nextConfig = {
     styledComponents: false,
     emotion: false,
   },
-  // Use SWC instead of Babel
-  swcMinify: true,
   // Compress output
   compress: true,
   webpack: (config, { isServer, dev }) => {

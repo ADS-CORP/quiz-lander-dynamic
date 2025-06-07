@@ -214,7 +214,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
           </div>
           {content.settlementSection?.settlements?.length > 0 && (
             <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme?.settlementCarouselBackground || '#ffffff' }}>
-              <div className="max-w-[1100px] mx-auto px-4 py-8 overflow-hidden">
+              <div className="max-w-[1100px] mx-auto px-4 py-4 md:py-6 overflow-hidden">
                 <SettlementCarousel settlements={content.settlementSection.settlements} />
               </div>
             </div>
