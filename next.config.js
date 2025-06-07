@@ -42,6 +42,11 @@ const nextConfig = {
   experimental: {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-slot', '@radix-ui/react-tabs', 'clsx', 'tailwind-merge'],
+    serverMinification: true,
+  },
+  // Configure SWC to target modern browsers
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
   },
   // Compress output
   compress: true,
@@ -52,10 +57,23 @@ const nextConfig = {
         ...config.resolve.alias,
         'core-js': false,
       };
+      
+      // Target modern browsers only
+      config.target = 'web';
+      
+      // Disable polyfills for modern features
+      config.resolve.fallback = {
+        ...config.resolve.fallback,
+        'core-js': false,
+        'regenerator-runtime': false,
+      };
     }
 
     return config;
   },
+  
+  // Target modern browsers
+  transpilePackages: [],
   async headers() {
     return [
       {

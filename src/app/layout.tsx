@@ -66,8 +66,7 @@ export async function generateViewport() {
   return {
     width: 'device-width',
     initialScale: 1,
-    maximumScale: 1,
-    userScalable: false,
+    maximumScale: 5,
   };
 }
 
@@ -79,6 +78,9 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden`}>
       <head>
+        {/* Critical CSS preload */}
+        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        
         {/* Preconnect to improve font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
