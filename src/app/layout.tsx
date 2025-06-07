@@ -48,7 +48,13 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = host.includes('localhost') ? 'http' : 'https';
 
   const metadata: Metadata = {
-    metadataBase: new URL(`${protocol}://${host}`)
+    metadataBase: new URL(`${protocol}://${host}`),
+    viewport: {
+      width: 'device-width',
+      initialScale: 1,
+      maximumScale: 1,
+      userScalable: false,
+    }
   };
 
   // Only add title template if we have a brand
@@ -68,7 +74,7 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={montserrat.variable}>
+    <html lang="en" className={`${montserrat.variable} overflow-x-hidden`}>
       <head>
         {/* Preconnect to improve font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -82,7 +88,11 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
         <link rel="dns-prefetch" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
       </head>
-      <body className={montserrat.className}>{children}</body>
+      <body className={`${montserrat.className} overflow-x-hidden`}>
+        <div className="min-h-screen w-screen overflow-x-hidden">
+          {children}
+        </div>
+      </body>
     </html>
   );
 }

@@ -87,14 +87,14 @@ const Footer: React.FC<FooterProps> = ({ brand }) => {
         )}
 
         {/* Logo */}
-        <div className="flex justify-center mb-6" style={{ height: '144px', width: '100%' }}>
+        <div className="flex justify-center mb-6 px-4" style={{ height: '144px' }}>
           <Image
             src={brand.footer.logo.src}
             alt={brand.footer.logo.alt}
             width={320}
             height={160}
-            className="h-36 w-auto object-contain"
-            style={{ color: "transparent", width: "auto" }}
+            className="h-36 w-auto object-contain max-w-full"
+            style={{ color: "transparent" }}
             priority={true}
           />
         </div>

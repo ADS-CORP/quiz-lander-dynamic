@@ -135,7 +135,7 @@ export default function LiveClaimsNotification({ brand }: LiveClaimsNotification
   const currentNotification = notifications[currentIndex];
 
   return (
-    <div className="fixed bottom-4 left-4 z-[9999] max-w-xs md:max-w-sm">
+    <div className="fixed bottom-4 left-4 z-[9999] max-w-[calc(100vw-2rem)] sm:max-w-xs md:max-w-sm">
       <div 
         className={`
           bg-white rounded-lg shadow-lg p-3 

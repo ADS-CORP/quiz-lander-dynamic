@@ -59,10 +59,10 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
   return (
     <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme?.headerBackground }}>
       <div className="border-b">
-        <div className="w-full">
-          <div className="h-[60px] px-6 flex items-center">
+        <div className="w-full overflow-hidden">
+          <div className="h-[60px] px-4 sm:px-6 flex items-center relative">
             <button 
-              className="p-1 absolute left-6" 
+              className="p-1 absolute left-4 sm:left-6" 
               style={{ color: brand.theme?.headerText }}
               aria-label="Open menu"
               type="button"
@@ -102,7 +102,7 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
                   backgroundColor: brand.theme?.ctaBackground || '#0066FF',
                   color: brand.theme?.ctaText || '#FFFFFF'
                 }}
-                className="absolute right-6 px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity"
+                className="absolute right-4 sm:right-6 px-4 sm:px-6 py-2.5 rounded-full hover:opacity-90 transition-opacity text-sm sm:text-base"
               >
                 {ctaText}
               </button>

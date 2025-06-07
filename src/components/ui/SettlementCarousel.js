@@ -55,7 +55,7 @@ export default function SettlementCarousel({ settlements }) {
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto">
+    <div className="relative w-full max-w-2xl mx-auto overflow-hidden px-8">
       <button 
         onClick={handlePrev}
         className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"

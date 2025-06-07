@@ -191,7 +191,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
 
   return (
     <BaseLayout brand={brand} pageBrandConfig={pageConfig}>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-white overflow-x-hidden">
         <div 
           className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
           style={{ backgroundColor: brand.theme?.trafficCounterBackground || '#ffffff' }}
@@ -199,7 +199,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
           <TrafficCounter brand={brand} />
         </div>
         <div className="relative mt-[90px]">
-          <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-5">
+          <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-5">
             <div className="text-center">
               <h1 
                 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
@@ -214,7 +214,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
           </div>
 
           <div className="relative bg-white">
-            <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
+            <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
               <div className="relative pt-3">
                 <div 
                   id="quiz-widget-container" 
