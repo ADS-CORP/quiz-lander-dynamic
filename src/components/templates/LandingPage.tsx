@@ -25,8 +25,10 @@ const AsSeenOn = dynamic(() => import('@/components/ui/AsSeenOn'), {
 // Extend Window interface to include our custom properties
 declare global {
   interface Window {
-    qw?: (command: string, containerId: string, config?: any) => void;
-    __quizConfig?: any;
+    qw?: {
+      (command: string, containerId: string, config?: any): void;
+      q?: any[];
+    };
   }
 }
 
@@ -39,114 +41,75 @@ interface QuizWidgetProps {
 let quizInitialized = false;
 
 function QuizWidget({ quizId }: QuizWidgetProps) {
-  const widgetId = 'quiz-widget'; // Use standard ID as per documentation
-
   useEffect(() => {
     // Prevent multiple initializations
     if (quizInitialized) {
       console.log('Quiz already initialized, skipping');
       return;
     }
-    
-    // Pre-create the quiz widget container
-    const widgetContainer = document.getElementById('quiz-widget-container');
-    if (!widgetContainer) {
-      console.error('quiz-widget-container not found');
-      return;
-    }
-    
-    // Clear any existing quiz widgets in this container
-    widgetContainer.innerHTML = '';
-    
-    // Create the quiz widget div with standard ID
-    const container = document.createElement('div');
-    container.id = widgetId;
-    widgetContainer.appendChild(container);
-    console.log('Created quiz widget div with ID:', widgetId);
 
-    // Check if script is already loaded
-    const existingScript = document.querySelector('script[src="https://quiz-widget.netlify.app/embed.js"]');
-    
-    if (existingScript && window.qw) {
-      // Script already loaded, initialize immediately
-      console.log('Script already exists, initializing with existing window.qw...');
-      try {
-        // Use simplified initialization with quizId, apiUrl, and hideLoading
-        window.qw('init', widgetId, {
-          quizId,
-          apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
-          hideLoading: true  // Hide loading placeholder for cleaner UX
-        });
-        quizInitialized = true;
-        console.log('Quiz widget initialized successfully (existing script)');
-      } catch (error) {
-        console.error('Error initializing quiz widget (existing script):', error);
-      }
-      return;
-    }
+    // Defer quiz widget loading until after page is interactive
+    const loadQuizWidget = () => {
+      // Create the qw function first
+      const script1 = document.createElement('script');
+      script1.innerHTML = `window.qw = window.qw || function(){(qw.q=qw.q||[]).push(arguments)};`;
+      document.head.appendChild(script1);
 
-    if (!existingScript) {
-      // Defer quiz widget loading until after page is interactive
-      const loadQuizWidget = () => {
-        const script = document.createElement('script');
-        script.src = 'https://quiz-widget.netlify.app/embed.js';
-        script.async = true;
-        script.defer = true;
-        script.setAttribute('data-quiz-id', quizId); // Add quiz ID as data attribute
-        script.setAttribute('data-api-url', 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'); // Add API URL
-        
-        script.onload = () => {
+      // Add the embed script
+      const script2 = document.createElement('script');
+      script2.src = 'https://quiz-widget.netlify.app/embed.js';
+      script2.async = true;
+      
+      script2.onload = () => {
         console.log('Quiz script loaded');
-        // According to docs, it should auto-initialize with data-quiz-id
-        // But for React apps, we may need manual init
-        setTimeout(() => {
-          if (window.qw && typeof window.qw === 'function') {
-            try {
-              // Manual initialization for React apps
-              window.qw('init', widgetId, {
-                quizId,
-                apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
-                hideLoading: true  // Hide loading placeholder for cleaner UX
-              });
-              quizInitialized = true;
-              console.log('Quiz widget initialized successfully');
-            } catch (error) {
-              console.error('Error initializing quiz widget:', error);
-            }
-          } else {
-            // If auto-initialized, just mark as loaded
+        // Initialize the widget after script loads
+        if (window.qw) {
+          try {
+            window.qw('init', 'quiz-widget-container', {
+              quizId,
+              apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
+              hideLoading: true  // Hide loading placeholder for cleaner UX
+            });
             quizInitialized = true;
-            console.log('Quiz widget auto-initialized');
+            console.log('Quiz widget initialized successfully');
+          } catch (error) {
+            console.error('Error initializing quiz widget:', error);
           }
-        }, 100);
+        }
       };
       
-        script.onerror = () => {
-          console.error('Failed to load quiz widget script');
-        };
-        
-        document.head.appendChild(script);
+      script2.onerror = () => {
+        console.error('Failed to load quiz widget script');
       };
       
-      // Add resource hints for quiz widget
-      const preloadLink = document.createElement('link');
-      preloadLink.rel = 'preload';
-      preloadLink.as = 'script';
-      preloadLink.href = 'https://quiz-widget.netlify.app/embed.js';
-      document.head.appendChild(preloadLink);
-      
-      // Load immediately if page is already interactive, otherwise wait
-      if (document.readyState === 'complete' || document.readyState === 'interactive') {
-        // Small delay to ensure DOM is ready
-        setTimeout(loadQuizWidget, 100);
-      } else {
-        // Use DOMContentLoaded instead of load for faster initialization
-        window.addEventListener('DOMContentLoaded', loadQuizWidget, { once: true });
-      }
+      document.head.appendChild(script2);
+    };
+    
+    // Add resource hints for quiz widget
+    const preloadLink = document.createElement('link');
+    preloadLink.rel = 'preload';
+    preloadLink.as = 'script';
+    preloadLink.href = 'https://quiz-widget.netlify.app/embed.js';
+    document.head.appendChild(preloadLink);
+    
+    // Load immediately if page is already interactive, otherwise wait
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      // Small delay to ensure DOM is ready
+      setTimeout(loadQuizWidget, 100);
+    } else {
+      // Use DOMContentLoaded instead of load for faster initialization
+      window.addEventListener('DOMContentLoaded', loadQuizWidget, { once: true });
     }
 
+    // Cleanup function
     return () => {
-      // Cleanup if needed
+      if (window.qw) {
+        try {
+          window.qw('destroy', 'quiz-widget-container', {});
+        } catch (error) {
+          console.error('Error destroying quiz widget:', error);
+        }
+      }
     };
   }, [quizId]);
 
