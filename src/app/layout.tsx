@@ -8,8 +8,8 @@ import "./globals.css";
 // Load Montserrat with optimized settings to prevent font shifts
 const montserrat = Montserrat({
   subsets: ["latin"],
-  display: "optional", // Use optional for faster LCP
-  preload: false, // We're manually preloading only the 800 weight
+  display: "swap", // Changed from optional to swap for better reliability
+  preload: true, // Enable preloading
   fallback: ["system-ui", "sans-serif"],
   weight: ["800"], // Only load the weight used for h1
   variable: "--font-montserrat",
