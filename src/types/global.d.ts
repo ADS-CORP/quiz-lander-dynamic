@@ -1,3 +1,6 @@
 interface Window {
-  qw?: (action: string, config?: any) => void;
+  qw?: {
+    (command: 'init' | 'destroy', containerId?: string, config?: any): void;
+    q?: any[];
+  };
 }

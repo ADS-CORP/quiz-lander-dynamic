@@ -22,16 +22,6 @@ const AsSeenOn = dynamic(() => import('@/components/ui/AsSeenOn'), {
   loading: () => <div className="min-h-[200px]" />
 });
 
-// Extend Window interface to include our custom properties
-declare global {
-  interface Window {
-    qw?: {
-      (command: string, containerId: string, config?: any): void;
-      q?: any[];
-    };
-  }
-}
-
 interface QuizWidgetProps {
   quizId: string;
   brand: BrandConfig;
@@ -168,7 +158,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
                     backgroundColor: "#ffffff",
                     position: "relative",
                     overflow: "visible",
-                    minHeight: "420px" // Reserve space for quiz to prevent layout shift
+                    minHeight: "320px" // Reduced space to minimize gap before As Seen On
                   }}
                 >
                   <QuizWidget quizId={quizId} brand={brand} />

@@ -66,7 +66,7 @@ export default function Document() {
             
             /* Quiz container to prevent layout shift */
             #quiz-widget-container {
-              min-height: 420px;
+              min-height: 320px;
               background-color: #ffffff;
               position: relative;
               overflow: visible;
