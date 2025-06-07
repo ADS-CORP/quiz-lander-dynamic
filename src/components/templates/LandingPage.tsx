@@ -39,27 +39,57 @@ interface QuizWidgetProps {
 function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const [widgetId] = useState(`quiz-widget-${Math.random().toString(36).substr(2, 9)}`);
 
   useEffect(() => {
     setIsMounted(true);
+    
+    // Set up mutation observer to catch any quiz error elements added to body
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+          if (node.nodeType === 1 && node instanceof HTMLElement) {
+            const text = node.textContent || '';
+            if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
+              console.log('Hiding quiz error element added to body');
+              (node as HTMLElement).style.display = 'none';
+            }
+          }
+        });
+      });
+    });
+    
+    observer.observe(document.body, { childList: true, subtree: false });
+    
     // Pre-create the quiz widget container
-    const container = document.createElement('div');
-    container.id = 'quiz-widget';
     const widgetContainer = document.getElementById('quiz-widget-container');
-    if (widgetContainer) {
-      widgetContainer.appendChild(container);
-    } else {
+    if (!widgetContainer) {
       console.error('quiz-widget-container not found');
+      observer.disconnect();
       return;
     }
+    
+    // Clear any existing quiz widgets in this container
+    widgetContainer.innerHTML = '';
+    
+    // Create new quiz widget div with unique ID
+    const container = document.createElement('div');
+    container.id = widgetId;
+    widgetContainer.appendChild(container);
+    console.log('Created quiz widget div with ID:', widgetId);
 
+    // Clear any existing config first
+    delete window.__quizConfig;
+    
     // Pre-initialize configuration object on window
     window.__quizConfig = {
       ...quizConfig,
       quizId,
       hideFooter: true,
       preventDefaultStyles: true,
-      container: '#quiz-widget',
+      container: `#${widgetId}`,
+      apiUrl: '/api',
+      autoInit: false, // Prevent auto-initialization
       apiConfig: {
         baseURL: window.location.origin,
         withCredentials: false,
@@ -93,14 +123,48 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
         );
       }
     };
+    
+    console.log('Quiz config set:', window.__quizConfig);
+    console.log('Container exists:', !!document.getElementById(widgetId));
+    
+    // Debug: Find all elements with quiz in their id or class
+    const allQuizElements = document.querySelectorAll('[id*="quiz"], [class*="quiz"]');
+    console.log('All quiz-related elements on page:', allQuizElements.length);
+    allQuizElements.forEach((el, index) => {
+      console.log(`Element ${index}:`, el.tagName, el.id, el.className, 'Parent:', el.parentElement?.id);
+    });
 
     // Check if script is already loaded
     const existingScript = document.querySelector('script[src="https://quiz-widget.netlify.app/embed.js"]');
     
     if (existingScript && window.qw) {
       // Script already loaded, initialize immediately
-      window.qw('init', window.__quizConfig);
-      setIsLoaded(true);
+      console.log('Script already exists, initializing with existing window.qw...');
+      // Make sure we have the container before initializing
+      const containerCheck = document.getElementById(widgetId);
+      if (!containerCheck) {
+        console.error('Container not found, skipping initialization');
+        return;
+      }
+      try {
+        window.qw('init', window.__quizConfig);
+        setIsLoaded(true);
+        console.log('Quiz widget initialized successfully (existing script)');
+        
+        // Check for any error elements created outside our container
+        setTimeout(() => {
+          const errorElements = document.querySelectorAll('body > div');
+          errorElements.forEach(el => {
+            const text = el.textContent || '';
+            if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
+              console.log('Found quiz error element outside container, hiding it');
+              el.style.display = 'none';
+            }
+          });
+        }, 100);
+      } catch (error) {
+        console.error('Error initializing quiz widget (existing script):', error);
+      }
       return;
     }
 
@@ -109,11 +173,33 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       script.src = 'https://quiz-widget.netlify.app/embed.js';
       script.async = true;
       script.defer = true;
+      script.setAttribute('data-no-auto-init', 'true');
       
       script.onload = () => {
+        console.log('Quiz script loaded, checking window.qw...');
         if (window.qw && typeof window.qw === 'function') {
-          window.qw('init', window.__quizConfig);
-          setIsLoaded(true);
+          console.log('Initializing quiz widget...');
+          try {
+            window.qw('init', window.__quizConfig);
+            setIsLoaded(true);
+            console.log('Quiz widget initialized successfully');
+            
+            // Check for any error elements created outside our container
+            setTimeout(() => {
+              const errorElements = document.querySelectorAll('body > div');
+              errorElements.forEach(el => {
+                const text = el.textContent || '';
+                if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
+                  console.log('Found quiz error element outside container, hiding it');
+                  el.style.display = 'none';
+                }
+              });
+            }, 100);
+          } catch (error) {
+            console.error('Error initializing quiz widget:', error);
+          }
+        } else {
+          console.error('window.qw not found after script load');
         }
       };
       
@@ -125,10 +211,12 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     }
 
     return () => {
-      container?.remove();
+      // Don't remove the container on cleanup as it might cause issues with React re-renders
+      // Just clear the config
       delete window.__quizConfig;
+      observer.disconnect();
     };
-  }, [quizConfig, quizId]);
+  }, [quizConfig, quizId, widgetId]);
 
   // Only show loading state on client side to prevent hydration mismatch
   return (

@@ -25,6 +25,18 @@
   outline: 1px solid red !important;
 }
 
+/* Hide any quiz widget elements that appear outside of our container */
+body > div[id*="quiz"]:not(#__next),
+body > div[class*="quiz-widget"],
+body > .quiz-widget-error,
+body > .quiz-error,
+/* Also hide any direct children of body that contain quiz error text */
+body > div:has(.quiz-error),
+body > div:contains("Unable to load quiz"),
+body > div:contains("Widget not properly initialized") {
+  display: none !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
