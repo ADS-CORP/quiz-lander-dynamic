@@ -81,6 +81,29 @@ const nextConfig = {
           sideEffects: false,
           concatenateModules: true,
           minimize: true,
+          splitChunks: {
+            chunks: 'all',
+            cacheGroups: {
+              default: false,
+              vendors: false,
+              // Split vendor code
+              vendor: {
+                name: 'vendor',
+                chunks: 'all',
+                test: /node_modules/,
+                priority: 20
+              },
+              // Split common code
+              common: {
+                name: 'common',
+                minChunks: 2,
+                chunks: 'all',
+                priority: 10,
+                reuseExistingChunk: true,
+                enforce: true
+              }
+            }
+          }
         };
       }
     }

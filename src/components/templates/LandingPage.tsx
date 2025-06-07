@@ -181,13 +181,10 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
         >
           <TrafficCounter brand={brand} />
         </div>
-        <div className="relative mt-[90px]">
+        <div className="relative mt-[90px]" data-priority="high">
           <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-5">
             <div className="text-center">
-              <h1 
-                className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
-                style={{ fontFamily: 'Montserrat, system-ui, sans-serif' }}
-              >
+              <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl">
                 {content.headline}
               </h1>
             </div>

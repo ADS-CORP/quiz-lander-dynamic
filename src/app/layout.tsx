@@ -9,9 +9,9 @@ import "./globals.css";
 const montserrat = Montserrat({
   subsets: ["latin"],
   display: "optional", // Use optional for faster LCP
-  preload: true,
+  preload: false, // We're manually preloading only the 800 weight
   fallback: ["system-ui", "sans-serif"],
-  weight: ["400", "500", "600", "700"],
+  weight: ["800"], // Only load the weight used for h1
   variable: "--font-montserrat",
   adjustFontFallback: true, // Reduces CLS
 });
@@ -79,39 +79,6 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden`}>
       <head>
-        {/* Inline critical CSS for above-the-fold content */}
-        <style dangerouslySetInnerHTML={{ __html: `
-          /* Critical CSS for initial render */
-          html { overflow-x: hidden; max-width: 100vw; }
-          body { overflow-x: hidden; position: relative; max-width: 100vw; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
-          .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
-          .font-extrabold { font-weight: 800; }
-          .text-gray-900 { color: rgb(17 24 39); }
-          .text-center { text-align: center; }
-          .tracking-tight { letter-spacing: -0.025em; }
-          .mx-auto { margin-left: auto; margin-right: auto; }
-          .px-4 { padding-left: 1rem; padding-right: 1rem; }
-          .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
-          .mt-\\[90px\\] { margin-top: 90px; }
-          .relative { position: relative; }
-          .w-full { width: 100%; }
-          .max-w-screen-xl { max-width: 1280px; }
-          @media (min-width: 640px) {
-            .sm\\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
-          }
-          @media (min-width: 768px) {
-            .md\\:text-5xl { font-size: 3rem; line-height: 1; }
-            .md\\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
-          }
-          @media (min-width: 1024px) {
-            .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
-          }
-        ` }} />
-        
-        {/* Preconnect to improve font loading */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        
         {/* Preconnect to quiz widget for faster loading */}
         <link rel="preconnect" href="https://quiz-widget.netlify.app" />
         <link rel="dns-prefetch" href="https://quiz-widget.netlify.app" />

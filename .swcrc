@@ -1,0 +1,42 @@
+{
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "tsx": true
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    },
+    "target": "es2022",
+    "loose": false,
+    "externalHelpers": false,
+    "keepClassNames": true
+  },
+  "module": {
+    "type": "es6",
+    "strict": true,
+    "strictMode": true,
+    "lazy": false,
+    "noInterop": false
+  },
+  "minify": {
+    "compress": {
+      "unused": true,
+      "dead_code": true,
+      "drop_console": true
+    },
+    "mangle": true
+  },
+  "env": {
+    "targets": {
+      "chrome": "91",
+      "edge": "91", 
+      "firefox": "89",
+      "safari": "14.1"
+    },
+    "mode": "usage",
+    "coreJs": false
+  }
+}
