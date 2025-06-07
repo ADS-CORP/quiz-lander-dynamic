@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 
 declare global {
   interface Window {
@@ -14,14 +14,21 @@ export default function TestQuizPage() {
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const [widgetInitialized, setWidgetInitialized] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
 
-  const addLog = (message: string) => {
+  const addLog = useCallback((message: string) => {
     const timestamp = new Date().toISOString();
     setLogs(prev => [...prev, `[${timestamp}] ${message}`]);
     console.log(`[Quiz Debug] ${message}`);
-  };
+  }, []);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+    
     addLog('Component mounted');
 
     // Check if container exists
@@ -48,7 +55,7 @@ export default function TestQuizPage() {
       preventDefaultStyles: true,
       container: '#quiz-widget',
       apiConfig: {
-        baseURL: window.location.origin,
+        baseURL: typeof window !== 'undefined' ? window.location.origin : '',
         withCredentials: false,
         proxyConfig: {
           enabled: true,
@@ -127,7 +134,7 @@ export default function TestQuizPage() {
       }
       delete window.__quizConfig;
     };
-  }, []);
+  }, [mounted, addLog]);
 
   return (
     <div className="p-8">
@@ -138,7 +145,7 @@ export default function TestQuizPage() {
         <div className="space-y-1">
           <p>Script Loaded: <span className={scriptLoaded ? 'text-green-600' : 'text-red-600'}>{scriptLoaded ? 'Yes' : 'No'}</span></p>
           <p>Widget Initialized: <span className={widgetInitialized ? 'text-green-600' : 'text-red-600'}>{widgetInitialized ? 'Yes' : 'No'}</span></p>
-          <p>window.qw available: <span className={typeof window.qw === 'function' ? 'text-green-600' : 'text-red-600'}>{typeof window.qw === 'function' ? 'Yes' : 'No'}</span></p>
+          <p>window.qw available: <span className={mounted && typeof window !== 'undefined' && typeof window.qw === 'function' ? 'text-green-600' : 'text-red-600'}>{mounted && typeof window !== 'undefined' && typeof window.qw === 'function' ? 'Yes' : 'No'}</span></p>
           {error && <p className="text-red-600">Error: {error}</p>}
         </div>
       </div>
