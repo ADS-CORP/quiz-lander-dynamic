@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { BrandConfig } from '@/types/config';
 import Footer from '@/components/base/footer';
@@ -25,114 +25,48 @@ const AsSeenOn = dynamic(() => import('@/components/ui/AsSeenOn'), {
 // Extend Window interface to include our custom properties
 declare global {
   interface Window {
-    qw?: (command: string, config?: any) => void;
+    qw?: (command: string, containerId: string, config?: any) => void;
     __quizConfig?: any;
   }
 }
 
 interface QuizWidgetProps {
-  quizConfig: any;
   quizId: string;
   brand: BrandConfig;
 }
 
-function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
+// Global flag to prevent multiple quiz initializations
+let quizInitialized = false;
+
+function QuizWidget({ quizId }: QuizWidgetProps) {
   const [isLoaded, setIsLoaded] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
-  const [widgetId] = useState(`quiz-widget-${Math.random().toString(36).substr(2, 9)}`);
+  const widgetId = 'quiz-widget'; // Use standard ID as per documentation
 
   useEffect(() => {
     setIsMounted(true);
     
-    // Set up mutation observer to catch any quiz error elements added to body
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === 1 && node instanceof HTMLElement) {
-            const text = node.textContent || '';
-            if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
-              console.log('Hiding quiz error element added to body');
-              (node as HTMLElement).style.display = 'none';
-            }
-          }
-        });
-      });
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: false });
+    // Prevent multiple initializations
+    if (quizInitialized) {
+      console.log('Quiz already initialized, skipping');
+      return;
+    }
     
     // Pre-create the quiz widget container
     const widgetContainer = document.getElementById('quiz-widget-container');
     if (!widgetContainer) {
       console.error('quiz-widget-container not found');
-      observer.disconnect();
       return;
     }
     
     // Clear any existing quiz widgets in this container
     widgetContainer.innerHTML = '';
     
-    // Create new quiz widget div with unique ID
+    // Create the quiz widget div with standard ID
     const container = document.createElement('div');
     container.id = widgetId;
     widgetContainer.appendChild(container);
     console.log('Created quiz widget div with ID:', widgetId);
-
-    // Clear any existing config first
-    delete window.__quizConfig;
-    
-    // Pre-initialize configuration object on window
-    window.__quizConfig = {
-      ...quizConfig,
-      quizId,
-      hideFooter: true,
-      preventDefaultStyles: true,
-      container: `#${widgetId}`,
-      apiUrl: '/api',
-      autoInit: false, // Prevent auto-initialization
-      apiConfig: {
-        baseURL: window.location.origin,
-        withCredentials: false,
-        proxyConfig: {
-          enabled: true,
-          prefix: '/api',
-          overrides: {
-            ipapi: '/api/proxy-webhook/ipapi',
-            npiRegistry: '/api/proxy-webhook/npi-registry'
-          }
-        }
-      },
-      containerStyle: { 
-        background: 'transparent',
-        maxHeight: '100vh',
-        overflow: 'visible',
-        position: 'relative',
-        zIndex: 1000
-      },
-      dropdownStyle: {
-        position: 'fixed',
-        zIndex: 1001
-      },
-      popoverStyle: {
-        position: 'fixed',
-        zIndex: 1001
-      },
-      onQuestionChange: (questionNumber: number) => {
-        window.dispatchEvent(
-          new CustomEvent('quizProgress', { detail: { questionNumber } })
-        );
-      }
-    };
-    
-    console.log('Quiz config set:', window.__quizConfig);
-    console.log('Container exists:', !!document.getElementById(widgetId));
-    
-    // Debug: Find all elements with quiz in their id or class
-    const allQuizElements = document.querySelectorAll('[id*="quiz"], [class*="quiz"]');
-    console.log('All quiz-related elements on page:', allQuizElements.length);
-    allQuizElements.forEach((el, index) => {
-      console.log(`Element ${index}:`, el.tagName, el.id, el.className, 'Parent:', el.parentElement?.id);
-    });
 
     // Check if script is already loaded
     const existingScript = document.querySelector('script[src="https://quiz-widget.netlify.app/embed.js"]');
@@ -140,28 +74,15 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     if (existingScript && window.qw) {
       // Script already loaded, initialize immediately
       console.log('Script already exists, initializing with existing window.qw...');
-      // Make sure we have the container before initializing
-      const containerCheck = document.getElementById(widgetId);
-      if (!containerCheck) {
-        console.error('Container not found, skipping initialization');
-        return;
-      }
       try {
-        window.qw('init', window.__quizConfig);
+        // Use simplified initialization with quizId and apiUrl
+        window.qw('init', widgetId, {
+          quizId,
+          apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
+        });
         setIsLoaded(true);
+        quizInitialized = true;
         console.log('Quiz widget initialized successfully (existing script)');
-        
-        // Check for any error elements created outside our container
-        setTimeout(() => {
-          const errorElements = document.querySelectorAll('body > div');
-          errorElements.forEach(el => {
-            const text = el.textContent || '';
-            if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
-              console.log('Found quiz error element outside container, hiding it');
-              el.style.display = 'none';
-            }
-          });
-        }, 100);
       } catch (error) {
         console.error('Error initializing quiz widget (existing script):', error);
       }
@@ -172,35 +93,34 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       const script = document.createElement('script');
       script.src = 'https://quiz-widget.netlify.app/embed.js';
       script.async = true;
-      script.defer = true;
-      script.setAttribute('data-no-auto-init', 'true');
+      script.setAttribute('data-quiz-id', quizId); // Add quiz ID as data attribute
+      script.setAttribute('data-api-url', 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'); // Add API URL
       
       script.onload = () => {
-        console.log('Quiz script loaded, checking window.qw...');
-        if (window.qw && typeof window.qw === 'function') {
-          console.log('Initializing quiz widget...');
-          try {
-            window.qw('init', window.__quizConfig);
-            setIsLoaded(true);
-            console.log('Quiz widget initialized successfully');
-            
-            // Check for any error elements created outside our container
-            setTimeout(() => {
-              const errorElements = document.querySelectorAll('body > div');
-              errorElements.forEach(el => {
-                const text = el.textContent || '';
-                if (text.includes('Unable to load quiz') || text.includes('Widget not properly initialized')) {
-                  console.log('Found quiz error element outside container, hiding it');
-                  el.style.display = 'none';
-                }
+        console.log('Quiz script loaded');
+        // According to docs, it should auto-initialize with data-quiz-id
+        // But for React apps, we may need manual init
+        setTimeout(() => {
+          if (window.qw && typeof window.qw === 'function') {
+            try {
+              // Manual initialization for React apps
+              window.qw('init', widgetId, {
+                quizId,
+                apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
               });
-            }, 100);
-          } catch (error) {
-            console.error('Error initializing quiz widget:', error);
+              setIsLoaded(true);
+              quizInitialized = true;
+              console.log('Quiz widget initialized successfully');
+            } catch (error) {
+              console.error('Error initializing quiz widget:', error);
+            }
+          } else {
+            // If auto-initialized, just mark as loaded
+            setIsLoaded(true);
+            quizInitialized = true;
+            console.log('Quiz widget auto-initialized');
           }
-        } else {
-          console.error('window.qw not found after script load');
-        }
+        }, 100);
       };
       
       script.onerror = () => {
@@ -211,30 +131,12 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     }
 
     return () => {
-      // Don't remove the container on cleanup as it might cause issues with React re-renders
-      // Just clear the config
-      delete window.__quizConfig;
-      observer.disconnect();
+      // Cleanup if needed
     };
-  }, [quizConfig, quizId, widgetId]);
+  }, [quizId]);
 
-  // Only show loading state on client side to prevent hydration mismatch
-  return (
-    <>
-      {isMounted && !isLoaded && (
-        <div className="absolute inset-0 flex items-center justify-center bg-white">
-          <div className="text-center">
-            <div className="animate-pulse space-y-4 w-full max-w-md mx-auto p-6">
-              <div className="h-8 bg-gray-200 rounded w-3/4 mx-auto"></div>
-              <div className="h-12 bg-gray-200 rounded"></div>
-              <div className="h-12 bg-gray-200 rounded"></div>
-              <div className="h-12 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
+  // Return empty div - the quiz widget will render itself inside the container
+  return null;
 }
 
 interface LandingPageProps {
@@ -272,7 +174,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
         <div className="relative mt-[90px]" data-priority="high">
           <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-5">
             <div className="text-center">
-              <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl">
+              <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl font-montserrat">
                 {content.headline}
               </h1>
             </div>
@@ -291,7 +193,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
                     minHeight: "420px" // Reserve space for quiz to prevent layout shift
                   }}
                 >
-                  <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
+                  <QuizWidget quizId={quizId} brand={brand} />
                 </div>
               </div>
             </div>
@@ -302,7 +204,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
           </div>
           {content.settlementSection?.settlements?.length > 0 && (
             <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme?.settlementCarouselBackground || '#ffffff' }}>
-              <div className="max-w-[1100px] mx-auto px-4 py-4 md:py-6 overflow-hidden">
+              <div className="max-w-[1100px] mx-auto px-4 py-1 md:py-2 overflow-hidden">
                 <SettlementCarousel settlements={content.settlementSection.settlements} />
               </div>
             </div>

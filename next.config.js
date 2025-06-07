@@ -33,8 +33,10 @@ const nextConfig = {
       }
     ],
     formats: ['image/avif', 'image/webp'],
-    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
-    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    deviceSizes: [640, 750, 828, 1080, 1200],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256],
+    minimumCacheTTL: 60,
+    disableStaticImages: false,
   },
   // Enable static exports
   output: 'standalone',
@@ -43,6 +45,7 @@ const nextConfig = {
     optimizeCss: true,
     optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-slot', '@radix-ui/react-tabs', 'clsx', 'tailwind-merge'],
     serverMinification: true,
+    webpackBuildWorker: true,
   },
   // Configure SWC to target modern browsers
   compiler: {

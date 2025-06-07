@@ -45,10 +45,7 @@ export default function CustomFaqSection({ faqSection, expandedBackground, textC
                   <ChevronDown className="h-4 w-4 shrink-0 transition-transform duration-200 group-data-[state=open]:rotate-180" />
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div 
-                    className="transition-all duration-200"
-                    style={{ backgroundColor: expandedBackground }}
-                  >
+                  <div className="transition-all duration-200">
                     {faq.answer}
                   </div>
                 </AccordionContent>

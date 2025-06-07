@@ -31,7 +31,7 @@ export default function SettlementCarousel({ settlements }) {
     if (!userInteracted) {
       const interval = setInterval(() => {
         handleNext();
-      }, 5000);
+      }, 7000);
       setAutoRotateInterval(interval);
     }
   };
@@ -57,7 +57,11 @@ export default function SettlementCarousel({ settlements }) {
   return (
     <div className="relative w-full max-w-3xl lg:max-w-5xl mx-auto px-8">
       <button 
-        onClick={handlePrev}
+        onClick={() => {
+          setUserInteracted(true);
+          stopAutoRotate();
+          handlePrev();
+        }}
         className="absolute -left-2 md:-left-6 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"
         aria-label="Previous settlement"
       >
@@ -81,20 +85,26 @@ export default function SettlementCarousel({ settlements }) {
       </button>
 
       <div className="relative flex justify-center items-center min-h-[280px] md:min-h-[500px] lg:min-h-[600px]">
-        {sortedSettlements.map((settlement, index) => (
-          <div 
-            key={index}
-            onClick={() => handleSettlementClick(settlement.link)}
-            className={`
-              absolute w-[calc(100%-20px)] md:w-[600px] lg:w-[650px] bg-white rounded-xl md:rounded-2xl shadow-lg
-              transition-all duration-500 ease-in-out
-              transform cursor-pointer
-              ${index === currentIndex ? 'z-20 scale-100 opacity-100 translate-x-0' : 
-                index < currentIndex ? 'z-10 scale-95 opacity-0 -translate-x-full' : 
-                'z-10 scale-95 opacity-0 translate-x-full'}
-              ${isTransitioning ? 'pointer-events-none' : ''}
-            `}
-          >
+        {sortedSettlements.map((settlement, index) => {
+          const isActive = index === currentIndex;
+          const isPrev = index === (currentIndex - 1 + sortedSettlements.length) % sortedSettlements.length;
+          const isNext = index === (currentIndex + 1) % sortedSettlements.length;
+          
+          return (
+            <div 
+              key={index}
+              onClick={() => handleSettlementClick(settlement.link)}
+              className={`
+                absolute w-[calc(100%-20px)] md:w-[600px] lg:w-[650px] bg-white rounded-xl md:rounded-2xl shadow-lg
+                transition-all duration-500 ease-in-out
+                transform cursor-pointer
+                ${isActive ? 'z-20 scale-100 opacity-100 translate-x-0' : 
+                  isPrev ? 'z-10 scale-95 opacity-0 -translate-x-full' :
+                  isNext ? 'z-10 scale-95 opacity-0 translate-x-full' :
+                  'z-0 scale-90 opacity-0 translate-x-0'}
+                ${isTransitioning ? 'pointer-events-none' : ''}
+              `}
+            >
             <div className="p-5 md:p-12 lg:p-16">
               <div className="text-center">
                 <div className="inline-flex items-center bg-blue-50 rounded-full px-3 py-1.5 mb-4">
@@ -125,7 +135,8 @@ export default function SettlementCarousel({ settlements }) {
               </div>
             </div>
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

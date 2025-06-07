@@ -87,7 +87,7 @@ export default async function RootLayout({
         <link rel="preconnect" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
         <link rel="dns-prefetch" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
       </head>
-      <body className={`${montserrat.className} overflow-x-hidden`}>
+      <body className={`${montserrat.variable} overflow-x-hidden`}>
         <div className="min-h-screen w-screen overflow-x-hidden">
           {children}
         </div>
