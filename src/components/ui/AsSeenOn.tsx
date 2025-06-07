@@ -43,7 +43,6 @@ export default function AsSeenOn() {
                 height={logo.height}
                 sizes={logo.sizes}
                 loading="lazy"
-                placeholder="blur"
                 className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'object-contain' : ''}`}
                 style={{ 
                   color: 'transparent',
@@ -107,7 +106,7 @@ export default function AsSeenOn() {
                     maxWidth: '100%'
                   } : {})
                 }}
-                priority={true}
+                loading="lazy"
               />
             </div>
           ))}

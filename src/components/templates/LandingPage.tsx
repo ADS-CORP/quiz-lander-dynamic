@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 import { BrandConfig } from '@/types/config';
 import Footer from '@/components/base/footer';
@@ -39,13 +39,9 @@ interface QuizWidgetProps {
 let quizInitialized = false;
 
 function QuizWidget({ quizId }: QuizWidgetProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
   const widgetId = 'quiz-widget'; // Use standard ID as per documentation
 
   useEffect(() => {
-    setIsMounted(true);
-    
     // Prevent multiple initializations
     if (quizInitialized) {
       console.log('Quiz already initialized, skipping');
@@ -80,7 +76,6 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
           quizId,
           apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
         });
-        setIsLoaded(true);
         quizInitialized = true;
         console.log('Quiz widget initialized successfully (existing script)');
       } catch (error) {
@@ -90,13 +85,16 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
     }
 
     if (!existingScript) {
-      const script = document.createElement('script');
-      script.src = 'https://quiz-widget.netlify.app/embed.js';
-      script.async = true;
-      script.setAttribute('data-quiz-id', quizId); // Add quiz ID as data attribute
-      script.setAttribute('data-api-url', 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'); // Add API URL
-      
-      script.onload = () => {
+      // Defer quiz widget loading until after page is interactive
+      const loadQuizWidget = () => {
+        const script = document.createElement('script');
+        script.src = 'https://quiz-widget.netlify.app/embed.js';
+        script.async = true;
+        script.defer = true;
+        script.setAttribute('data-quiz-id', quizId); // Add quiz ID as data attribute
+        script.setAttribute('data-api-url', 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'); // Add API URL
+        
+        script.onload = () => {
         console.log('Quiz script loaded');
         // According to docs, it should auto-initialize with data-quiz-id
         // But for React apps, we may need manual init
@@ -108,7 +106,6 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
                 quizId,
                 apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
               });
-              setIsLoaded(true);
               quizInitialized = true;
               console.log('Quiz widget initialized successfully');
             } catch (error) {
@@ -116,18 +113,25 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
             }
           } else {
             // If auto-initialized, just mark as loaded
-            setIsLoaded(true);
             quizInitialized = true;
             console.log('Quiz widget auto-initialized');
           }
         }, 100);
       };
       
-      script.onerror = () => {
-        console.error('Failed to load quiz widget script');
+        script.onerror = () => {
+          console.error('Failed to load quiz widget script');
+        };
+        
+        document.head.appendChild(script);
       };
       
-      document.head.appendChild(script);
+      // Load immediately if page is already interactive, otherwise wait
+      if (document.readyState === 'complete') {
+        loadQuizWidget();
+      } else {
+        window.addEventListener('load', loadQuizWidget, { once: true });
+      }
     }
 
     return () => {

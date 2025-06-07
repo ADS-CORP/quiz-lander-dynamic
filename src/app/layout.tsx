@@ -79,13 +79,21 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden`}>
       <head>
-        {/* Preconnect to quiz widget for faster loading */}
+        {/* Preconnect to critical third-party domains */}
         <link rel="preconnect" href="https://quiz-widget.netlify.app" />
         <link rel="dns-prefetch" href="https://quiz-widget.netlify.app" />
         
-        {/* Preconnect to backend API */}
         <link rel="preconnect" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
         <link rel="dns-prefetch" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
+        
+        <link rel="preconnect" href="https://cdn.trustedform.com" />
+        <link rel="dns-prefetch" href="https://cdn.trustedform.com" />
+        
+        <link rel="preconnect" href="https://api.trustedform.com" />
+        <link rel="dns-prefetch" href="https://api.trustedform.com" />
+        
+        <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+        <link rel="dns-prefetch" href="https://cdn.jsdelivr.net" />
       </head>
       <body className={`${montserrat.variable} overflow-x-hidden`}>
         <div className="min-h-screen w-screen overflow-x-hidden">
