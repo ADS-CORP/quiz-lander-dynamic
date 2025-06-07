@@ -55,10 +55,10 @@ export default function SettlementCarousel({ settlements }) {
   };
 
   return (
-    <div className="relative w-full max-w-2xl mx-auto overflow-hidden px-8">
+    <div className="relative w-full max-w-3xl mx-auto px-8">
       <button 
         onClick={handlePrev}
-        className="absolute -left-2 md:-left-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"
+        className="absolute -left-2 md:-left-6 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"
         aria-label="Previous settlement"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -72,7 +72,7 @@ export default function SettlementCarousel({ settlements }) {
           stopAutoRotate();
           handleNext();
         }}
-        className="absolute -right-2 md:-right-4 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"
+        className="absolute -right-2 md:-right-6 top-1/2 -translate-y-1/2 z-30 bg-white/90 hover:bg-white text-blue-600 p-2 md:p-2.5 rounded-full shadow-md transition-all"
         aria-label="Next settlement"
       >
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -86,7 +86,7 @@ export default function SettlementCarousel({ settlements }) {
             key={index}
             onClick={() => handleSettlementClick(settlement.link)}
             className={`
-              absolute w-[calc(100%-32px)] md:w-[500px] bg-white rounded-xl md:rounded-2xl shadow-lg
+              absolute w-[calc(100%-20px)] md:w-[600px] bg-white rounded-xl md:rounded-2xl shadow-lg
               transition-all duration-500 ease-in-out
               transform cursor-pointer
               ${index === currentIndex ? 'z-20 scale-100 opacity-100 translate-x-0' : 
@@ -95,30 +95,30 @@ export default function SettlementCarousel({ settlements }) {
               ${isTransitioning ? 'pointer-events-none' : ''}
             `}
           >
-            <div className="p-6 md:p-8">
+            <div className="p-5 md:p-6">
               <div className="text-center">
-                <div className="inline-flex items-center bg-blue-50 rounded-full px-3 py-1 md:px-4 md:py-1.5 mb-4">
-                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-blue-600 mr-1.5 md:mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <div className="inline-flex items-center bg-blue-50 rounded-full px-3 py-1 mb-3">
+                  <svg className="w-3.5 h-3.5 text-blue-600 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
                   <span className="text-blue-600 font-medium text-sm">{verifiedText}</span>
                 </div>
 
-                <div className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6 tracking-tight">
+                <div className="text-2xl md:text-3xl font-bold text-gray-900 mb-3 tracking-tight break-words px-2">
                   ${settlement.amount}
                 </div>
 
-                <div className="text-xl md:text-2xl font-semibold text-gray-800 mb-2 md:mb-3">
+                <div className="text-lg md:text-xl font-semibold text-gray-800 mb-2">
                   {settlement.name} • {settlement.location}
                 </div>
 
-                <div className="text-base md:text-lg text-gray-600 mb-4 md:mb-6">
+                <div className="text-sm md:text-base text-gray-600 mb-3 px-2">
                   {settlement.detail}
                 </div>
 
-                <div className="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors text-sm md:text-base">
+                <div className="inline-flex items-center text-blue-600 font-medium hover:text-blue-700 transition-colors text-sm">
                   {settlement.timeline}
-                  <svg className="w-3.5 h-3.5 md:w-4 md:h-4 ml-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-3.5 h-3.5 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                   </svg>
                 </div>

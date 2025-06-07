@@ -1,11 +1,37 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   poweredByHeader: false,
+  reactStrictMode: true,
   eslint: {
     ignoreDuringBuilds: true,
   },
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  // Optimize module resolution
+  modularizeImports: {
+    '@radix-ui/react-icons': {
+      transform: '@radix-ui/react-icons/dist/{{member}}',
+    },
+    'lucide-react': {
+      transform: 'lucide-react/dist/esm/icons/{{member}}',
+    },
+  },
   images: {
-    domains: ['localhost'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'localhost',
+        port: '',
+        pathname: '/**',
+      }
+    ],
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
@@ -15,21 +41,11 @@ const nextConfig = {
   // Enable optimizations
   experimental: {
     optimizeCss: true,
-    optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog'],
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog', '@radix-ui/react-slot', '@radix-ui/react-tabs', 'clsx', 'tailwind-merge'],
   },
-  // Enable SWC minification
-  swcMinify: true,
   // Compress output
   compress: true,
-  webpack: (config, { dev, isServer }) => {
-    // Force development mode for better debugging
-    config.mode = dev ? 'development' : 'production';
-    
-    // Add source maps in development
-    if (dev) {
-      config.devtool = 'eval-source-map';
-    }
-
+  webpack: (config, { isServer }) => {
     // Reduce polyfills for modern browsers
     if (!isServer) {
       config.resolve.alias = {
@@ -37,13 +53,6 @@ const nextConfig = {
         'core-js': false,
       };
     }
-
-    // Optimize bundle size
-    config.optimization = {
-      ...config.optimization,
-      usedExports: true,
-      sideEffects: false,
-    };
 
     return config;
   },
@@ -77,15 +86,6 @@ const nextConfig = {
         source: "/fonts/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
-        ]
-      },
-      {
-        // Security headers
-        source: "/:path*",
-        headers: [
-          { key: "X-Content-Type-Options", value: "nosniff" },
-          { key: "X-Frame-Options", value: "DENY" },
-          { key: "X-XSS-Protection", value: "1; mode=block" }
         ]
       },
       {

@@ -12,7 +12,8 @@ const CustomFaqSection = dynamic(() => import('@/components/ui/CustomFaqSection'
   loading: () => <div className="min-h-[400px]" />
 });
 const SettlementCarousel = dynamic(() => import('@/components/ui/SettlementCarousel'), {
-  loading: () => <div className="min-h-[280px]" />
+  loading: () => <div className="min-h-[280px]" />,
+  ssr: false
 });
 const LiveClaimsNotification = dynamic(() => import('@/components/ui/LiveClaimsNotification'), {
   ssr: false
@@ -44,7 +45,13 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
     // Pre-create the quiz widget container
     const container = document.createElement('div');
     container.id = 'quiz-widget';
-    document.getElementById('quiz-widget-container')?.appendChild(container);
+    const widgetContainer = document.getElementById('quiz-widget-container');
+    if (widgetContainer) {
+      widgetContainer.appendChild(container);
+    } else {
+      console.error('quiz-widget-container not found');
+      return;
+    }
 
     // Pre-initialize configuration object on window
     window.__quizConfig = {
@@ -110,6 +117,10 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
         }
       };
       
+      script.onerror = () => {
+        console.error('Failed to load quiz widget script');
+      };
+      
       document.head.appendChild(script);
     }
 
@@ -146,35 +157,7 @@ interface LandingPageProps {
   buyer: any;
 }
 
-export function LandingPage({ brand, content, source, quizId, buyer }: LandingPageProps) {
-  // Add structured data for SEO (removed buyer from params since it's not used)
-  const structuredData = {
-    '@context': 'https://schema.org',
-    '@type': 'WebPage',
-    name: content.metaTitle,
-    description: content.metaDescription,
-    url: `https://${brand.domain}/${brand.abbreviation}/${content.abbreviation}-${source}`,
-    publisher: {
-      '@type': 'Organization',
-      name: brand.name,
-      url: `https://${brand.domain}`,
-    },
-    mainEntity: {
-      '@type': 'Service',
-      name: content.title,
-      description: content.description,
-      provider: {
-        '@type': 'Organization',
-        name: brand.name,
-      },
-      serviceType: 'Legal Service',
-      areaServed: 'United States',
-    },
-    speakable: {
-      '@type': 'SpeakableSpecification',
-      cssSelector: ['h1', 'h2', '.description'],
-    },
-  };
+export function LandingPage({ brand, content, quizId }: LandingPageProps) {
 
   // Extract page-specific config
   const pageConfig = {
@@ -237,7 +220,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
           </div>
           {content.settlementSection?.settlements?.length > 0 && (
             <div className="w-full relative z-[80]" style={{ backgroundColor: brand.theme?.settlementCarouselBackground || '#ffffff' }}>
-              <div className="max-w-[900px] mx-auto px-4 py-8">
+              <div className="max-w-[1100px] mx-auto px-4 py-8 overflow-hidden">
                 <SettlementCarousel settlements={content.settlementSection.settlements} />
               </div>
             </div>

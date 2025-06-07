@@ -48,13 +48,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const protocol = host.includes('localhost') ? 'http' : 'https';
 
   const metadata: Metadata = {
-    metadataBase: new URL(`${protocol}://${host}`),
-    viewport: {
-      width: 'device-width',
-      initialScale: 1,
-      maximumScale: 1,
-      userScalable: false,
-    }
+    metadataBase: new URL(`${protocol}://${host}`)
   };
 
   // Only add title template if we have a brand
@@ -66,6 +60,15 @@ export async function generateMetadata(): Promise<Metadata> {
   }
 
   return metadata;
+}
+
+export async function generateViewport() {
+  return {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 1,
+    userScalable: false,
+  };
 }
 
 export default async function RootLayout({
