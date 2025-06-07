@@ -54,6 +54,8 @@ const nextConfig = {
     styledComponents: false,
     emotion: false,
   },
+  // Ensure modern browser targeting
+  swcMinify: true,
   // Compress output
   compress: true,
   webpack: (config, { isServer, dev }) => {
@@ -62,16 +64,19 @@ const nextConfig = {
       config.resolve.alias = {
         ...config.resolve.alias,
         'core-js': false,
+        'regenerator-runtime': false,
+        '@babel/runtime': false,
       };
       
       // Target modern browsers only
-      config.target = 'web';
+      config.target = ['web', 'es2020'];
       
       // Disable polyfills for modern features
       config.resolve.fallback = {
         ...config.resolve.fallback,
         'core-js': false,
         'regenerator-runtime': false,
+        '@babel/runtime': false,
       };
       
       // Enable aggressive tree shaking in production

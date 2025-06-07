@@ -71,10 +71,11 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
       // Script already loaded, initialize immediately
       console.log('Script already exists, initializing with existing window.qw...');
       try {
-        // Use simplified initialization with quizId and apiUrl
+        // Use simplified initialization with quizId, apiUrl, and hideLoading
         window.qw('init', widgetId, {
           quizId,
-          apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
+          apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
+          hideLoading: true  // Hide loading placeholder for cleaner UX
         });
         quizInitialized = true;
         console.log('Quiz widget initialized successfully (existing script)');
@@ -104,7 +105,8 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
               // Manual initialization for React apps
               window.qw('init', widgetId, {
                 quizId,
-                apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api'
+                apiUrl: 'https://quiz-widget-backend-685730230e63.herokuapp.com/api',
+                hideLoading: true  // Hide loading placeholder for cleaner UX
               });
               quizInitialized = true;
               console.log('Quiz widget initialized successfully');
@@ -126,11 +128,20 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
         document.head.appendChild(script);
       };
       
+      // Add resource hints for quiz widget
+      const preloadLink = document.createElement('link');
+      preloadLink.rel = 'preload';
+      preloadLink.as = 'script';
+      preloadLink.href = 'https://quiz-widget.netlify.app/embed.js';
+      document.head.appendChild(preloadLink);
+      
       // Load immediately if page is already interactive, otherwise wait
-      if (document.readyState === 'complete') {
-        loadQuizWidget();
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        // Small delay to ensure DOM is ready
+        setTimeout(loadQuizWidget, 100);
       } else {
-        window.addEventListener('load', loadQuizWidget, { once: true });
+        // Use DOMContentLoaded instead of load for faster initialization
+        window.addEventListener('DOMContentLoaded', loadQuizWidget, { once: true });
       }
     }
 

@@ -107,6 +107,7 @@ export default function AsSeenOn() {
                   } : {})
                 }}
                 loading="lazy"
+                sizes={logo.sizes}
               />
             </div>
           ))}
@@ -150,7 +151,8 @@ export default function AsSeenOn() {
                   maxWidth: '100%'
                 } : {})
               }}
-              priority={true}
+              loading="lazy"
+              sizes={logo.sizes}
             />
           </div>
         ))}
