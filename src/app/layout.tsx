@@ -83,16 +83,28 @@ export default async function RootLayout({
         <style dangerouslySetInnerHTML={{ __html: `
           /* Critical CSS for initial render */
           html { overflow-x: hidden; max-width: 100vw; }
-          body { overflow-x: hidden; position: relative; max-width: 100vw; margin: 0; }
+          body { overflow-x: hidden; position: relative; max-width: 100vw; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
           .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
           .font-extrabold { font-weight: 800; }
           .text-gray-900 { color: rgb(17 24 39); }
           .text-center { text-align: center; }
+          .tracking-tight { letter-spacing: -0.025em; }
+          .mx-auto { margin-left: auto; margin-right: auto; }
+          .px-4 { padding-left: 1rem; padding-right: 1rem; }
+          .py-5 { padding-top: 1.25rem; padding-bottom: 1.25rem; }
+          .mt-\\[90px\\] { margin-top: 90px; }
+          .relative { position: relative; }
+          .w-full { width: 100%; }
+          .max-w-screen-xl { max-width: 1280px; }
           @media (min-width: 640px) {
             .sm\\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
           }
           @media (min-width: 768px) {
             .md\\:text-5xl { font-size: 3rem; line-height: 1; }
+            .md\\:px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+          }
+          @media (min-width: 1024px) {
+            .lg\\:px-8 { padding-left: 2rem; padding-right: 2rem; }
           }
         ` }} />
         

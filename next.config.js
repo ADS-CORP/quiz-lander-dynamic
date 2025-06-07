@@ -47,7 +47,12 @@ const nextConfig = {
   // Configure SWC to target modern browsers
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
+    // Disable legacy transforms
+    styledComponents: false,
+    emotion: false,
   },
+  // Use SWC instead of Babel
+  swcMinify: true,
   // Compress output
   compress: true,
   webpack: (config, { isServer, dev }) => {

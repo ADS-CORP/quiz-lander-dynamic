@@ -38,6 +38,8 @@
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
+    "autoprefixer": "^10.4.21",
+    "cssnano": "^7.0.7",
     "eslint": "^9",
     "eslint-config-next": "15.1.0",
     "postcss": "^8",
@@ -49,7 +51,7 @@
   "browserslist": {
     "production": [
       "last 2 Chrome versions",
-      "last 2 Firefox versions", 
+      "last 2 Firefox versions",
       "last 2 Safari versions",
       "last 2 Edge versions",
       "not dead",
