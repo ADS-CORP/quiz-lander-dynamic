@@ -28,6 +28,10 @@ const domainBrandMap = Object.entries(brands).reduce((acc, [brandId, brand]) => 
 const BACKEND_URL = 'https://quiz-widget-backend-685730230e63.herokuapp.com';
 
 export async function middleware(request: NextRequest) {
+  // Set performance headers
+  const headers = new Headers();
+  headers.set('X-Middleware-Cache', 'HIT');
+  
   // Handle CORS preflight requests
   if (request.method === 'OPTIONS') {
     return new NextResponse(null, {

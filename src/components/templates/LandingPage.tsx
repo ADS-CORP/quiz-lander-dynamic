@@ -1,14 +1,25 @@
 'use client';
 
-import CustomFaqSection from '@/components/ui/CustomFaqSection';
-import SettlementCarousel from '@/components/ui/SettlementCarousel';
-import LiveClaimsNotification from '@/components/ui/LiveClaimsNotification';
-import TrafficCounter from '@/components/ui/TrafficCounter';
-import AsSeenOn from '@/components/ui/AsSeenOn';
+import { useEffect, useState, useCallback } from 'react';
+import dynamic from 'next/dynamic';
+import { BrandConfig } from '@/types/config';
 import Footer from '@/components/base/footer';
 import BaseLayout from '@/components/base/layout/BaseLayout';
-import { useEffect, useState } from 'react';
-import { BrandConfig } from '@/types/config';
+import TrafficCounter from '@/components/ui/TrafficCounter';
+
+// Lazy load non-critical components
+const CustomFaqSection = dynamic(() => import('@/components/ui/CustomFaqSection'), {
+  loading: () => <div className="min-h-[400px]" />
+});
+const SettlementCarousel = dynamic(() => import('@/components/ui/SettlementCarousel'), {
+  loading: () => <div className="min-h-[280px]" />
+});
+const LiveClaimsNotification = dynamic(() => import('@/components/ui/LiveClaimsNotification'), {
+  ssr: false
+});
+const AsSeenOn = dynamic(() => import('@/components/ui/AsSeenOn'), {
+  loading: () => <div className="min-h-[200px]" />
+});
 
 // Extend Window interface to include our custom properties
 declare global {

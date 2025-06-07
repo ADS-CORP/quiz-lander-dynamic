@@ -70,12 +70,17 @@ export default async function RootLayout({
   return (
     <html lang="en" className={montserrat.variable}>
       <head>
-        <link
-          rel="preload"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
-          as="style"
-          crossOrigin="anonymous"
-        />
+        {/* Preconnect to improve font loading */}
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        
+        {/* Preconnect to quiz widget for faster loading */}
+        <link rel="preconnect" href="https://quiz-widget.netlify.app" />
+        <link rel="dns-prefetch" href="https://quiz-widget.netlify.app" />
+        
+        {/* Preconnect to backend API */}
+        <link rel="preconnect" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
+        <link rel="dns-prefetch" href="https://quiz-widget-backend-685730230e63.herokuapp.com" />
       </head>
       <body className={montserrat.className}>{children}</body>
     </html>

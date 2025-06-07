@@ -6,15 +6,21 @@ const nextConfig = {
   },
   images: {
     domains: ['localhost'],
-    unoptimized: true,
+    formats: ['image/avif', 'image/webp'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
   },
   // Enable static exports
   output: 'standalone',
-  // Disable static optimization to ensure proper chunk loading
+  // Enable optimizations
   experimental: {
-    optimizeCss: false,
-    optimizePackageImports: [],
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react', '@radix-ui/react-accordion', '@radix-ui/react-dialog'],
   },
+  // Enable SWC minification
+  swcMinify: true,
+  // Compress output
+  compress: true,
   webpack: (config, { dev, isServer }) => {
     // Force development mode for better debugging
     config.mode = dev ? 'development' : 'production';
@@ -42,6 +48,29 @@ const nextConfig = {
         source: "/_next/static/:path*",
         headers: [
           { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+        ]
+      },
+      {
+        // Cache images
+        source: "/images/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+        ]
+      },
+      {
+        // Cache fonts
+        source: "/fonts/:path*",
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" }
+        ]
+      },
+      {
+        // Security headers
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "X-Frame-Options", value: "DENY" },
+          { key: "X-XSS-Protection", value: "1; mode=block" }
         ]
       }
     ];

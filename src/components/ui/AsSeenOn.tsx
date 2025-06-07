@@ -9,13 +9,13 @@ import abcLogo from '../../../public/images/abc.png';
 
 export default function AsSeenOn() {
   const logos = [
-    { src: bbcLogo, alt: 'BBC', width: 55, height: 55 },
-    { src: nytLogo, alt: 'The New York Times', width: 75, height: 75 },
-    { src: forbesLogo, alt: 'Forbes', width: 60, height: 60 },
-    { src: usaLogo, alt: 'USA Today', width: 65, height: 65 },
-    { src: foxLogo, alt: 'Fox News', width: 60, height: 60 },
-    { src: yahooLogo, alt: 'Yahoo!', width: 55, height: 55 },
-    { src: abcLogo, alt: 'ABC', width: 40, height: 40 },
+    { src: bbcLogo, alt: 'BBC', width: 55, height: 55, sizes: '55px' },
+    { src: nytLogo, alt: 'The New York Times', width: 75, height: 75, sizes: '75px' },
+    { src: forbesLogo, alt: 'Forbes', width: 60, height: 60, sizes: '60px' },
+    { src: usaLogo, alt: 'USA Today', width: 65, height: 65, sizes: '65px' },
+    { src: foxLogo, alt: 'Fox News', width: 60, height: 60, sizes: '60px' },
+    { src: yahooLogo, alt: 'Yahoo!', width: 55, height: 55, sizes: '55px' },
+    { src: abcLogo, alt: 'ABC', width: 40, height: 40, sizes: '40px' },
   ];
 
   return (
@@ -41,6 +41,9 @@ export default function AsSeenOn() {
                 alt={logo.alt}
                 width={logo.width}
                 height={logo.height}
+                sizes={logo.sizes}
+                loading="lazy"
+                placeholder="blur"
                 className={`grayscale opacity-75 hover:opacity-100 transition-opacity ${['USA Today', 'The New York Times', 'Yahoo!'].includes(logo.alt) ? 'object-contain' : ''}`}
                 style={{ 
                   color: 'transparent',
@@ -62,7 +65,6 @@ export default function AsSeenOn() {
                     maxWidth: '100%'
                   } : {})
                 }}
-                priority={true}
               />
             </div>
           ))}
