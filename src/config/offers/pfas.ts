@@ -92,7 +92,7 @@ export const pfasOffer: LandingPageContent = {
       },
       {
         name: "Multi-District Settlement",
-        location: "United States",
+        location: "US",
         amount: "4,000,000,000",
         detail: "Settlement for water systems contaminated with PFAS",
         timeline: "2023 Settlement",

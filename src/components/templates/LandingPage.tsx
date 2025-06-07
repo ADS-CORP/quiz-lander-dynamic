@@ -205,7 +205,7 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
                     backgroundColor: "#ffffff",
                     position: "relative",
                     overflow: "visible",
-                    minHeight: "650px" // Reserve space for quiz to prevent layout shift
+                    minHeight: "420px" // Reserve space for quiz to prevent layout shift
                   }}
                 >
                   <QuizWidget quizConfig={content.quizConfig} quizId={quizId} brand={brand} />
