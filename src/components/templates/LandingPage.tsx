@@ -101,6 +101,7 @@ function QuizWidget({ quizConfig, quizId, brand }: QuizWidgetProps) {
       const script = document.createElement('script');
       script.src = 'https://quiz-widget.netlify.app/embed.js';
       script.async = true;
+      script.defer = true;
       
       script.onload = () => {
         if (window.qw && typeof window.qw === 'function') {
@@ -200,7 +201,13 @@ export function LandingPage({ brand, content, source, quizId, buyer }: LandingPa
         <div className="relative mt-[90px]">
           <div className="max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8 py-5">
             <div className="text-center">
-              <h1 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl">
+              <h1 
+                className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
+                style={{ 
+                  contain: 'layout style paint',
+                  willChange: 'auto'
+                }}
+              >
                 {content.headline}
               </h1>
             </div>

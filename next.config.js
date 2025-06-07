@@ -30,6 +30,21 @@ const nextConfig = {
       config.devtool = 'eval-source-map';
     }
 
+    // Reduce polyfills for modern browsers
+    if (!isServer) {
+      config.resolve.alias = {
+        ...config.resolve.alias,
+        'core-js': false,
+      };
+    }
+
+    // Optimize bundle size
+    config.optimization = {
+      ...config.optimization,
+      usedExports: true,
+      sideEffects: false,
+    };
+
     return config;
   },
   async headers() {
@@ -71,6 +86,20 @@ const nextConfig = {
           { key: "X-Content-Type-Options", value: "nosniff" },
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-XSS-Protection", value: "1; mode=block" }
+        ]
+      },
+      {
+        // Cache HTML pages
+        source: "/(.*)",
+        headers: [
+          { key: "Cache-Control", value: "s-maxage=3600, stale-while-revalidate=59" }
+        ]
+      },
+      {
+        // Cache API responses
+        source: "/api/(.*)",
+        headers: [
+          { key: "Cache-Control", value: "s-maxage=60, stale-while-revalidate=30" }
         ]
       }
     ];

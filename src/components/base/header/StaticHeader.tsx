@@ -82,13 +82,14 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
                       alt={brand.logo.header.alt}
                       width={brand.logo.header.width || 150}
                       height={brand.logo.header.height || 48}
+                      sizes="(max-width: 640px) 120px, 150px"
+                      className="object-contain w-auto h-auto"
                       style={{ 
-                        width: brand.logo.header.width ? `${brand.logo.header.width}px` : '150px',
-                        height: brand.logo.header.height ? `${brand.logo.header.height}px` : '48px',
+                        maxWidth: brand.logo.header.width ? `${brand.logo.header.width}px` : '150px',
                         maxHeight: '48px'
                       }}
-                      className="object-contain"
                       priority={true}
+                      quality={85}
                     />
                   </div>
                 </Link>
