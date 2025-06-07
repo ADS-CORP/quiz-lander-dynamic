@@ -50,7 +50,7 @@ const nextConfig = {
   },
   // Compress output
   compress: true,
-  webpack: (config, { isServer }) => {
+  webpack: (config, { isServer, dev }) => {
     // Reduce polyfills for modern browsers
     if (!isServer) {
       config.resolve.alias = {
@@ -67,6 +67,17 @@ const nextConfig = {
         'core-js': false,
         'regenerator-runtime': false,
       };
+      
+      // Enable aggressive tree shaking in production
+      if (!dev) {
+        config.optimization = {
+          ...config.optimization,
+          usedExports: true,
+          sideEffects: false,
+          concatenateModules: true,
+          minimize: true,
+        };
+      }
     }
 
     return config;

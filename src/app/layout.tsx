@@ -8,11 +8,12 @@ import "./globals.css";
 // Load Montserrat with optimized settings to prevent font shifts
 const montserrat = Montserrat({
   subsets: ["latin"],
-  display: "swap",
+  display: "optional", // Use optional for faster LCP
   preload: true,
   fallback: ["system-ui", "sans-serif"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-montserrat",
+  adjustFontFallback: true, // Reduces CLS
 });
 
 async function getBrand() {
@@ -78,8 +79,22 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${montserrat.variable} overflow-x-hidden`}>
       <head>
-        {/* Critical CSS preload */}
-        <link rel="preload" href="/_next/static/css/app/layout.css" as="style" />
+        {/* Inline critical CSS for above-the-fold content */}
+        <style dangerouslySetInnerHTML={{ __html: `
+          /* Critical CSS for initial render */
+          html { overflow-x: hidden; max-width: 100vw; }
+          body { overflow-x: hidden; position: relative; max-width: 100vw; margin: 0; }
+          .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+          .font-extrabold { font-weight: 800; }
+          .text-gray-900 { color: rgb(17 24 39); }
+          .text-center { text-align: center; }
+          @media (min-width: 640px) {
+            .sm\\:text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+          }
+          @media (min-width: 768px) {
+            .md\\:text-5xl { font-size: 3rem; line-height: 1; }
+          }
+        ` }} />
         
         {/* Preconnect to improve font loading */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />

@@ -186,10 +186,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
             <div className="text-center">
               <h1 
                 className="text-3xl tracking-tight font-extrabold text-gray-900 sm:text-4xl md:text-5xl"
-                style={{ 
-                  contain: 'layout style paint',
-                  willChange: 'auto'
-                }}
+                style={{ fontFamily: 'Montserrat, system-ui, sans-serif' }}
               >
                 {content.headline}
               </h1>
