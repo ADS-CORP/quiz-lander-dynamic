@@ -62,6 +62,36 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
             });
             quizInitialized = true;
             console.log('Quiz widget initialized successfully');
+            
+            // Set up scroll position preservation
+            const container = document.getElementById('quiz-widget-container');
+            if (container) {
+              // Create a MutationObserver to watch for height changes
+              const observer = new MutationObserver(() => {
+                // Get the quiz container's position
+                const rect = container.getBoundingClientRect();
+                const containerTop = rect.top + window.pageYOffset;
+                
+                // If the container is above the viewport, scroll to keep it in view
+                if (rect.top < 100) { // 100px buffer for header
+                  window.scrollTo({
+                    top: containerTop - 100, // Account for fixed header
+                    behavior: 'instant'
+                  });
+                }
+              });
+              
+              // Observe the container for changes
+              observer.observe(container, {
+                childList: true,
+                subtree: true,
+                attributes: true,
+                attributeFilter: ['style', 'class']
+              });
+              
+              // Store observer for cleanup
+              (window as any).quizObserver = observer;
+            }
           } catch (error) {
             console.error('Error initializing quiz widget:', error);
           }
@@ -93,6 +123,12 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
 
     // Cleanup function
     return () => {
+      // Clean up observer
+      if ((window as any).quizObserver) {
+        (window as any).quizObserver.disconnect();
+        delete (window as any).quizObserver;
+      }
+      
       if (window.qw) {
         try {
           window.qw('destroy', 'quiz-widget-container', {});
