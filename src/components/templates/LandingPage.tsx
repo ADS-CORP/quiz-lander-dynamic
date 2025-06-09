@@ -63,21 +63,66 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
             quizInitialized = true;
             console.log('Quiz widget initialized successfully');
             
-            // Set up scroll position preservation
+            // Set up engagement detection and scroll to top for mobile
             const container = document.getElementById('quiz-widget-container');
             if (container) {
-              // Create a MutationObserver to watch for height changes
-              const observer = new MutationObserver(() => {
-                // Get the quiz container's position
-                const rect = container.getBoundingClientRect();
-                const containerTop = rect.top + window.pageYOffset;
-                
-                // If the container is above the viewport, scroll to keep it in view
-                if (rect.top < 100) { // 100px buffer for header
+              let isEngaged = false;
+              
+              // Check if device is mobile
+              const isMobile = () => {
+                return window.innerWidth <= 768 || 
+                       /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+              };
+              
+              // Function to scroll quiz to absolute top on mobile
+              const scrollQuizToTop = () => {
+                if (isMobile()) {
+                  const rect = container.getBoundingClientRect();
+                  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                  const containerTop = rect.top + scrollTop;
+                  
+                  // Scroll to put quiz at very top of viewport (0 position)
                   window.scrollTo({
-                    top: containerTop - 100, // Account for fixed header
-                    behavior: 'instant'
+                    top: containerTop,
+                    behavior: 'smooth'
                   });
+                }
+              };
+              
+              // Detect user engagement with quiz
+              const engagementHandler = (e: Event) => {
+                // Check if the event target is an input or select element
+                const target = e.target as HTMLElement;
+                const isFormElement = target.tagName === 'INPUT' || 
+                                    target.tagName === 'SELECT' || 
+                                    target.tagName === 'TEXTAREA' ||
+                                    target.closest('input, select, textarea');
+                
+                if (!isEngaged && isFormElement && isMobile()) {
+                  isEngaged = true;
+                  // Small delay to ensure keyboard is opening
+                  setTimeout(scrollQuizToTop, 300);
+                }
+              };
+              
+              // Add engagement listeners
+              container.addEventListener('click', engagementHandler, true);
+              container.addEventListener('focus', engagementHandler, true);
+              container.addEventListener('touchstart', engagementHandler, true);
+              
+              // Create a MutationObserver to maintain position during quiz interactions on mobile
+              const observer = new MutationObserver(() => {
+                if (isEngaged && isMobile()) {
+                  // Keep the quiz at the top of the viewport
+                  const rect = container.getBoundingClientRect();
+                  if (rect.top > 10) { // Small threshold to prevent constant scrolling
+                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+                    const containerTop = rect.top + scrollTop;
+                    window.scrollTo({
+                      top: containerTop,
+                      behavior: 'instant'
+                    });
+                  }
                 }
               });
               
@@ -89,8 +134,16 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
                 attributeFilter: ['style', 'class']
               });
               
-              // Store observer for cleanup
+              // Reset engagement state when keyboard closes
+              window.addEventListener('resize', () => {
+                if (!isMobile()) {
+                  isEngaged = false;
+                }
+              });
+              
+              // Store observer and handlers for cleanup
               (window as any).quizObserver = observer;
+              (window as any).quizEngagementHandler = engagementHandler;
             }
           } catch (error) {
             console.error('Error initializing quiz widget:', error);
@@ -127,6 +180,15 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
       if ((window as any).quizObserver) {
         (window as any).quizObserver.disconnect();
         delete (window as any).quizObserver;
+      }
+      
+      // Clean up engagement handler
+      const container = document.getElementById('quiz-widget-container');
+      if (container && (window as any).quizEngagementHandler) {
+        container.removeEventListener('click', (window as any).quizEngagementHandler, true);
+        container.removeEventListener('focus', (window as any).quizEngagementHandler, true);
+        container.removeEventListener('touchstart', (window as any).quizEngagementHandler, true);
+        delete (window as any).quizEngagementHandler;
       }
       
       if (window.qw) {
