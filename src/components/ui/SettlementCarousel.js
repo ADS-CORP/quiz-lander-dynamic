@@ -84,7 +84,7 @@ export default function SettlementCarousel({ settlements }) {
         </svg>
       </button>
 
-      <div className="relative flex justify-center items-center min-h-[280px] md:min-h-[500px] lg:min-h-[600px]">
+      <div className="relative flex justify-center items-center min-h-[280px] md:min-h-[400px] lg:min-h-[450px]">
         {sortedSettlements.map((settlement, index) => {
           const isActive = index === currentIndex;
           const isPrev = index === (currentIndex - 1 + sortedSettlements.length) % sortedSettlements.length;
