@@ -74,16 +74,19 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
               };
               
-              // Function to scroll quiz to absolute top on mobile
+              // Function to scroll quiz below fixed header on mobile
               const scrollQuizToTop = () => {
                 if (isMobile()) {
                   const rect = container.getBoundingClientRect();
                   const scrollTop = window.scrollY || document.documentElement.scrollTop;
                   const containerTop = rect.top + scrollTop;
                   
-                  // Scroll to put quiz at very top of viewport (0 position)
+                  // Account for fixed header (60px) + traffic counter (30px) = 90px total
+                  const headerOffset = 90;
+                  
+                  // Scroll to put quiz just below the fixed header elements
                   window.scrollTo({
-                    top: containerTop,
+                    top: containerTop - headerOffset,
                     behavior: 'smooth'
                   });
                 }
@@ -113,13 +116,15 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
               // Create a MutationObserver to maintain position during quiz interactions on mobile
               const observer = new MutationObserver(() => {
                 if (isEngaged && isMobile()) {
-                  // Keep the quiz at the top of the viewport
+                  // Keep the quiz just below the fixed header
                   const rect = container.getBoundingClientRect();
-                  if (rect.top > 10) { // Small threshold to prevent constant scrolling
+                  const headerOffset = 90; // header + traffic counter height
+                  
+                  if (rect.top > headerOffset + 10) { // Small threshold to prevent constant scrolling
                     const scrollTop = window.scrollY || document.documentElement.scrollTop;
                     const containerTop = rect.top + scrollTop;
                     window.scrollTo({
-                      top: containerTop,
+                      top: containerTop - headerOffset,
                       behavior: 'instant'
                     });
                   }
