@@ -96,6 +96,39 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               let isSticky = false;
               let lastScrollY = window.scrollY;
               let scrollVelocity = 0;
+              let allowEngagement = false;
+              
+              // Delay allowing engagement to prevent auto-triggering
+              setTimeout(() => {
+                allowEngagement = true;
+                console.log('Engagement now allowed');
+              }, 1000);
+              
+              // Watch for unwanted class additions during initialization
+              const classObserver = new MutationObserver((mutations) => {
+                if (!allowEngagement) {
+                  mutations.forEach((mutation) => {
+                    if (mutation.type === 'attributes' && mutation.attributeName === 'class') {
+                      const target = mutation.target as HTMLElement;
+                      if (target.classList.contains('quiz-sticky')) {
+                        console.log('Removing unwanted quiz-sticky class during initialization');
+                        target.classList.remove('quiz-sticky');
+                      }
+                    }
+                  });
+                }
+              });
+              
+              // Observe the widget wrapper for class changes
+              classObserver.observe(widgetWrapper, {
+                attributes: true,
+                attributeFilter: ['class']
+              });
+              
+              // Stop observing after initialization period
+              setTimeout(() => {
+                classObserver.disconnect();
+              }, 1500);
               
               // Check if device is mobile
               const isMobile = () => {
@@ -105,7 +138,7 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               
               // Function to make quiz sticky at top
               const makeQuizSticky = () => {
-                if (!isSticky && isMobile() && isEngaged) {
+                if (!isSticky && isMobile() && isEngaged && allowEngagement) {
                   isSticky = true;
                   widgetWrapper.classList.add('quiz-sticky');
                   document.body.classList.add('quiz-engaged');
@@ -127,6 +160,12 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               
               // Detect user engagement with quiz
               const engagementHandler = (e: Event) => {
+                // Don't process events during initialization
+                if (!allowEngagement) {
+                  console.log('Ignoring event - engagement not yet allowed');
+                  return;
+                }
+                
                 // Check if the event target is an input or select element
                 const target = e.target as HTMLElement;
                 const isFormElement = target.tagName === 'INPUT' || 
@@ -135,6 +174,7 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                                     target.closest('input, select, textarea');
                 
                 if (!isEngaged && isFormElement && isMobile()) {
+                  console.log('User engaged with form element:', target.tagName);
                   isEngaged = true;
                   // Make quiz sticky when engaged
                   makeQuizSticky();
@@ -261,6 +301,13 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
   // Ensure clean state on mount
   useEffect(() => {
     setIsQuizSticky(false);
+    // Force cleanup on page load
+    document.body.classList.remove('quiz-engaged');
+    const wrapper = document.getElementById('quiz-widget-wrapper');
+    if (wrapper) {
+      wrapper.classList.remove('quiz-sticky');
+      wrapper.removeAttribute('style');
+    }
   }, []);
 
   // Extract page-specific config
