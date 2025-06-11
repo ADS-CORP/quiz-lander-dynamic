@@ -15,9 +15,10 @@ interface BaseLayoutProps {
   };
   children: React.ReactNode;
   isRootLayout?: boolean;
+  isQuizSticky?: boolean;
 }
 
-const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, children, isRootLayout }) => {
+const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, children, isRootLayout, isQuizSticky }) => {
   // Create the header brand config (without CTA fields)
   const headerBrand = {
     ...brand,
@@ -29,7 +30,7 @@ const BaseLayout: React.FC<BaseLayoutProps> = ({ brand, pageBrandConfig, childre
 
   return (
     <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
-      <StaticHeader brand={headerBrand} pageConfig={pageBrandConfig} />
+      <StaticHeader brand={headerBrand} pageConfig={pageBrandConfig} isQuizSticky={isQuizSticky} />
       <main className="flex-grow w-full overflow-x-hidden">{children}</main>
     </div>
   );

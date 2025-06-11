@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 import { BrandConfig } from '@/types/config';
 import Footer from '@/components/base/footer';
@@ -25,12 +25,13 @@ const AsSeenOn = dynamic(() => import('@/components/ui/AsSeenOn'), {
 interface QuizWidgetProps {
   quizId: string;
   brand: BrandConfig;
+  onStickyChange?: (isSticky: boolean) => void;
 }
 
 // Global flag to prevent multiple quiz initializations
 let quizInitialized = false;
 
-function QuizWidget({ quizId }: QuizWidgetProps) {
+function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
   useEffect(() => {
     // Prevent multiple initializations
     if (quizInitialized) {
@@ -63,10 +64,14 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
             quizInitialized = true;
             console.log('Quiz widget initialized successfully');
             
-            // Set up engagement detection and scroll to top for mobile
+            // Set up engagement detection and sticky behavior
             const container = document.getElementById('quiz-widget-container');
-            if (container) {
+            const widgetWrapper = document.getElementById('quiz-widget-wrapper');
+            if (container && widgetWrapper) {
               let isEngaged = false;
+              let isSticky = false;
+              let lastScrollY = window.scrollY;
+              let scrollVelocity = 0;
               
               // Check if device is mobile
               const isMobile = () => {
@@ -74,21 +79,25 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
                        /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
               };
               
-              // Function to scroll quiz below fixed header on mobile
-              const scrollQuizToTop = () => {
-                if (isMobile()) {
-                  const rect = container.getBoundingClientRect();
-                  const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                  const containerTop = rect.top + scrollTop;
-                  
-                  // Account for fixed header (60px) + traffic counter (30px) = 90px total
-                  const headerOffset = 90;
-                  
-                  // Scroll to put quiz just below the fixed header elements
-                  window.scrollTo({
-                    top: containerTop - headerOffset,
-                    behavior: 'smooth'
-                  });
+              // Function to make quiz sticky at top
+              const makeQuizSticky = () => {
+                if (!isSticky && isMobile()) {
+                  isSticky = true;
+                  widgetWrapper.classList.add('quiz-sticky');
+                  document.body.classList.add('quiz-engaged');
+                  onStickyChange?.(true);
+                  console.log('Quiz made sticky');
+                }
+              };
+              
+              // Function to remove sticky behavior
+              const removeQuizSticky = () => {
+                if (isSticky) {
+                  isSticky = false;
+                  widgetWrapper.classList.remove('quiz-sticky');
+                  document.body.classList.remove('quiz-engaged');
+                  onStickyChange?.(false);
+                  console.log('Quiz sticky removed');
                 }
               };
               
@@ -103,9 +112,28 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
                 
                 if (!isEngaged && isFormElement && isMobile()) {
                   isEngaged = true;
-                  // Small delay to ensure keyboard is opening
-                  setTimeout(scrollQuizToTop, 300);
+                  // Make quiz sticky when engaged
+                  makeQuizSticky();
                 }
+              };
+              
+              // Detect forceful scroll to unstick
+              const scrollHandler = () => {
+                if (!isSticky) return;
+                
+                const currentScrollY = window.scrollY;
+                const scrollDelta = currentScrollY - lastScrollY;
+                
+                // Calculate scroll velocity
+                scrollVelocity = scrollDelta;
+                
+                // Detect forceful downward scroll (threshold of 50px in one scroll event)
+                if (scrollDelta > 50 && currentScrollY > 100) {
+                  removeQuizSticky();
+                  isEngaged = false;
+                }
+                
+                lastScrollY = currentScrollY;
               };
               
               // Add engagement listeners
@@ -113,42 +141,20 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
               container.addEventListener('focus', engagementHandler, true);
               container.addEventListener('touchstart', engagementHandler, true);
               
-              // Create a MutationObserver to maintain position during quiz interactions on mobile
-              const observer = new MutationObserver(() => {
-                if (isEngaged && isMobile()) {
-                  // Keep the quiz just below the fixed header
-                  const rect = container.getBoundingClientRect();
-                  const headerOffset = 90; // header + traffic counter height
-                  
-                  if (rect.top > headerOffset + 10) { // Small threshold to prevent constant scrolling
-                    const scrollTop = window.scrollY || document.documentElement.scrollTop;
-                    const containerTop = rect.top + scrollTop;
-                    window.scrollTo({
-                      top: containerTop - headerOffset,
-                      behavior: 'instant'
-                    });
-                  }
-                }
-              });
+              // Add scroll listener
+              window.addEventListener('scroll', scrollHandler, { passive: true });
               
-              // Observe the container for changes
-              observer.observe(container, {
-                childList: true,
-                subtree: true,
-                attributes: true,
-                attributeFilter: ['style', 'class']
-              });
-              
-              // Reset engagement state when keyboard closes
+              // Reset engagement state when keyboard closes or on resize
               window.addEventListener('resize', () => {
                 if (!isMobile()) {
+                  removeQuizSticky();
                   isEngaged = false;
                 }
               });
               
-              // Store observer and handlers for cleanup
-              (window as any).quizObserver = observer;
+              // Store handlers for cleanup
               (window as any).quizEngagementHandler = engagementHandler;
+              (window as any).quizScrollHandler = scrollHandler;
             }
           } catch (error) {
             console.error('Error initializing quiz widget:', error);
@@ -181,12 +187,6 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
 
     // Cleanup function
     return () => {
-      // Clean up observer
-      if ((window as any).quizObserver) {
-        (window as any).quizObserver.disconnect();
-        delete (window as any).quizObserver;
-      }
-      
       // Clean up engagement handler
       const container = document.getElementById('quiz-widget-container');
       if (container && (window as any).quizEngagementHandler) {
@@ -194,6 +194,19 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
         container.removeEventListener('focus', (window as any).quizEngagementHandler, true);
         container.removeEventListener('touchstart', (window as any).quizEngagementHandler, true);
         delete (window as any).quizEngagementHandler;
+      }
+      
+      // Clean up scroll handler
+      if ((window as any).quizScrollHandler) {
+        window.removeEventListener('scroll', (window as any).quizScrollHandler);
+        delete (window as any).quizScrollHandler;
+      }
+      
+      // Remove sticky classes
+      document.body.classList.remove('quiz-engaged');
+      const widgetWrapper = document.getElementById('quiz-widget-wrapper');
+      if (widgetWrapper) {
+        widgetWrapper.classList.remove('quiz-sticky');
       }
       
       if (window.qw) {
@@ -204,7 +217,7 @@ function QuizWidget({ quizId }: QuizWidgetProps) {
         }
       }
     };
-  }, [quizId]);
+  }, [quizId, onStickyChange]);
 
   // Return empty div - the quiz widget will render itself inside the container
   return null;
@@ -219,6 +232,7 @@ interface LandingPageProps {
 }
 
 export function LandingPage({ brand, content, quizId }: LandingPageProps) {
+  const [isQuizSticky, setIsQuizSticky] = useState(false);
 
   // Extract page-specific config
   const pageConfig = {
@@ -234,10 +248,10 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
   };
 
   return (
-    <BaseLayout brand={brand} pageBrandConfig={pageConfig}>
+    <BaseLayout brand={brand} pageBrandConfig={pageConfig} isQuizSticky={isQuizSticky}>
       <div className="min-h-screen bg-white overflow-x-hidden">
         <div 
-          className="border-b shadow-sm fixed top-[60px] w-full z-[100]"
+          className={`border-b shadow-sm fixed top-[60px] w-full z-[100] transition-transform duration-300 ${isQuizSticky ? '-translate-y-[90px]' : 'translate-y-0'}`}
           style={{ backgroundColor: brand.theme?.trafficCounterBackground || '#ffffff' }}
         >
           <TrafficCounter brand={brand} />
@@ -251,7 +265,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
             </div>
           </div>
 
-          <div className="relative bg-white">
+          <div id="quiz-widget-wrapper" className="relative bg-white">
             <div className="w-full max-w-screen-xl mx-auto px-4 md:px-6 lg:px-8">
               <div className="relative pt-3">
                 <div 
@@ -264,7 +278,7 @@ export function LandingPage({ brand, content, quizId }: LandingPageProps) {
                     minHeight: "320px" // Reduced space to minimize gap before As Seen On
                   }}
                 >
-                  <QuizWidget quizId={quizId} brand={brand} />
+                  <QuizWidget quizId={quizId} brand={brand} onStickyChange={setIsQuizSticky} />
                 </div>
               </div>
             </div>

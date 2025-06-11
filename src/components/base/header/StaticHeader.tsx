@@ -14,20 +14,31 @@ interface HeaderProps {
       footer?: string;
     };
   };
+  isQuizSticky?: boolean;
 }
 
-const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
+const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig, isQuizSticky }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  // Simple scroll handler
+  // Simple scroll handler and mobile detection
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 10);
     };
 
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
     window.addEventListener('scroll', handleScroll);
+    window.addEventListener('resize', checkMobile);
     handleScroll(); // Check initial scroll position
-    return () => window.removeEventListener('scroll', handleScroll);
+    checkMobile(); // Check initial mobile state
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', checkMobile);
+    };
   }, []);
 
   // Handle CTA click
@@ -56,8 +67,14 @@ const StaticHeader: React.FC<HeaderProps> = ({ brand, pageConfig }) => {
   const ctaText = pageConfig?.ctaText?.header ?? 'Call Now';
   const ctaValue = pageConfig?.cta;
 
+  // Hide header on mobile when quiz is sticky
+  const shouldHideHeader = isMobile && isQuizSticky;
+
   return (
-    <header className="fixed w-full top-0 z-[1000]" style={{ backgroundColor: brand.theme?.headerBackground }}>
+    <header 
+      className={`fixed w-full top-0 z-[1000] transition-transform duration-300 ${shouldHideHeader ? '-translate-y-full' : 'translate-y-0'}`} 
+      style={{ backgroundColor: brand.theme?.headerBackground }}
+    >
       <div className="border-b">
         <div className="w-full overflow-hidden">
           <div className="h-[60px] px-4 sm:px-6 flex items-center relative">
