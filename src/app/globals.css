@@ -47,6 +47,12 @@ body > .quiz-error {
 
 /* Quiz sticky behavior for mobile */
 @media (max-width: 768px) {
+  /* Ensure quiz is not sticky by default */
+  #quiz-widget-wrapper {
+    position: relative;
+  }
+  
+  /* Only apply sticky styles when quiz-sticky class is present */
   #quiz-widget-wrapper.quiz-sticky {
     position: fixed;
     top: 0;

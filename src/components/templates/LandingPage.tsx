@@ -33,6 +33,18 @@ let quizInitialized = false;
 
 function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
   useEffect(() => {
+    // Ensure no sticky classes are present on mount
+    const cleanup = () => {
+      document.body.classList.remove('quiz-engaged');
+      const wrapper = document.getElementById('quiz-widget-wrapper');
+      if (wrapper) {
+        wrapper.classList.remove('quiz-sticky');
+      }
+    };
+    
+    // Clean up any residual classes immediately
+    cleanup();
+    
     // Prevent multiple initializations
     if (quizInitialized) {
       console.log('Quiz already initialized, skipping');
@@ -81,7 +93,7 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               
               // Function to make quiz sticky at top
               const makeQuizSticky = () => {
-                if (!isSticky && isMobile()) {
+                if (!isSticky && isMobile() && isEngaged) {
                   isSticky = true;
                   widgetWrapper.classList.add('quiz-sticky');
                   document.body.classList.add('quiz-engaged');
@@ -233,6 +245,11 @@ interface LandingPageProps {
 
 export function LandingPage({ brand, content, quizId }: LandingPageProps) {
   const [isQuizSticky, setIsQuizSticky] = useState(false);
+  
+  // Ensure clean state on mount
+  useEffect(() => {
+    setIsQuizSticky(false);
+  }, []);
 
   // Extract page-specific config
   const pageConfig = {
