@@ -39,11 +39,23 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
       const wrapper = document.getElementById('quiz-widget-wrapper');
       if (wrapper) {
         wrapper.classList.remove('quiz-sticky');
+        // Force reset styles
+        wrapper.style.position = '';
+        wrapper.style.top = '';
+        wrapper.style.left = '';
+        wrapper.style.right = '';
+        wrapper.style.bottom = '';
+        wrapper.style.zIndex = '';
+        wrapper.style.height = '';
+        wrapper.style.width = '';
       }
     };
     
     // Clean up any residual classes immediately
     cleanup();
+    
+    // Double-check after a short delay
+    setTimeout(cleanup, 50);
     
     // Prevent multiple initializations
     if (quizInitialized) {

@@ -49,21 +49,28 @@ body > .quiz-error {
 @media (max-width: 768px) {
   /* Ensure quiz is not sticky by default */
   #quiz-widget-wrapper {
-    position: relative;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    height: auto !important;
+    width: auto !important;
+    z-index: auto !important;
   }
   
   /* Only apply sticky styles when quiz-sticky class is present */
   #quiz-widget-wrapper.quiz-sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1100;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    z-index: 1100 !important;
     background: white;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-    height: 100vh;
-    width: 100vw;
+    height: 100vh !important;
+    width: 100vw !important;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     padding: 0;
