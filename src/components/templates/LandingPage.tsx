@@ -158,32 +158,49 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 }
               };
               
-              // Detect user engagement with quiz
-              const engagementHandler = (e: Event) => {
-                // Don't process events during initialization
-                if (!allowEngagement) {
-                  console.log('Ignoring event - engagement not yet allowed');
-                  return;
-                }
+              // Watch for quiz progression instead of first click
+              let quizObserver: MutationObserver | null = null;
+              
+              const startWatchingQuizProgress = () => {
+                if (quizObserver) return;
                 
-                // Check if the event target is an interactive element
-                const target = e.target as HTMLElement;
-                const isInteractiveElement = 
-                  target.tagName === 'INPUT' || 
-                  target.tagName === 'SELECT' || 
-                  target.tagName === 'TEXTAREA' ||
-                  target.tagName === 'BUTTON' ||
-                  target.closest('input, select, textarea, button') !== null ||
-                  (target.getAttribute('role') === 'button') ||
-                  (target.parentElement && target.parentElement.getAttribute('role') === 'button');
+                quizObserver = new MutationObserver((mutations) => {
+                  if (!isEngaged && isMobile() && allowEngagement) {
+                    // Check if quiz has progressed (look for changes that indicate quiz started)
+                    const hasQuizProgressed = mutations.some(mutation => {
+                      // Look for added nodes that might indicate quiz progression
+                      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+                        return true;
+                      }
+                      // Look for attribute changes that might indicate state change
+                      if (mutation.type === 'attributes' && 
+                          (mutation.attributeName === 'class' || mutation.attributeName === 'data-question')) {
+                        return true;
+                      }
+                      return false;
+                    });
+                    
+                    if (hasQuizProgressed) {
+                      console.log('Quiz progression detected - making sticky');
+                      isEngaged = true;
+                      makeQuizSticky();
+                      // Stop observing once engaged
+                      quizObserver?.disconnect();
+                    }
+                  }
+                });
                 
-                if (!isEngaged && isInteractiveElement && isMobile()) {
-                  console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
-                  isEngaged = true;
-                  // Use minimal delay to let the click complete
-                  setTimeout(makeQuizSticky, 10);
-                }
+                // Start observing the quiz container
+                quizObserver.observe(container, {
+                  childList: true,
+                  subtree: true,
+                  attributes: true,
+                  attributeFilter: ['class', 'data-question', 'data-step']
+                });
               };
+              
+              // Start watching after a short delay
+              setTimeout(startWatchingQuizProgress, 500);
               
               // Detect forceful scroll to unstick
               const scrollHandler = () => {
@@ -204,12 +221,6 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 lastScrollY = currentScrollY;
               };
               
-              // Add engagement listeners - use bubble phase (false) instead of capture (true)
-              container.addEventListener('click', engagementHandler, false);
-              container.addEventListener('focus', engagementHandler, false);
-              container.addEventListener('touchstart', engagementHandler, false);
-              container.addEventListener('input', engagementHandler, false);
-              
               // Add scroll listener
               window.addEventListener('scroll', scrollHandler, { passive: true });
               
@@ -222,8 +233,8 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               });
               
               // Store handlers for cleanup
-              (window as any).quizEngagementHandler = engagementHandler;
               (window as any).quizScrollHandler = scrollHandler;
+              (window as any).quizProgressObserver = quizObserver;
             }
           } catch (error) {
             console.error('Error initializing quiz widget:', error);
@@ -256,20 +267,16 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
 
     // Cleanup function
     return () => {
-      // Clean up engagement handler
-      const container = document.getElementById('quiz-widget-container');
-      if (container && (window as any).quizEngagementHandler) {
-        container.removeEventListener('click', (window as any).quizEngagementHandler, false);
-        container.removeEventListener('focus', (window as any).quizEngagementHandler, false);
-        container.removeEventListener('touchstart', (window as any).quizEngagementHandler, false);
-        container.removeEventListener('input', (window as any).quizEngagementHandler, false);
-        delete (window as any).quizEngagementHandler;
-      }
-      
       // Clean up scroll handler
       if ((window as any).quizScrollHandler) {
         window.removeEventListener('scroll', (window as any).quizScrollHandler);
         delete (window as any).quizScrollHandler;
+      }
+      
+      // Clean up quiz progress observer
+      if ((window as any).quizProgressObserver) {
+        (window as any).quizProgressObserver.disconnect();
+        delete (window as any).quizProgressObserver;
       }
       
       // Remove sticky classes
