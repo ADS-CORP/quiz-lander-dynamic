@@ -158,49 +158,53 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 }
               };
               
-              // Watch for quiz progression instead of first click
-              let quizObserver: MutationObserver | null = null;
-              
-              const startWatchingQuizProgress = () => {
-                if (quizObserver) return;
+              // Detect user engagement with quiz
+              const engagementHandler = (e: Event) => {
+                // Don't process events during initialization
+                if (!allowEngagement) {
+                  console.log('Ignoring event - engagement not yet allowed');
+                  return;
+                }
                 
-                quizObserver = new MutationObserver((mutations) => {
-                  if (!isEngaged && isMobile() && allowEngagement) {
-                    // Check if quiz has progressed (look for changes that indicate quiz started)
-                    const hasQuizProgressed = mutations.some(mutation => {
-                      // Look for added nodes that might indicate quiz progression
-                      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                        return true;
-                      }
-                      // Look for attribute changes that might indicate state change
-                      if (mutation.type === 'attributes' && 
-                          (mutation.attributeName === 'class' || mutation.attributeName === 'data-question')) {
-                        return true;
-                      }
-                      return false;
-                    });
-                    
-                    if (hasQuizProgressed) {
-                      console.log('Quiz progression detected - making sticky');
-                      isEngaged = true;
+                // Check if the event target is an interactive element
+                const target = e.target as HTMLElement;
+                const isInteractiveElement = 
+                  target.tagName === 'INPUT' || 
+                  target.tagName === 'SELECT' || 
+                  target.tagName === 'TEXTAREA' ||
+                  target.tagName === 'BUTTON' ||
+                  target.closest('input, select, textarea, button') !== null ||
+                  (target.getAttribute('role') === 'button') ||
+                  (target.parentElement && target.parentElement.getAttribute('role') === 'button');
+                
+                if (!isEngaged && isInteractiveElement && isMobile()) {
+                  console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
+                  isEngaged = true;
+                  
+                  // Watch for DOM changes after the interaction
+                  const observer = new MutationObserver((mutations) => {
+                    console.log('DOM changed after interaction - making sticky');
+                    makeQuizSticky();
+                    observer.disconnect();
+                  });
+                  
+                  // Start observing for changes
+                  observer.observe(container, {
+                    childList: true,
+                    subtree: true,
+                    attributes: true
+                  });
+                  
+                  // Fallback: make sticky after timeout if no DOM changes detected
+                  setTimeout(() => {
+                    observer.disconnect();
+                    if (!isSticky) {
+                      console.log('Fallback - making sticky after timeout');
                       makeQuizSticky();
-                      // Stop observing once engaged
-                      quizObserver?.disconnect();
                     }
-                  }
-                });
-                
-                // Start observing the quiz container
-                quizObserver.observe(container, {
-                  childList: true,
-                  subtree: true,
-                  attributes: true,
-                  attributeFilter: ['class', 'data-question', 'data-step']
-                });
+                  }, 300);
+                }
               };
-              
-              // Start watching after a short delay
-              setTimeout(startWatchingQuizProgress, 500);
               
               // Detect forceful scroll to unstick
               const scrollHandler = () => {
