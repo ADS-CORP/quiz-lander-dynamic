@@ -166,43 +166,76 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                   return;
                 }
                 
-                // Check if the event target is an interactive element
-                const target = e.target as HTMLElement;
-                const isInteractiveElement = 
-                  target.tagName === 'INPUT' || 
-                  target.tagName === 'SELECT' || 
-                  target.tagName === 'TEXTAREA' ||
-                  target.tagName === 'BUTTON' ||
-                  target.closest('input, select, textarea, button') !== null ||
-                  (target.getAttribute('role') === 'button') ||
-                  (target.parentElement && target.parentElement.getAttribute('role') === 'button');
+                if (isEngaged || !isMobile()) return;
                 
-                if (!isEngaged && isInteractiveElement && isMobile()) {
-                  console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
+                // Log all clicks for debugging
+                const target = e.target as HTMLElement;
+                console.log('Click detected on:', target.tagName, 'Classes:', target.className, 'Role:', target.getAttribute('role'));
+                
+                // Check if clicked element or any parent is clickable/interactive
+                let clickedElement = target;
+                let isInteractive = false;
+                
+                // Walk up the DOM tree to find interactive elements
+                while (clickedElement && clickedElement !== container) {
+                  const tag = clickedElement.tagName;
+                  const role = clickedElement.getAttribute('role');
+                  const type = clickedElement.getAttribute('type');
+                  
+                  // Check if this element is interactive
+                  if (
+                    tag === 'BUTTON' ||
+                    tag === 'INPUT' ||
+                    tag === 'SELECT' ||
+                    tag === 'TEXTAREA' ||
+                    tag === 'A' ||
+                    role === 'button' ||
+                    role === 'link' ||
+                    clickedElement.onclick ||
+                    clickedElement.classList.contains('btn') ||
+                    clickedElement.classList.contains('button') ||
+                    (tag === 'DIV' && clickedElement.style.cursor === 'pointer')
+                  ) {
+                    isInteractive = true;
+                    break;
+                  }
+                  
+                  clickedElement = clickedElement.parentElement as HTMLElement;
+                }
+                
+                if (isInteractive) {
+                  console.log('User engaged with interactive element - making sticky');
                   isEngaged = true;
                   
-                  // Watch for DOM changes after the interaction
-                  const observer = new MutationObserver((mutations) => {
-                    console.log('DOM changed after interaction - making sticky');
-                    makeQuizSticky();
-                    observer.disconnect();
-                  });
-                  
-                  // Start observing for changes
-                  observer.observe(container, {
-                    childList: true,
-                    subtree: true,
-                    attributes: true
-                  });
-                  
-                  // Fallback: make sticky after timeout if no DOM changes detected
-                  setTimeout(() => {
-                    observer.disconnect();
-                    if (!isSticky) {
-                      console.log('Fallback - making sticky after timeout');
+                  // Make sticky immediately for button clicks
+                  if (target.tagName === 'BUTTON' || clickedElement.tagName === 'BUTTON' || 
+                      target.getAttribute('role') === 'button' || clickedElement.getAttribute('role') === 'button') {
+                    // Small delay to let the click process
+                    setTimeout(() => {
                       makeQuizSticky();
-                    }
-                  }, 300);
+                    }, 50);
+                  } else {
+                    // For other interactions, wait for DOM changes
+                    const observer = new MutationObserver((mutations) => {
+                      console.log('DOM changed after interaction - making sticky');
+                      makeQuizSticky();
+                      observer.disconnect();
+                    });
+                    
+                    observer.observe(container, {
+                      childList: true,
+                      subtree: true,
+                      attributes: true
+                    });
+                    
+                    // Fallback timeout
+                    setTimeout(() => {
+                      observer.disconnect();
+                      if (!isSticky) {
+                        makeQuizSticky();
+                      }
+                    }, 300);
+                  }
                 }
               };
               
