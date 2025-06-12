@@ -166,17 +166,21 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                   return;
                 }
                 
-                // Check if the event target is an input or select element
+                // Check if the event target is an interactive element
                 const target = e.target as HTMLElement;
-                const isFormElement = target.tagName === 'INPUT' || 
-                                    target.tagName === 'SELECT' || 
-                                    target.tagName === 'TEXTAREA' ||
-                                    target.closest('input, select, textarea');
+                const isInteractiveElement = 
+                  target.tagName === 'INPUT' || 
+                  target.tagName === 'SELECT' || 
+                  target.tagName === 'TEXTAREA' ||
+                  target.tagName === 'BUTTON' ||
+                  target.closest('input, select, textarea, button') !== null ||
+                  (target.getAttribute('role') === 'button') ||
+                  (target.parentElement && target.parentElement.getAttribute('role') === 'button');
                 
-                if (!isEngaged && isFormElement && isMobile()) {
-                  console.log('User engaged with form element:', target.tagName);
+                if (!isEngaged && isInteractiveElement && isMobile()) {
+                  console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
                   isEngaged = true;
-                  // Make quiz sticky when engaged
+                  // Make quiz sticky when engaged immediately
                   makeQuizSticky();
                 }
               };
@@ -204,6 +208,7 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               container.addEventListener('click', engagementHandler, true);
               container.addEventListener('focus', engagementHandler, true);
               container.addEventListener('touchstart', engagementHandler, true);
+              container.addEventListener('input', engagementHandler, true);
               
               // Add scroll listener
               window.addEventListener('scroll', scrollHandler, { passive: true });
@@ -257,6 +262,7 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
         container.removeEventListener('click', (window as any).quizEngagementHandler, true);
         container.removeEventListener('focus', (window as any).quizEngagementHandler, true);
         container.removeEventListener('touchstart', (window as any).quizEngagementHandler, true);
+        container.removeEventListener('input', (window as any).quizEngagementHandler, true);
         delete (window as any).quizEngagementHandler;
       }
       
