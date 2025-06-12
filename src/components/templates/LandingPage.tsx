@@ -180,8 +180,10 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 if (!isEngaged && isInteractiveElement && isMobile()) {
                   console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
                   isEngaged = true;
-                  // Make quiz sticky when engaged immediately
-                  makeQuizSticky();
+                  // Make quiz sticky after the current event finishes propagating
+                  setTimeout(() => {
+                    makeQuizSticky();
+                  }, 0);
                 }
               };
               
