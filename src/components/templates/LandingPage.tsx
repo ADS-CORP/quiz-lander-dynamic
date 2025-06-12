@@ -180,10 +180,8 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 if (!isEngaged && isInteractiveElement && isMobile()) {
                   console.log('User engaged with interactive element:', target.tagName, 'Event type:', e.type);
                   isEngaged = true;
-                  // Make quiz sticky after the current event finishes propagating
-                  setTimeout(() => {
-                    makeQuizSticky();
-                  }, 0);
+                  // Use minimal delay to let the click complete
+                  setTimeout(makeQuizSticky, 10);
                 }
               };
               
@@ -206,11 +204,11 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 lastScrollY = currentScrollY;
               };
               
-              // Add engagement listeners
-              container.addEventListener('click', engagementHandler, true);
-              container.addEventListener('focus', engagementHandler, true);
-              container.addEventListener('touchstart', engagementHandler, true);
-              container.addEventListener('input', engagementHandler, true);
+              // Add engagement listeners - use bubble phase (false) instead of capture (true)
+              container.addEventListener('click', engagementHandler, false);
+              container.addEventListener('focus', engagementHandler, false);
+              container.addEventListener('touchstart', engagementHandler, false);
+              container.addEventListener('input', engagementHandler, false);
               
               // Add scroll listener
               window.addEventListener('scroll', scrollHandler, { passive: true });
@@ -261,10 +259,10 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
       // Clean up engagement handler
       const container = document.getElementById('quiz-widget-container');
       if (container && (window as any).quizEngagementHandler) {
-        container.removeEventListener('click', (window as any).quizEngagementHandler, true);
-        container.removeEventListener('focus', (window as any).quizEngagementHandler, true);
-        container.removeEventListener('touchstart', (window as any).quizEngagementHandler, true);
-        container.removeEventListener('input', (window as any).quizEngagementHandler, true);
+        container.removeEventListener('click', (window as any).quizEngagementHandler, false);
+        container.removeEventListener('focus', (window as any).quizEngagementHandler, false);
+        container.removeEventListener('touchstart', (window as any).quizEngagementHandler, false);
+        container.removeEventListener('input', (window as any).quizEngagementHandler, false);
         delete (window as any).quizEngagementHandler;
       }
       
