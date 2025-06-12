@@ -225,6 +225,10 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
                 lastScrollY = currentScrollY;
               };
               
+              // Add engagement listeners
+              container.addEventListener('click', engagementHandler, false);
+              container.addEventListener('touchstart', engagementHandler, false);
+              
               // Add scroll listener
               window.addEventListener('scroll', scrollHandler, { passive: true });
               
@@ -237,8 +241,8 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
               });
               
               // Store handlers for cleanup
+              (window as any).quizEngagementHandler = engagementHandler;
               (window as any).quizScrollHandler = scrollHandler;
-              (window as any).quizProgressObserver = quizObserver;
             }
           } catch (error) {
             console.error('Error initializing quiz widget:', error);
@@ -271,16 +275,18 @@ function QuizWidget({ quizId, onStickyChange }: QuizWidgetProps) {
 
     // Cleanup function
     return () => {
+      // Clean up engagement handler
+      const container = document.getElementById('quiz-widget-container');
+      if (container && (window as any).quizEngagementHandler) {
+        container.removeEventListener('click', (window as any).quizEngagementHandler, false);
+        container.removeEventListener('touchstart', (window as any).quizEngagementHandler, false);
+        delete (window as any).quizEngagementHandler;
+      }
+      
       // Clean up scroll handler
       if ((window as any).quizScrollHandler) {
         window.removeEventListener('scroll', (window as any).quizScrollHandler);
         delete (window as any).quizScrollHandler;
-      }
-      
-      // Clean up quiz progress observer
-      if ((window as any).quizProgressObserver) {
-        (window as any).quizProgressObserver.disconnect();
-        delete (window as any).quizProgressObserver;
       }
       
       // Remove sticky classes
