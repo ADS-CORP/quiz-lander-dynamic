@@ -160,7 +160,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'ss',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054',
+    quizId: '92b4c017-ad63-4021-90d9-8d9514ce9b2e',
     showEmail: false
   },
   {
@@ -168,7 +168,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'pj',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054',
+    quizId: '92b4c017-ad63-4021-90d9-8d9514ce9b2e',
     showEmail: false
   },
   {
@@ -176,7 +176,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'wbl',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054',
+    quizId: '92b4c017-ad63-4021-90d9-8d9514ce9b2e',
     showEmail: false
   },
   {
@@ -184,7 +184,7 @@ export const pagesToBuild: PageBuildConfig[] = [
     brand: 'yt',
     buyer: 'ad',
     source: 'fb',
-    quizId: '3da42beb-ef7a-413a-bec9-013f0bb0f054',
+    quizId: '92b4c017-ad63-4021-90d9-8d9514ce9b2e',
     showEmail: false
   }
 ];

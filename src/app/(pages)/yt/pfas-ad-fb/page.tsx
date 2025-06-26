@@ -106,7 +106,7 @@ const Page = () => {
         }
       }}
       source="fb"
-      quizId="3da42beb-ef7a-413a-bec9-013f0bb0f054"
+      quizId="92b4c017-ad63-4021-90d9-8d9514ce9b2e"
       buyer={{"abbreviation":"ad","name":"A4D"}}
     />
   );
